@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CLOOVA</string>
+    <string name="email_name">Почта</string>
+    <string name="password_name">Пароль</string>
+    <string name="login_name">Логин</string>
+    <string name="reg_button_name">Ещё нет аккаунта? Регистрация</string>
+    <string name="registration_name">Регистрация</string>
+    <string name="confirm_name">Подтвердите пароль</string>
+    <string name="log_button_name">Уже есть аккаунт? Вход</string>
+
+</resources>
