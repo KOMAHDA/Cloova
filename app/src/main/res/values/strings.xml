@@ -7,5 +7,13 @@
     <string name="registration_name">Регистрация</string>
     <string name="confirm_name">Подтвердите пароль</string>
     <string name="log_button_name">Уже есть аккаунт? Вход</string>
+    <string name="profile_intro">Заглушка</string>
+    <string name="name_label">Заглушка</string>
+    <string name="city_label">Заглушка</string>
+    <string name="style_hint">Заглушка</string>
+    <string name="colors_hint">Заглушка</string>
+    <string name="clothes_hint">Заглушка</string>
+    <string name="more_info">Заглушка</string>
+    <string name="create_profile_button">Заглушка</string>
 
 </resources>
