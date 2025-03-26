@@ -15,12 +15,12 @@ public class MainActivity extends AppCompatActivity {
     private Button registrationButton;
     private Button loginButton;
 
-    protected void onClick(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        registrationButton = findViewById(R.id.button_top);
-        loginButton = findViewById(R.id.button_bottom);
+        registrationButton = findViewById(R.id.button2);
+        loginButton = findViewById(R.id.button3);
 
         registrationButton.setOnClickListener(new View.OnClickListener(){
             @Override

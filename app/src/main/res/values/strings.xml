@@ -1,19 +1,7 @@
 <resources>
-    <string name="app_name">CLOOVA</string>
-    <string name="email_name">Почта</string>
-    <string name="password_name">Пароль</string>
-    <string name="login_name">Логин</string>
-    <string name="reg_button_name">Ещё нет аккаунта? Регистрация</string>
-    <string name="registration_name">Регистрация</string>
-    <string name="confirm_name">Подтвердите пароль</string>
-    <string name="log_button_name">Уже есть аккаунт? Вход</string>
-    <string name="profile_intro">Заглушка</string>
-    <string name="name_label">Заглушка</string>
-    <string name="city_label">Заглушка</string>
-    <string name="style_hint">Заглушка</string>
-    <string name="colors_hint">Заглушка</string>
-    <string name="clothes_hint">Заглушка</string>
-    <string name="more_info">Заглушка</string>
-    <string name="create_profile_button">Заглушка</string>
-
+    <string name="app_name">My Application</string>
+    <string name="logo_text">CLOOVA</string>
+    <string name="nach">Начать знакомство</string>
+    <string name="prof">У меня уже есть профиль</string>
+    <string name="zit_reg">Стиль, который всегда в теме — с Cloova, ваш образ идеален в любую погоду!</string>
 </resources>

@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="blue">#0013A0</color>
+    <color name="fon_reg">#ADDFFF</color>
+    <color name="ser">#A9A9A9</color>
 </resources>
