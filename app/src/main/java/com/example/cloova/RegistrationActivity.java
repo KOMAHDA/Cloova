@@ -22,10 +22,10 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        loginWindow = findViewById(R.id.editText1);
-        passWindow = findViewById(R.id.editText2);
-        confirmpassWindow = findViewById(R.id.editText3);
-        registrationButton = findViewById(R.id.buttonSubmit);
+        loginWindow = findViewById(R.id.loginEditText);
+        passWindow = findViewById(R.id.passwordEditText);
+        confirmpassWindow = findViewById(R.id.confirmPasswordEditText);
+        registrationButton = findViewById(R.id.registerButton);
 
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
