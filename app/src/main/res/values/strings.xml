@@ -4,4 +4,8 @@
     <string name="nach">Начать знакомство</string>
     <string name="prof">У меня уже есть профиль</string>
     <string name="zit_reg">Стиль, который всегда в теме — с Cloova, ваш образ идеален в любую погоду!</string>
+    <string name="login_subtitle">Рады вашему возвращению!\nCloova всегда готов подобрать\nидеальный образ!</string>
+    <string name="username_hint">Имя пользователя</string>
+    <string name="password_hint">Пароль</string>
+    <string name="login_button_text">Войти</string>
 </resources>

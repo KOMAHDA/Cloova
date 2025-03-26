@@ -5,4 +5,7 @@
     <color name="blue">#0013A0</color>
     <color name="fon_reg">#ADDFFF</color>
     <color name="ser">#A9A9A9</color>
+    <color name="login_background_light_blue">#E0F2FF</color>
+    <color name="login_dark_blue">#003399</color>
+    <color name="login_input_gray">#EAEAEA</color>
 </resources>
