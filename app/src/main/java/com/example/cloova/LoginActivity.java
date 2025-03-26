@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-        Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Вход успешен!", Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
         startActivity(intent);

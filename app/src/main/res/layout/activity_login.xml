@@ -87,6 +87,7 @@
             android:minHeight="48dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+            android:focusableInTouchMode="true"
             android:textColor="@android:color/black"
             android:textColorHint="#8A8A8A"
             android:textSize="16sp"
