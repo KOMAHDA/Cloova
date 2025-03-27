@@ -15,7 +15,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText loginWindow;
     private EditText passWindow;
     private EditText confirmpassWindow;
-    private EditText name;
     private Button registrationButton;
 
     private Button goBackButton;
@@ -29,7 +28,6 @@ public class RegistrationActivity extends AppCompatActivity {
         passWindow = findViewById(R.id.passwordEditText);
         confirmpassWindow = findViewById(R.id.confirmPasswordEditText);
         registrationButton = findViewById(R.id.registerButton);
-        name = findViewById(R.id.nameEditText);
         goBackButton = findViewById(R.id.gobackbutton);
 
         registrationButton.setOnClickListener(new View.OnClickListener() {
