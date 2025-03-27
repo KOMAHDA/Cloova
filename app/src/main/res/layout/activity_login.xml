@@ -8,43 +8,69 @@
     tools:context=".LoginActivity">
 
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="410dp"
-        android:layout_height="134dp"
-        android:src="@drawable/temni_2_2_snizu"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:src="@drawable/svetli_2"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@null" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="82dp"
+        android:src="@drawable/temni_2"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@null"/>
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="410dp"
+        android:layout_width="0dp"
         android:layout_height="268dp"
         android:src="@drawable/temni_2_3_snizu"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@null"/>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="134dp"
+        android:src="@drawable/temni_2_2_snizu"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@null"/>
+
 
     <TextView
         android:id="@+id/logoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="155dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="@font/marcellus"
         android:text="@string/logo_text"
         android:textColor="@color/login_dark_blue"
         android:textSize="80sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/subtitleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="40dp"
         android:fontFamily="@font/manrope_bold"
         android:gravity="center"
@@ -60,7 +86,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="40dp"
         android:background="@drawable/rounded_white_bg"
         android:orientation="vertical"
@@ -72,6 +98,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subtitleTextView">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,92 +106,81 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/usernameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_hint"
+            android:labelFor="@id/usernameEditText"
             android:textSize="19sp" />
 
         <EditText
             android:id="@+id/usernameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:background="@android:drawable/editbox_background"
             android:backgroundTint="@color/login_input_gray"
             android:inputType="text"
-            android:textSize="17dp" />
+            android:textSize="17sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:orientation="vertical">
+    android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/password_hint"
-            android:textSize="19sp" />
+    <TextView
+        android:id="@+id/passwordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/password_hint"
+        android:labelFor="@id/passwordEditText"
+        android:textSize="19sp" />
 
-        <EditText
-            android:id="@+id/passwordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:backgroundTint="@color/login_input_gray"
-            android:inputType="text"
-            android:textSize="17dp" />
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:background="@android:drawable/editbox_background"
+        android:backgroundTint="@color/login_input_gray"
+        android:inputType="textPassword"
+        android:textSize="17sp" />
+</LinearLayout>
+
     </LinearLayout>
 
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="228dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="40dp"
-        android:backgroundTint="@color/blue"
-        android:fontFamily="@font/manrope_bold"
-        android:text="@string/login_button_text"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginBox" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="410dp"
-        android:layout_height="180dp"
-        android:src="@drawable/svetli_2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<Button
+    android:id="@+id/loginButton"
+    android:layout_width="0dp"
+    android:layout_height="64dp"
+    android:layout_marginStart="40dp"
+    android:layout_marginTop="32dp"
+    android:layout_marginEnd="40dp"
+    android:backgroundTint="@color/blue"
+    android:fontFamily="@font/manrope_bold"
+    android:text="@string/login_button_text"
+    android:textAllCaps="false"
+    android:textColor="@android:color/white"
+    android:textSize="18sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/loginBox" />
 
     <Button
         android:id="@+id/gobackbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="38dp"
-        android:onClick="Back"
+        android:layout_width="83dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/white"
+        android:contentDescription="@string/strelka"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:padding="8dp"
         android:text="@string/strelka"
         android:textColor="@color/blue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="411dp"
-        android:layout_height="82dp"
-        android:src="@drawable/temni_2"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
