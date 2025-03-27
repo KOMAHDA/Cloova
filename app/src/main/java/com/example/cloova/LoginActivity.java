@@ -33,6 +33,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void Back (View v) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
     private void handleSubmit() {
         String login = loginWindow.getText().toString().trim();
         String password = passWindow.getText().toString().trim();

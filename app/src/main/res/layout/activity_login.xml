@@ -139,6 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="38dp"
+        android:onClick="Back"
         android:backgroundTint="@color/white"
         android:text="@string/strelka"
         android:textColor="@color/blue"
