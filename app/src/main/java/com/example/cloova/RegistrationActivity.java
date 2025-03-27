@@ -15,6 +15,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText loginWindow;
     private EditText passWindow;
     private EditText confirmpassWindow;
+    private EditText name;
     private Button registrationButton;
 
     @Override
@@ -26,6 +27,7 @@ public class RegistrationActivity extends AppCompatActivity {
         passWindow = findViewById(R.id.passwordEditText);
         confirmpassWindow = findViewById(R.id.confirmPasswordEditText);
         registrationButton = findViewById(R.id.registerButton);
+        name = findViewById(R.id.name);
 
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override

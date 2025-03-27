@@ -5,13 +5,15 @@
     <string name="prof">У меня уже есть профиль</string>
     <string name="zit_reg">Стиль, который всегда в теме — с Cloova, ваш образ идеален в любую погоду!</string>
     <string name="login_subtitle">Рады вашему возвращению!\nCloova всегда готов подобрать\nидеальный образ!</string>
-    <string name="username_hint">Имя пользователя</string>
-    <string name="password_hint">Пароль</string>
+    <string name="username_hint">Логин:</string>
+    <string name="password_hint">Пароль:</string>
     <string name="login_button_text">Войти</string>
     <string name="register_subtitle">Создайте аккаунт,\nчтобы начать подбирать\nидеальные образы!</string>
-    <string name="login_hint">Имя пользователя</string>
-    <string name="confirm_password_hint">Подтвердите пароль</string>
+    <string name="login_hint">Логин:</string>
+    <string name="confirm_password_hint">Подтвердите пароль:</string>
     <string name="register_button_text">Зарегистрироваться</string>
     <string name="strelka">Назад</string>
-    <string name="password_hint_2">Подтвердите пароль</string>
+    <string name="password_hint_2">Подтвердите пароль:</string>
+    <string name="anketa">Более подробную анкету пройдите в вашем личном кабинете</string>
+    <string name="name">Ваше имя:</string>
 </resources>
