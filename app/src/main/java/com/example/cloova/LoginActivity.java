@@ -2,6 +2,7 @@ package com.example.cloova;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +16,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginWindow;
     private EditText passWindow;
     private Button loginButton;
+    private Button goBackButton;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         loginWindow = findViewById(R.id.usernameEditText);
         passWindow = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
+        goBackButton = findViewById(R.id.gobackbutton);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,6 +35,16 @@ public class LoginActivity extends AppCompatActivity {
                 handleSubmit();
             }
         });
+
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     private void handleSubmit() {
