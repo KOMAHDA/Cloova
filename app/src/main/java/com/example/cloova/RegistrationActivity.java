@@ -15,8 +15,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText loginWindow;
     private EditText passWindow;
     private EditText confirmpassWindow;
-    private EditText name;
     private Button registrationButton;
+
+    private Button goBackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +28,21 @@ public class RegistrationActivity extends AppCompatActivity {
         passWindow = findViewById(R.id.passwordEditText);
         confirmpassWindow = findViewById(R.id.confirmPasswordEditText);
         registrationButton = findViewById(R.id.registerButton);
-        name = findViewById(R.id.nameEditText);
+        goBackButton = findViewById(R.id.gobackbutton);
 
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handleSubmit();
+            }
+        });
+
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -57,7 +67,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+        Intent intent = new Intent(RegistrationActivity.this, ProfileActivity.class);
         startActivity(intent);
 
         finish();

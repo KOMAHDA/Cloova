@@ -16,4 +16,15 @@
     <string name="password_hint_2">Подтвердите пароль:</string>
     <string name="anketa">Более подробную анкету пройдите в вашем личном кабинете</string>
     <string name="name">Ваше имя:</string>
+    <string-array name="cities_array">
+        <item></item>
+        <item>Самара</item>
+        <item>Тольятти</item>
+        <item>Москва</item>
+    </string-array>
+    <string-array name="genders_array">
+        <item></item>
+        <item>Мужской</item>
+        <item>Женский</item>
+    </string-array>
 </resources>
