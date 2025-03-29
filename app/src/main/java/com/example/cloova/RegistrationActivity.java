@@ -16,8 +16,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText passWindow;
     private EditText confirmpassWindow;
     private Button registrationButton;
-
     private Button goBackButton;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,8 @@ public class RegistrationActivity extends AppCompatActivity {
         confirmpassWindow = findViewById(R.id.confirmPasswordEditText);
         registrationButton = findViewById(R.id.registerButton);
         goBackButton = findViewById(R.id.gobackbutton);
+
+        databaseHelper = new DatabaseHelper(this);
 
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,12 +66,20 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
+        boolean isAdded = databaseHelper.addUser(login, password);
 
-        Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_LONG).show();
+        if(isAdded){
+            Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(RegistrationActivity.this, ProfileActivity.class);
+            startActivity(intent);
 
-        Intent intent = new Intent(RegistrationActivity.this, ProfileActivity.class);
-        startActivity(intent);
-
-        finish();
+            finish();
+        }
+        else {
+            // Если addUser вернул false (ошибка или логин занят)
+            Toast.makeText(this, "Ошибка регистрации. Возможно, логин уже занят.", Toast.LENGTH_LONG).show();
+            // Можно очистить поле логина, чтобы пользователь ввел другое
+            loginWindow.setText("");
+        }
     }
 }

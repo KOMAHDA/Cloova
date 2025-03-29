@@ -27,4 +27,24 @@
         <item>Мужской</item>
         <item>Женский</item>
     </string-array>
+
+    <string name="profile_data_title">Расскажите о себе</string>
+
+    <string name="profile_name_label">Ваше имя</string>
+    <string name="profile_name_hint">Введите ваше имя</string>
+
+    <string name="profile_city_label">Город</string>
+    <string name="profile_city_hint">Введите ваш город</string>
+
+    <string name="profile_style_label">Желаемый стиль</string>
+    <string name="profile_style_hint">Например: кэжуал, деловой, спортивный</string>
+
+    <string name="profile_colors_label">Предпочитаемые цвета</string>
+    <string name="profile_colors_hint">Например: синий, бежевый, черный</string>
+
+    <string name="profile_clothes_label">Имеющаяся одежда</string>
+    <string name="profile_clothes_hint">Опишите основные предметы вашего гардероба...</string>
+
+    <string name="save_button_text">Сохранить</string>
+    <string name="back_button_desc">Назад</string>
 </resources>
