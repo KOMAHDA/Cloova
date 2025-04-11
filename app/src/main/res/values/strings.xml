@@ -9,13 +9,15 @@
     <string name="password_hint">Пароль:</string>
     <string name="login_button_text">Войти</string>
     <string name="register_subtitle">Создайте аккаунт,\nчтобы начать подбирать\nидеальные образы!</string>
-    <string name="login_hint">Логин:</string>
+    <string name="login_hint">Имя пользователя</string>
     <string name="confirm_password_hint">Подтвердите пароль:</string>
     <string name="register_button_text">Зарегистрироваться</string>
     <string name="strelka">Назад</string>
+    <string name="sozdanie">Создание профиля\nШаг 2: Заполните информацию о себе</string>
     <string name="password_hint_2">Подтвердите пароль:</string>
     <string name="anketa">Более подробную анкету пройдите в вашем личном кабинете</string>
-    <string name="name">Ваше имя:</string>
+    <string name="name">Имя:</string>
+    <string name="happy">Дата рождения:</string>
     <string name="next">Продолжить</string>
     <string name="stil">Ваш стиль — наша забота! Давайте узнаем друг друга лучше, чтобы создавать образы, которые идеально подходят именно вам.</string>
     <string-array name="cities_array">
@@ -29,16 +31,21 @@
         <item>Мужской</item>
         <item>Женский</item>
     </string-array>
-
+    <string-array name="style_options">
+        <item>Классический</item>
+        <item>Спортивный</item>
+        <item>Деловой</item>
+        <item>Свободный</item>
+    </string-array>
     <string name="profile_data_title">Расскажите о себе</string>
 
     <string name="profile_name_label">Ваше имя</string>
     <string name="profile_name_hint">Введите ваше имя</string>
 
-    <string name="profile_city_label">Город</string>
+    <string name="profile_city_label">Город:</string>
     <string name="profile_city_hint">Введите ваш город</string>
 
-    <string name="profile_style_label">Желаемый стиль</string>
+    <string name="profile_style_label">Желаемый стиль:</string>
     <string name="profile_style_hint">Например: кэжуал, деловой, спортивный</string>
 
     <string name="profile_colors_label">Предпочитаемые цвета</string>
