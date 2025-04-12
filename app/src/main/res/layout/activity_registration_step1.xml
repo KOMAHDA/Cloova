@@ -154,7 +154,7 @@ tools:context=".Registration_step1">
 
         <EditText
             android:id="@+id/nameEditText3"
-            android:layout_width="300dp"
+            android:layout_width="320dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:background="@drawable/rounded_gray_edittext_bg"
@@ -175,7 +175,7 @@ tools:context=".Registration_step1">
 
         <Spinner
             android:id="@+id/nameSpinner4"
-            android:layout_width="300dp"
+            android:layout_width="320dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:background="@drawable/rounded_gray_edittext_bg"
@@ -212,7 +212,7 @@ tools:context=".Registration_step1">
             android:fontFamily="@font/manrope_bold"
             android:text="@string/sozdanie"
             android:textColor="@color/black"
-            android:textSize="30sp" />
+            android:textSize="27sp" />
 
         <TextView
             android:id="@+id/text2"
@@ -238,10 +238,9 @@ tools:context=".Registration_step1">
         android:text="@string/next"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:onClick="Registration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line1"/>
+        app:layout_constraintTop_toBottomOf="@+id/line1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
