@@ -72,7 +72,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="40dp"
-        android:fontFamily="@font/manrope_bold"
+        android:fontFamily="@font/manrope_medium"
         android:gravity="center"
         android:text="@string/login_subtitle"
         android:textColor="@android:color/black"
@@ -109,16 +109,18 @@
             android:id="@+id/usernameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_medium"
             android:text="@string/login_hint"
             android:labelFor="@id/usernameEditText"
             android:textSize="19sp" />
 
         <EditText
             android:id="@+id/usernameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="280dp"
+            android:layout_height="35dp"
             android:minHeight="48dp"
-            android:background="@android:drawable/editbox_background"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
             android:inputType="text"
             android:textSize="17sp" />
@@ -135,18 +137,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/password_hint"
+        android:fontFamily="@font/manrope_medium"
         android:labelFor="@id/passwordEditText"
         android:textSize="19sp" />
 
     <EditText
         android:id="@+id/passwordEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="280dp"
+        android:layout_height="35dp"
         android:minHeight="48dp"
-        android:background="@android:drawable/editbox_background"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_gray_edittext_bg"
         android:backgroundTint="@color/login_input_gray"
-        android:inputType="textPassword"
-        android:textSize="17sp" />
+        android:inputType="text"
+        android:textSize="17sp"/>
 </LinearLayout>
 
     </LinearLayout>
