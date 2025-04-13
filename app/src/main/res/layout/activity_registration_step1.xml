@@ -7,6 +7,7 @@ android:layout_height="match_parent"
 android:background="@color/fon_reg"
 tools:context=".Registration_step1">
 
+
 <ImageView
     android:id="@+id/imageView6"
     android:layout_width="0dp"
@@ -184,7 +185,6 @@ tools:context=".Registration_step1">
             android:popupBackground="@color/white"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textAlignment="center"
             android:textSize="17sp" />
 
 

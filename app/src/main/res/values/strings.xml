@@ -15,11 +15,14 @@
     <string name="strelka">Назад</string>
     <string name="sozdanie">Создание профиля</string>
     <string name="step_1">Шаг 1: Заполните информацию о себе</string>
+    <string name="step_2">Шаг 2: Расскажите про ваш стиль</string>
     <string name="password_hint_2">Подтвердите пароль:</string>
     <string name="anketa">Более подробную анкету пройдите в вашем личном кабинете</string>
     <string name="name">Имя:</string>
+    <string name="skip">Пропустить</string>
     <string name="happy">Дата рождения:</string>
     <string name="next">Продолжить</string>
+    <string name="next_1">Далее</string>
     <string name="stil">Ваш стиль — наша забота! Давайте узнаем друг друга лучше, чтобы создавать образы, которые идеально подходят именно вам.</string>
     <string-array name="cities_array">
         <item></item>
@@ -49,11 +52,18 @@
     <string name="profile_style_label">Желаемый стиль:</string>
     <string name="profile_style_hint">Например: кэжуал, деловой, спортивный</string>
 
-    <string name="profile_colors_label">Предпочитаемые цвета</string>
-    <string name="profile_colors_hint">Например: синий, бежевый, черный</string>
+    <string name="profile_colors_label">Предпочитаемые цвета:</string>
+    <string-array name="profile_colors_hint">
+        <item>Классический</item>
+        <item>Спортивный</item>
+        <item>Деловой</item>
+        <item>Свободный</item>
+    </string-array>
 
-    <string name="profile_clothes_label">Имеющаяся одежда</string>
-    <string name="profile_clothes_hint">Опишите основные предметы вашего гардероба...</string>
+    <string name="profile_style_aks">Какие аксуессуары есть у вас?</string>
+
+    <string name="profile_clothes_label">Главный принцип в одежде:</string>
+    <string name="profile_clothes_hint">Какая одежда есть в вашем гардеробе?</string>
 
     <string name="save_button_text">Сохранить</string>
     <string name="back_button_desc">Назад</string>
