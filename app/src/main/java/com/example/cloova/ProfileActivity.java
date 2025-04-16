@@ -55,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, RegistrationActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, Registration_step1.class);
                 startActivity(intent);
                 finish();
             }

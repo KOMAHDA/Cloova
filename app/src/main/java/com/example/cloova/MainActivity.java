@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Registration (View v) {
-        Intent intent = new Intent(this, RegistrationActivity.class);
+        Intent intent = new Intent(this, Registration_step1.class);
         startActivity(intent);
     }
 
