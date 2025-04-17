@@ -90,7 +90,7 @@ tools:context=".Registration_step1">
     <LinearLayout
         android:id="@+id/line1"
         android:layout_width="345dp"
-        android:layout_height="370dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/rounded_edit_text"
         android:orientation="vertical"

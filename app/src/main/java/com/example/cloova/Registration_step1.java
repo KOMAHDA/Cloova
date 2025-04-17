@@ -66,7 +66,6 @@ public class Registration_step1 extends AppCompatActivity {
         goNextButton = findViewById(R.id.gonextbutton);
         profileImage = findViewById(R.id.profileImage);
 
-
         // Кнопка выбора фото
         Button uploadPhotoBtn = findViewById(R.id.uploadPhotoBtn);
         uploadPhotoBtn.setOnClickListener(v -> showImagePickerDialog());
@@ -74,9 +73,6 @@ public class Registration_step1 extends AppCompatActivity {
         // Кнопка выбора стилей
         Button btnSelectStyles = findViewById(R.id.btnSelectStyles);
         btnSelectStyles.setOnClickListener(v -> showStylesDialog());
-
-        // Настройка Spinner для городов
-
 
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,30 +90,6 @@ public class Registration_step1 extends AppCompatActivity {
             }
         });
 
-        /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.style_options,
-                android.R.layout.simple_spinner_item
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        nameSpinner.setAdapter(adapter);
-
-        nameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    // Заглушка — ничего не делаем
-                    return;
-                }
-                String selectedName = parent.getItemAtPosition(position).toString();
-                Toast.makeText(Registration_step1.this, "Вы выбрали: " + selectedName, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Ничего не выбрано — можно оставить пустым
-            }
-        });*/
     }
 
     public void Back (View v) {
@@ -127,7 +99,7 @@ public class Registration_step1 extends AppCompatActivity {
 
     public void Next (View v) {
 
-        Intent intent = new Intent(this, Registration_step2.class);
+        Intent intent = new Intent(this, Registration_step3.class);
         intent.putExtra("name", nameEditText.getText().toString());
         intent.putExtra("city", citySpinner.getSelectedItem().toString());  // Передаём выбранный город
         intent.putStringArrayListExtra("styles", new ArrayList<>(selectedStyles)); // Список стилей

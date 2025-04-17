@@ -1,5 +1,5 @@
 package com.example.cloova;
-
+/*
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -100,4 +100,85 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+}
+*/
+
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class DatabaseHelper extends SQLiteOpenHelper {
+    private static final String DATABASE_NAME = "CloovaDB.db";
+    private static final int DATABASE_VERSION = 1;
+
+    // Таблица пользователей
+    private static final String TABLE_USERS = "users";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_PASSWORD = "password";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_CITY = "city";
+    private static final String COLUMN_BIRTH_DATE = "birth_date";
+    private static final String COLUMN_PROFILE_IMAGE = "profile_image";
+
+    public DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_USERNAME + " TEXT UNIQUE,"
+                + COLUMN_PASSWORD + " TEXT,"
+                + COLUMN_NAME + " TEXT,"
+                + COLUMN_CITY + " TEXT,"
+                + COLUMN_BIRTH_DATE + " TEXT,"
+                + COLUMN_PROFILE_IMAGE + " TEXT" + ")";
+        db.execSQL(CREATE_USERS_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        onCreate(db);
+    }
+
+    public long addUser(String username, String password, String name,
+                        String city, String birthDate, String profileImagePath) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Проверяем, существует ли пользователь
+        if (checkUser(username, password)) {
+            return -1; // Пользователь уже существует
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, username);
+        values.put(COLUMN_PASSWORD, password); // В реальном приложении нужно хешировать!
+        values.put(COLUMN_NAME, name);
+        values.put(COLUMN_CITY, city);
+        values.put(COLUMN_BIRTH_DATE, birthDate);
+        values.put(COLUMN_PROFILE_IMAGE, profileImagePath);
+
+        long result = db.insert(TABLE_USERS, null, values);
+        db.close();
+        return result;
+    }
+
+    public boolean checkUser(String login, String enteredPassword) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS,
+                new String[]{COLUMN_ID},
+                COLUMN_USERNAME + " = ?",
+                new String[]{login},
+                null, null, null);
+
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
+    }
 }

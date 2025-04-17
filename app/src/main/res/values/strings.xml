@@ -16,13 +16,15 @@
     <string name="sozdanie">Создание профиля</string>
     <string name="step_1">Шаг 1: Заполните информацию о себе</string>
     <string name="step_2">Шаг 2: Расскажите про ваш стиль</string>
-    <string name="password_hint_2">Подтвердите пароль:</string>
+    <string name="step_3">Шаг 3: Конфиденциальность</string>
     <string name="anketa">Более подробную анкету пройдите в вашем личном кабинете</string>
     <string name="name">Имя:</string>
+    <string name="login">Логин:</string>
     <string name="skip">Пропустить</string>
     <string name="happy">Дата рождения:</string>
     <string name="next">Продолжить</string>
     <string name="next_1">Далее</string>
+    <string name="create">Создать</string>
     <string name="stil">Ваш стиль — наша забота! Давайте узнаем друг друга лучше, чтобы создавать образы, которые идеально подходят именно вам.</string>
     <string-array name="cities_array">
         <item></item>
