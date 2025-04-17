@@ -5,41 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.ImageView;
 import android.widget.Toast;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.content.Intent;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.AlertDialog;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.provider.MediaStore;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.annotation.SuppressLint;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.FileDescriptor;
-import java.io.InputStream;
-
-import android.os.Environment;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import androidx.core.content.FileProvider;
 
 public class Registration_step3 extends AppCompatActivity {
 
@@ -79,7 +47,7 @@ public class Registration_step3 extends AppCompatActivity {
     }
 
     public void Back (View v) {
-        Intent intent = new Intent(this, Registration_step1.class);
+        Intent intent = new Intent(this, Registration_step2.class);
         startActivity(intent);
     }
 

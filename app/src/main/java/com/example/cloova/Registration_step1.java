@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -22,24 +21,13 @@ import android.app.AlertDialog;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.provider.MediaStore;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.annotation.SuppressLint;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.FileDescriptor;
 import java.io.InputStream;
 
-import android.os.Environment;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import androidx.core.content.FileProvider;
 
 public class Registration_step1 extends AppCompatActivity {
 
@@ -67,8 +55,8 @@ public class Registration_step1 extends AppCompatActivity {
         goNextButton = findViewById(R.id.gonextbutton);
         profileImage = findViewById(R.id.profileImage);
 
-        setupCitySpinner();
         setupSexSpinner();
+        setupCitySpinner();
 
         // Кнопка выбора фото
         Button uploadPhotoBtn = findViewById(R.id.uploadPhotoBtn);
@@ -103,7 +91,7 @@ public class Registration_step1 extends AppCompatActivity {
 
     public void Next (View v) {
 
-        Intent intent = new Intent(this, Registration_step3.class);
+        Intent intent = new Intent(this, Registration_step2.class);
         intent.putExtra("name", nameEditText.getText().toString());
         intent.putExtra("city", citySpinner.getSelectedItem().toString());  // Передаём выбранный город
         intent.putStringArrayListExtra("styles", new ArrayList<>(selectedStyles)); // Список стилей
@@ -116,6 +104,17 @@ public class Registration_step1 extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void setupSexSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.sex_array,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(adapter);
+    }
+
+
     // Выбор города. Нужно будет брать его из привязанного источника с погодой наверное
     private void setupCitySpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -127,44 +126,6 @@ public class Registration_step1 extends AppCompatActivity {
         citySpinner.setAdapter(adapter);
     }
 
-    private void setupSexSpinner() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.sex_array,  // Массив городов в res/values/arrays.xml
-                android.R.layout.simple_spinner_item
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        citySpinner.setAdapter(adapter);
-    }
-
-    // Выбор стилей (несколько). Возможно, стоит переделать
-    /*private void showStylesDialog() {
-        final String[] styles = {"Классический", "Спортивный", "Повседневный", "Богемный"};
-        final boolean[] checkedItems = new boolean[styles.length]; // Массив для хранения выбранных элементов
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Выберите стили")
-                .setMultiChoiceItems(styles, checkedItems, (dialog, which, isChecked) -> {
-                    checkedItems[which] = isChecked;
-                })
-                .setPositiveButton("Готово", (dialog, id) -> {
-                    // Сохраняем выбранные стили
-                    selectedStyles.clear();
-                    for (int i = 0; i < styles.length; i++) {
-                        if (checkedItems[i]) {
-                            selectedStyles.add(styles[i]);
-                        }
-                    }
-                    // Можно показать выбранные стили (опционально)
-                    Toast.makeText(this, "Выбрано: " + selectedStyles.toString(), Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("Отмена", (dialog, id) -> {
-                    // Действие при отмене
-                });
-
-        builder.create().show();
-    }
-*/
     // Фото профиля
     private void showImagePickerDialog() {
         String[] options = {"Камера", "Галерея"};
@@ -227,10 +188,6 @@ public class Registration_step1 extends AppCompatActivity {
         }
         if (citySpinner.getSelectedItemPosition() == 0) {  // Проверка выбора города
             Toast.makeText(this, "Выберите город", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (selectedStyles.isEmpty()) {
-            Toast.makeText(this, "Выберите хотя бы один стиль", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

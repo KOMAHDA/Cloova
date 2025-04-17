@@ -42,7 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Настройка Spinner для пола
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
-                R.array.genders_array, android.R.layout.simple_spinner_item);
+                R.array.sex_array, android.R.layout.simple_spinner_item);
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sexSpinner.setAdapter(genderAdapter);
 
