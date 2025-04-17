@@ -35,7 +35,7 @@
         <item>Мужской</item>
         <item>Женский</item>
     </string-array>
-    <string-array name="style_options">
+    <string-array name="style_array">
         <item>Классический</item>
         <item>Спортивный</item>
         <item>Деловой</item>
@@ -49,7 +49,7 @@
     <string name="profile_city_label">Город:</string>
     <string name="profile_city_hint">Введите ваш город</string>
 
-    <string name="profile_style_label">Желаемый стиль:</string>
+    <string name="profile_style_label">Желаемые стили:</string>
     <string name="profile_style_hint">Например: кэжуал, деловой, спортивный</string>
 
     <string name="profile_colors_label">Предпочитаемые цвета:</string>

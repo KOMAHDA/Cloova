@@ -90,92 +90,154 @@ tools:context=".Registration_step1">
     <LinearLayout
         android:id="@+id/line1"
         android:layout_width="345dp"
-        android:layout_height="297dp"
+        android:layout_height="370dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/rounded_edit_text"
         android:orientation="vertical"
+        android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Linear">
 
-        <TextView
-            android:id="@+id/nameLabel"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/manrope_bold"
-            android:labelFor="@id/nameEditText"
-            android:text="@string/name"
-            android:textSize="19sp" />
+            android:orientation="horizontal"
+            >
 
-        <EditText
-            android:id="@+id/nameEditText"
-            android:layout_width="173dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="160dp"
-            android:background="@drawable/rounded_gray_edittext_bg"
-            android:backgroundTint="@color/login_input_gray"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textSize="17sp" />
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/nameLabel2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="160dp"
-            android:fontFamily="@font/manrope_bold"
-            android:labelFor="@id/nameEditText"
-            android:text="@string/profile_city_label"
-            android:textSize="19sp" />
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_default_avatar"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/circle_shape"/>
 
-        <EditText
-            android:id="@+id/nameEditText2"
-            android:layout_width="173dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="160dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/rounded_gray_edittext_bg"
-            android:backgroundTint="@color/login_input_gray"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textSize="17sp" />
+                <Button
+                    android:id="@+id/uploadPhotoBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Загрузить фото"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="20dp">
+
+                <TextView
+                    android:id="@+id/nameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/manrope_bold"
+                    android:labelFor="@id/nameEditText"
+                    android:text="@string/name"
+                    android:textSize="19sp" />
+
+                <EditText
+                    android:id="@+id/nameEditText"
+                    android:layout_height="35dp"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rounded_gray_edittext_bg"
+                    android:backgroundTint="@color/login_input_gray"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/nameLabel2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:labelFor="@id/nameEditText"
+                    android:text="@string/profile_city_label"
+                    android:textSize="19sp" />
+
+                <Spinner
+                    android:id="@+id/citySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/rounded_gray_edittext_bg"
+                    android:backgroundTint="@color/login_input_gray"
+                    android:entries="@array/cities_array"
+                    android:minHeight="48dp"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/nameLabel3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/manrope_bold"
             android:labelFor="@id/nameEditText"
             android:text="@string/happy"
             android:textSize="19sp" />
 
         <EditText
-            android:id="@+id/nameEditText3"
-            android:layout_width="320dp"
+            android:id="@+id/dateEditText"
+            android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
-            android:inputType="textPersonName"
+            android:inputType="date"
+            android:hint="ДД.ММ.ГГГГ"
             android:minHeight="48dp"
             android:textSize="17sp" />
 
-        <TextView
-            android:id="@+id/nameLabel4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:fontFamily="@font/manrope_bold"
-            android:labelFor="@id/nameEditText"
-            android:text="@string/profile_style_label"
-            android:textSize="19sp" />
+            <TextView
+                android:id="@+id/nameLabel4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
+                android:labelFor="@id/nameEditText"
+                android:text="@string/profile_style_label"
+                android:textSize="19sp" />
 
-        <Spinner
-            android:id="@+id/nameSpinner4"
+            <Button
+                android:id="@+id/btnSelectStyles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Выбрать стили"/>
+
+            <!--<CheckBox
+                android:id="@+id/checkClassic"
+                android:text="Классический"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <CheckBox
+                android:id="@+id/checkSport"
+                android:text="Спортивный"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <CheckBox
+                android:id="@+id/checkCasual"
+                android:text="Повседневный"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <CheckBox
+                android:id="@+id/checkBohemian"
+                android:text="Богемный"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>-->
+
+
+        <!--<Spinner
+            android:id="@+id/styleSpinner"
             android:layout_width="320dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
@@ -185,8 +247,8 @@ tools:context=".Registration_step1">
             android:popupBackground="@color/white"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textSize="17sp" />
-
+            android:entries="@array/style_array"
+            android:textSize="17sp" />-->
 
     </LinearLayout>
 
@@ -229,7 +291,7 @@ tools:context=".Registration_step1">
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/gonextbutton"
         android:layout_width="240dp"
         android:layout_height="55dp"
         android:layout_marginTop="20dp"
@@ -241,6 +303,7 @@ tools:context=".Registration_step1">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line1" />
+        <!--android:onClick="onNextClick"-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
