@@ -45,6 +45,7 @@ public class Registration_step1 extends AppCompatActivity {
 
     private EditText nameEditText, dateEditText;
     private Spinner citySpinner;
+    private Spinner sexSpinner;
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int CAMERA_REQUEST = 2;
     private ImageView profileImage;
@@ -61,18 +62,21 @@ public class Registration_step1 extends AppCompatActivity {
         nameEditText = findViewById(R.id.nameEditText);
         dateEditText = findViewById(R.id.dateEditText);
         citySpinner = findViewById(R.id.citySpinner);
-        setupCitySpinner();
+        sexSpinner = findViewById(R.id.sexSpinner);
         goBackButton = findViewById(R.id.gobackbutton);
         goNextButton = findViewById(R.id.gonextbutton);
         profileImage = findViewById(R.id.profileImage);
+
+        setupCitySpinner();
+        setupSexSpinner();
 
         // Кнопка выбора фото
         Button uploadPhotoBtn = findViewById(R.id.uploadPhotoBtn);
         uploadPhotoBtn.setOnClickListener(v -> showImagePickerDialog());
 
-        // Кнопка выбора стилей
+        /*// Кнопка выбора стилей
         Button btnSelectStyles = findViewById(R.id.btnSelectStyles);
-        btnSelectStyles.setOnClickListener(v -> showStylesDialog());
+        btnSelectStyles.setOnClickListener(v -> showStylesDialog());*/
 
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,8 +127,18 @@ public class Registration_step1 extends AppCompatActivity {
         citySpinner.setAdapter(adapter);
     }
 
+    private void setupSexSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.sex_array,  // Массив городов в res/values/arrays.xml
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(adapter);
+    }
+
     // Выбор стилей (несколько). Возможно, стоит переделать
-    private void showStylesDialog() {
+    /*private void showStylesDialog() {
         final String[] styles = {"Классический", "Спортивный", "Повседневный", "Богемный"};
         final boolean[] checkedItems = new boolean[styles.length]; // Массив для хранения выбранных элементов
 
@@ -150,7 +164,7 @@ public class Registration_step1 extends AppCompatActivity {
 
         builder.create().show();
     }
-
+*/
     // Фото профиля
     private void showImagePickerDialog() {
         String[] options = {"Камера", "Галерея"};

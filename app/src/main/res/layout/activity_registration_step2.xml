@@ -128,6 +128,7 @@
         android:id="@+id/Scroll"
         android:layout_width="334dp"
         android:layout_height="274dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="425dp"
@@ -137,45 +138,69 @@
         app:layout_constraintTop_toBottomOf="@+id/Linear">
 
         <LinearLayout
-            android:layout_width="334dp"
-            android:layout_height="274dp"
+            android:padding="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/Text3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/manrope_medium"
+                android:fontFamily="@font/manrope_bold"
                 android:text="@string/profile_colors_label"
                 android:textSize="15sp" />
 
-            <Spinner
+            <Button
+                android:id="@+id/btnSelectColors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Выбрать цвета"/>
+
+            <!--<Spinner
                 android:id="@+id/nameSpinner5"
-                android:layout_width="302dp"
+                android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginStart="16dp"
                 android:background="@drawable/rounded_gray_edittext_bg"
                 android:backgroundTint="@color/login_input_gray"
                 android:inputType="textPersonName"
                 android:spinnerMode="dropdown"
                 android:minHeight="48dp"
-                android:textSize="17sp" />
+                android:textSize="17sp" />-->
+
+            <TextView
+                android:id="@+id/Text8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
+                android:labelFor="@id/nameEditText"
+                android:text="@string/profile_style_label"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btnSelectStyles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Выбрать стили"/>
 
             <TextView
                 android:id="@+id/Text4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/manrope_medium"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
                 android:text="@string/profile_clothes_label"
                 android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@+id/nameSpinner5"
                 />
 
-            <Spinner
+            <Button
+                android:id="@+id/btnSelectPrinciple"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Выбрать принципы"/>
+
+<!--            <Spinner
                 android:id="@+id/nameSpinner6"
                 android:layout_width="302dp"
                 android:layout_height="35dp"
@@ -185,21 +210,25 @@
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
                 android:spinnerMode="dropdown"
-                android:textSize="17sp" />
+                android:textSize="17sp" />-->
 
             <TextView
                 android:id="@+id/Text5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/manrope_medium"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
                 android:text="@string/profile_clothes_hint"
                 android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@+id/nameSpinner6"
                 />
 
-            <Spinner
+            <Button
+                android:id="@+id/btnSelectClothes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Выбрать одежду"/>
+
+<!--            <Spinner
                 android:id="@+id/nameSpinner7"
                 android:layout_width="302dp"
                 android:layout_height="35dp"
@@ -209,21 +238,25 @@
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
                 android:spinnerMode="dropdown"
-                android:textSize="17sp" />
+                android:textSize="17sp" />-->
 
             <TextView
                 android:id="@+id/Text6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/manrope_medium"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
                 android:text="@string/profile_style_aks"
                 android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@+id/nameSpinner7"
                 />
 
-            <Spinner
+            <Button
+                android:id="@+id/btnSelectAccessories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Выбрать аксессуары"/>
+
+<!--            <Spinner
                 android:id="@+id/nameSpinner8"
                 android:layout_width="302dp"
                 android:layout_height="35dp"
@@ -233,7 +266,7 @@
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
                 android:spinnerMode="dropdown"
-                android:textSize="17sp" />
+                android:textSize="17sp" />-->
         </LinearLayout>
     </ScrollView>
 

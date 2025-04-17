@@ -156,19 +156,18 @@ tools:context=".Registration_step1">
                     android:id="@+id/nameLabel2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/manrope_bold"
-                    android:labelFor="@id/nameEditText"
-                    android:text="@string/profile_city_label"
+                    android:labelFor="@id/sexSpinner"
+                    android:text="@string/sex"
                     android:textSize="19sp" />
 
                 <Spinner
-                    android:id="@+id/citySpinner"
+                    android:id="@+id/sexSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="@drawable/rounded_gray_edittext_bg"
                     android:backgroundTint="@color/login_input_gray"
-                    android:entries="@array/cities_array"
+                    android:entries="@array/sex_array"
                     android:minHeight="48dp"
                     android:textSize="17sp" />
 
@@ -198,21 +197,25 @@ tools:context=".Registration_step1">
             android:minHeight="48dp"
             android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/nameLabel4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/manrope_bold"
-                android:labelFor="@id/nameEditText"
-                android:text="@string/profile_style_label"
-                android:textSize="19sp" />
+        <TextView
+            android:id="@+id/nameLabel4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/manrope_bold"
+            android:labelFor="@id/nameEditText"
+            android:text="@string/profile_city_label"
+            android:textSize="19sp" />
 
-            <Button
-                android:id="@+id/btnSelectStyles"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Выбрать стили"/>
+        <Spinner
+            android:id="@+id/citySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_gray_edittext_bg"
+            android:backgroundTint="@color/login_input_gray"
+            android:entries="@array/cities_array"
+            android:minHeight="48dp"
+            android:textSize="17sp" />
 
             <!--<CheckBox
                 android:id="@+id/checkClassic"

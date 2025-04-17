@@ -179,7 +179,7 @@ tools:context=".ProfileActivity">
                     android:minHeight="48dp"
                     android:background="@android:drawable/editbox_background"
                     android:backgroundTint="@color/login_input_gray"
-                    android:inputType="textPassword"
+                    android:inputType="text"
                     android:textSize="17sp" />
             </LinearLayout>
 
