@@ -19,6 +19,7 @@
     <string name="step_3">Шаг 3: Конфиденциальность</string>
     <string name="anketa">Более подробную анкету пройдите в вашем личном кабинете</string>
     <string name="name">Имя:</string>
+    <string name="sex">Пол:</string>
     <string name="login">Логин:</string>
     <string name="skip">Пропустить</string>
     <string name="happy">Дата рождения:</string>
@@ -32,7 +33,7 @@
         <item>Тольятти</item>
         <item>Москва</item>
     </string-array>
-    <string-array name="genders_array">
+    <string-array name="sex_array">
         <item></item>
         <item>Мужской</item>
         <item>Женский</item>

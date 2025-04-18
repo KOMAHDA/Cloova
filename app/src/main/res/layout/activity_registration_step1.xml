@@ -111,20 +111,21 @@ tools:context=".Registration_step1">
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/profileImage"
+                    android:id="@+id/avatarImageView"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_default_avatar"
+                    android:src="@drawable/default_avatar1"
                     android:scaleType="centerCrop"
+                    android:clipToOutline="true"
                     android:background="@drawable/circle_shape"/>
 
                 <Button
-                    android:id="@+id/uploadPhotoBtn"
+                    android:id="@+id/selectAvatarButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Загрузить фото"/>
+                    android:text="Выбрать аватар"/>
             </LinearLayout>
 
             <LinearLayout
@@ -156,19 +157,18 @@ tools:context=".Registration_step1">
                     android:id="@+id/nameLabel2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/manrope_bold"
-                    android:labelFor="@id/nameEditText"
-                    android:text="@string/profile_city_label"
+                    android:labelFor="@id/sexSpinner"
+                    android:text="@string/sex"
                     android:textSize="19sp" />
 
                 <Spinner
-                    android:id="@+id/citySpinner"
+                    android:id="@+id/sexSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="@drawable/rounded_gray_edittext_bg"
                     android:backgroundTint="@color/login_input_gray"
-                    android:entries="@array/cities_array"
+                    android:entries="@array/sex_array"
                     android:minHeight="48dp"
                     android:textSize="17sp" />
 
@@ -193,62 +193,32 @@ tools:context=".Registration_step1">
             android:layout_gravity="center"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
-            android:inputType="date"
+            android:maxLength="10"
             android:hint="ДД.ММ.ГГГГ"
             android:minHeight="48dp"
-            android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/nameLabel4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/manrope_bold"
-                android:labelFor="@id/nameEditText"
-                android:text="@string/profile_style_label"
-                android:textSize="19sp" />
-
-            <Button
-                android:id="@+id/btnSelectStyles"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Выбрать стили"/>
-
-            <!--<CheckBox
-                android:id="@+id/checkClassic"
-                android:text="Классический"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <CheckBox
-                android:id="@+id/checkSport"
-                android:text="Спортивный"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <CheckBox
-                android:id="@+id/checkCasual"
-                android:text="Повседневный"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <CheckBox
-                android:id="@+id/checkBohemian"
-                android:text="Богемный"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>-->
+            android:textSize="17sp"
+            android:imeOptions="actionNext"/>
 
 
-        <!--<Spinner
-            android:id="@+id/styleSpinner"
-            android:layout_width="320dp"
+        <TextView
+            android:id="@+id/nameLabel4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/manrope_bold"
+            android:labelFor="@id/nameEditText"
+            android:text="@string/profile_city_label"
+            android:textSize="19sp" />
+
+        <Spinner
+            android:id="@+id/citySpinner"
+            android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:layout_gravity="center"
             android:background="@drawable/rounded_gray_edittext_bg"
-            android:spinnerMode="dropdown"
             android:backgroundTint="@color/login_input_gray"
-            android:popupBackground="@color/white"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:entries="@array/style_array"
-            android:textSize="17sp" />-->
+            android:entries="@array/cities_array"
+            android:minHeight="48dp"
+            android:textSize="17sp" />
 
     </LinearLayout>
 

@@ -1,56 +1,43 @@
 package com.example.cloova;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.ImageView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import java.util.Calendar;
+import android.text.InputType;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import android.app.AlertDialog;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.provider.MediaStore;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.annotation.SuppressLint;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.FileDescriptor;
-import java.io.InputStream;
-
-import android.os.Environment;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import androidx.core.content.FileProvider;
+import android.text.method.DigitsKeyListener;
 
 public class Registration_step1 extends AppCompatActivity {
 
     private EditText nameEditText, dateEditText;
     private Spinner citySpinner;
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private static final int CAMERA_REQUEST = 2;
-    private ImageView profileImage;
-    private Bitmap profileBitmap;
+    private Spinner sexSpinner;
     private Button goBackButton;
     private Button goNextButton;
+    private Button selectAvatarButton;
+    private ImageView avatarImageView;
+    private int selectedAvatarResId = 0; // ID выбранного аватара
     private List<String> selectedStyles = new ArrayList<>(); // Список выбранных стилей
 
     @Override
@@ -60,19 +47,18 @@ public class Registration_step1 extends AppCompatActivity {
 
         nameEditText = findViewById(R.id.nameEditText);
         dateEditText = findViewById(R.id.dateEditText);
+        dateEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        dateEditText.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
+        dateEditText.addTextChangedListener(new DateTextWatcher());
         citySpinner = findViewById(R.id.citySpinner);
-        setupCitySpinner();
+        sexSpinner = findViewById(R.id.sexSpinner);
         goBackButton = findViewById(R.id.gobackbutton);
         goNextButton = findViewById(R.id.gonextbutton);
-        profileImage = findViewById(R.id.profileImage);
+        selectAvatarButton = findViewById(R.id.selectAvatarButton);
+        avatarImageView = findViewById(R.id.avatarImageView);
 
-        // Кнопка выбора фото
-        Button uploadPhotoBtn = findViewById(R.id.uploadPhotoBtn);
-        uploadPhotoBtn.setOnClickListener(v -> showImagePickerDialog());
-
-        // Кнопка выбора стилей
-        Button btnSelectStyles = findViewById(R.id.btnSelectStyles);
-        btnSelectStyles.setOnClickListener(v -> showStylesDialog());
+        setupSexSpinner();
+        setupCitySpinner();
 
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,26 +76,37 @@ public class Registration_step1 extends AppCompatActivity {
             }
         });
 
+        selectAvatarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAvatarSelectionDialog();
+            }
+        });
+
     }
 
-    public void Back (View v) {
+    public void Back(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    public void Next (View v) {
-
-        Intent intent = new Intent(this, Registration_step3.class);
+    public void Next(View v) {
+        Intent intent = new Intent(this, Registration_step2.class);
         intent.putExtra("name", nameEditText.getText().toString());
         intent.putExtra("city", citySpinner.getSelectedItem().toString());  // Передаём выбранный город
         intent.putStringArrayListExtra("styles", new ArrayList<>(selectedStyles)); // Список стилей
-        if (profileBitmap != null) {
-            // Сохраняем фото во временный файл
-            String imagePath = saveImageToInternalStorage(profileBitmap);
-            // Передаем путь к файлу
-            intent.putExtra("profileImagePath", imagePath);
-        }
+        intent.putExtra("avatar", selectedAvatarResId); // Передаем ID выбранного аватара
         startActivity(intent);
+    }
+
+    private void setupSexSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.sex_array,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(adapter);
     }
 
     // Выбор города. Нужно будет брать его из привязанного источника с погодой наверное
@@ -123,89 +120,179 @@ public class Registration_step1 extends AppCompatActivity {
         citySpinner.setAdapter(adapter);
     }
 
-    // Выбор стилей (несколько). Возможно, стоит переделать
-    private void showStylesDialog() {
-        final String[] styles = {"Классический", "Спортивный", "Повседневный", "Богемный"};
-        final boolean[] checkedItems = new boolean[styles.length]; // Массив для хранения выбранных элементов
-
+    private void showAvatarSelectionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Выберите стили")
-                .setMultiChoiceItems(styles, checkedItems, (dialog, which, isChecked) -> {
-                    checkedItems[which] = isChecked;
-                })
-                .setPositiveButton("Готово", (dialog, id) -> {
-                    // Сохраняем выбранные стили
-                    selectedStyles.clear();
-                    for (int i = 0; i < styles.length; i++) {
-                        if (checkedItems[i]) {
-                            selectedStyles.add(styles[i]);
-                        }
-                    }
-                    // Можно показать выбранные стили (опционально)
-                    Toast.makeText(this, "Выбрано: " + selectedStyles.toString(), Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("Отмена", (dialog, id) -> {
-                    // Действие при отмене
-                });
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_avatar_selection, null);
+        builder.setView(dialogView);
 
-        builder.create().show();
-    }
+        // Получаем массив аватаров из ресурсов
+        final int[] avatarResources = {
+                R.drawable.default_avatar1,
+                R.drawable.default_avatar2,
+                R.drawable.default_avatar3,
+                R.drawable.default_avatar4,
+                R.drawable.default_avatar5
+        };
 
-    // Фото профиля
-    private void showImagePickerDialog() {
-        String[] options = {"Камера", "Галерея"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Выберите источник")
-                .setItems(options, (dialog, which) -> {
-                    switch (which) {
-                        case 0: openCamera(); break;
-                        case 1: openGallery(); break;
-                    }
-                })
-                .show();
-    }
-    private void openCamera() {
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST);
-            return;
-        }
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePictureIntent, CAMERA_REQUEST);
-    }
-    private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
+        LinearLayout avatarsContainer = dialogView.findViewById(R.id.avatarsContainer);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == PICK_IMAGE_REQUEST && data != null) {
-                try {
-                    InputStream stream = getContentResolver().openInputStream(data.getData());
-                    profileBitmap = BitmapFactory.decodeStream(stream);
-                    profileImage.setImageBitmap(profileBitmap);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        // Создаем сетку аватаров (3 в строку)
+        LinearLayout currentRow = null;
+        for (int i = 0; i < avatarResources.length; i++) {
+            if (i % 3 == 0) {
+                currentRow = new LinearLayout(this);
+                currentRow.setOrientation(LinearLayout.HORIZONTAL);
+                avatarsContainer.addView(currentRow);
+            }
+
+            final ImageView avatarImage = new ImageView(this);
+            // Устанавливаем аватар в круглую форму
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), avatarResources[i]);
+            Bitmap circularBitmap = getCircularBitmap(bitmap);
+            avatarImage.setImageBitmap(circularBitmap);
+
+            // Параметры для изображения
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    dpToPx(80), // ширина
+                    dpToPx(80)  // высота
+            );
+            params.setMargins(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
+            avatarImage.setLayoutParams(params);
+
+            final int position = i;
+            avatarImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedAvatarResId = avatarResources[position];
+                    // Устанавливаем выбранный аватар
+                    Bitmap selectedBitmap = BitmapFactory.decodeResource(getResources(), selectedAvatarResId);
+                    avatarImageView.setImageBitmap(getCircularBitmap(selectedBitmap));
+                    ((AlertDialog) v.getTag()).dismiss();
                 }
-            } else if (requestCode == CAMERA_REQUEST && data != null) {
-                profileBitmap = (Bitmap) data.getExtras().get("data");
-                profileImage.setImageBitmap(profileBitmap);
+            });
+
+            currentRow.addView(avatarImage);
+        }
+
+        AlertDialog dialog = builder.create();
+        // Сохраняем ссылку на диалог для закрытия при выборе аватара
+        for (int i = 0; i < avatarsContainer.getChildCount(); i++) {
+            LinearLayout row = (LinearLayout) avatarsContainer.getChildAt(i);
+            for (int j = 0; j < row.getChildCount(); j++) {
+                row.getChildAt(j).setTag(dialog);
+            }
+        }
+
+        dialog.show();
+    }
+
+    // Преобразование Bitmap в круглую форму
+    private Bitmap getCircularBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        android.graphics.Canvas canvas = new android.graphics.Canvas(output);
+
+        final int color = 0xff424242;
+        final android.graphics.Paint paint = new android.graphics.Paint();
+        final android.graphics.Rect rect = new android.graphics.Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
+    }
+
+    // Преобразование dp в пиксели
+    private int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
+    }
+
+    // для ввода даты
+    private class DateTextWatcher implements TextWatcher {
+        private boolean isFormatting;
+
+        private boolean isDeleting;
+        private String current = "";
+        private int lastValidLength = 0;
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            isDeleting = count > after;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (isFormatting) return;
+            isFormatting = true;
+
+            String original = s.toString();
+            String cleaned = original.replaceAll("[^\\d]", "");
+            StringBuilder formatted = new StringBuilder();
+
+            // Форматируем с точками
+            for (int i = 0; i < cleaned.length(); i++) {
+                if (i == 2 || i == 4) formatted.append(".");
+                formatted.append(cleaned.charAt(i));
+            }
+
+            // Устанавливаем новый текст
+            if (!original.equals(formatted.toString())) {
+                s.replace(0, s.length(), formatted);
+            }
+
+            // Всегда перемещаем курсор в конец
+            dateEditText.setSelection(formatted.length());
+
+            // Валидация
+            validateDate(formatted.toString());
+
+            isFormatting = false;
+        }
+
+        private void validateDate(String date) {
+            String[] parts = date.split("\\.");
+
+            try {
+                if (parts.length >= 1 && parts[0].length() == 2) {
+                    int day = Integer.parseInt(parts[0]);
+                    if (day < 1 || day > 31) {
+                        dateEditText.setError("День должен быть 1-31");
+                        return;
+                    }
+                }
+
+                if (parts.length >= 2 && parts[1].length() == 2) {
+                    int month = Integer.parseInt(parts[1]);
+                    if (month < 1 || month > 12) {
+                        dateEditText.setError("Месяц должен быть 1-12");
+                        return;
+                    }
+                }
+
+                if (parts.length >= 3 && parts[2].length() == 4) {
+                    int year = Integer.parseInt(parts[2]);
+                    if (year < 1900 || year > 2100) {
+                        dateEditText.setError("Год должен быть 1900-2100");
+                        return;
+                    }
+                }
+
+                dateEditText.setError(null);
+            } catch (NumberFormatException e) {
+                dateEditText.setError("Некорректная дата");
             }
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == CAMERA_REQUEST && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            openCamera();
-        }
-    }
-
-    // Проверка заполнения полей
     private boolean isDataValid() {
         if (nameEditText.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, "Введите имя", Toast.LENGTH_SHORT).show();
@@ -215,22 +302,18 @@ public class Registration_step1 extends AppCompatActivity {
             Toast.makeText(this, "Выберите город", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (selectedStyles.isEmpty()) {
-            Toast.makeText(this, "Выберите хотя бы один стиль", Toast.LENGTH_SHORT).show();
+        if (selectedAvatarResId == 0) {
+            Toast.makeText(this, "Выберите аватар", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (dateEditText.getText().toString().trim().length() < 10) {
+            dateEditText.setError("Введите полную дату в формате ДД.ММ.ГГГГ");
+            return false;
+        }
+        if (dateEditText.getError() != null) {
             return false;
         }
         return true;
     }
-    private String saveImageToInternalStorage(Bitmap bitmap) {
-        File directory = getApplicationContext().getDir("profile_images", MODE_PRIVATE);
-        File imageFile = new File(directory, "temp_profile.jpg");
-
-        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-            return imageFile.getAbsolutePath();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
+

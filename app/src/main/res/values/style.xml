@@ -13,6 +13,9 @@
     <item name="android:textColor">@android:color/black</item>
     <item name="android:layout_marginBottom">4dp</item> </style>
 
+    <style name="circleImageView" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
 
     <style name="InputField" parent="Widget.AppCompat.EditText">
     <item name="android:layout_width">match_parent</item>
