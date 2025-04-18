@@ -111,20 +111,21 @@ tools:context=".Registration_step1">
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/profileImage"
+                    android:id="@+id/avatarImageView"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_default_avatar"
+                    android:src="@drawable/default_avatar1"
                     android:scaleType="centerCrop"
+                    android:clipToOutline="true"
                     android:background="@drawable/circle_shape"/>
 
                 <Button
-                    android:id="@+id/uploadPhotoBtn"
+                    android:id="@+id/selectAvatarButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Загрузить фото"/>
+                    android:text="Выбрать аватар"/>
             </LinearLayout>
 
             <LinearLayout
@@ -216,42 +217,6 @@ tools:context=".Registration_step1">
             android:entries="@array/cities_array"
             android:minHeight="48dp"
             android:textSize="17sp" />
-
-            <!--<CheckBox
-                android:id="@+id/checkClassic"
-                android:text="Классический"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <CheckBox
-                android:id="@+id/checkSport"
-                android:text="Спортивный"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <CheckBox
-                android:id="@+id/checkCasual"
-                android:text="Повседневный"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <CheckBox
-                android:id="@+id/checkBohemian"
-                android:text="Богемный"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>-->
-
-
-        <!--<Spinner
-            android:id="@+id/styleSpinner"
-            android:layout_width="320dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:background="@drawable/rounded_gray_edittext_bg"
-            android:spinnerMode="dropdown"
-            android:backgroundTint="@color/login_input_gray"
-            android:popupBackground="@color/white"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:entries="@array/style_array"
-            android:textSize="17sp" />-->
 
     </LinearLayout>
 
