@@ -193,10 +193,12 @@ tools:context=".Registration_step1">
             android:layout_gravity="center"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
-            android:inputType="date"
+            android:maxLength="10"
             android:hint="ДД.ММ.ГГГГ"
             android:minHeight="48dp"
-            android:textSize="17sp" />
+            android:textSize="17sp"
+            android:imeOptions="actionNext"/>
+
 
         <TextView
             android:id="@+id/nameLabel4"

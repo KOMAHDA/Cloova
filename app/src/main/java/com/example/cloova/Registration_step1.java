@@ -18,9 +18,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import java.util.Calendar;
+import android.text.InputType;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.text.method.DigitsKeyListener;
 
 public class Registration_step1 extends AppCompatActivity {
 
@@ -41,6 +47,9 @@ public class Registration_step1 extends AppCompatActivity {
 
         nameEditText = findViewById(R.id.nameEditText);
         dateEditText = findViewById(R.id.dateEditText);
+        dateEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        dateEditText.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
+        dateEditText.addTextChangedListener(new DateTextWatcher());
         citySpinner = findViewById(R.id.citySpinner);
         sexSpinner = findViewById(R.id.sexSpinner);
         goBackButton = findViewById(R.id.gobackbutton);
@@ -204,7 +213,86 @@ public class Registration_step1 extends AppCompatActivity {
         return Math.round((float) dp * density);
     }
 
-    // Проверка заполнения полей
+    // для ввода даты
+    private class DateTextWatcher implements TextWatcher {
+        private boolean isFormatting;
+
+        private boolean isDeleting;
+        private String current = "";
+        private int lastValidLength = 0;
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            isDeleting = count > after;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (isFormatting) return;
+            isFormatting = true;
+
+            String original = s.toString();
+            String cleaned = original.replaceAll("[^\\d]", "");
+            StringBuilder formatted = new StringBuilder();
+
+            // Форматируем с точками
+            for (int i = 0; i < cleaned.length(); i++) {
+                if (i == 2 || i == 4) formatted.append(".");
+                formatted.append(cleaned.charAt(i));
+            }
+
+            // Устанавливаем новый текст
+            if (!original.equals(formatted.toString())) {
+                s.replace(0, s.length(), formatted);
+            }
+
+            // Всегда перемещаем курсор в конец
+            dateEditText.setSelection(formatted.length());
+
+            // Валидация
+            validateDate(formatted.toString());
+
+            isFormatting = false;
+        }
+
+        private void validateDate(String date) {
+            String[] parts = date.split("\\.");
+
+            try {
+                if (parts.length >= 1 && parts[0].length() == 2) {
+                    int day = Integer.parseInt(parts[0]);
+                    if (day < 1 || day > 31) {
+                        dateEditText.setError("День должен быть 1-31");
+                        return;
+                    }
+                }
+
+                if (parts.length >= 2 && parts[1].length() == 2) {
+                    int month = Integer.parseInt(parts[1]);
+                    if (month < 1 || month > 12) {
+                        dateEditText.setError("Месяц должен быть 1-12");
+                        return;
+                    }
+                }
+
+                if (parts.length >= 3 && parts[2].length() == 4) {
+                    int year = Integer.parseInt(parts[2]);
+                    if (year < 1900 || year > 2100) {
+                        dateEditText.setError("Год должен быть 1900-2100");
+                        return;
+                    }
+                }
+
+                dateEditText.setError(null);
+            } catch (NumberFormatException e) {
+                dateEditText.setError("Некорректная дата");
+            }
+        }
+    }
+
     private boolean isDataValid() {
         if (nameEditText.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, "Введите имя", Toast.LENGTH_SHORT).show();
@@ -216,6 +304,13 @@ public class Registration_step1 extends AppCompatActivity {
         }
         if (selectedAvatarResId == 0) {
             Toast.makeText(this, "Выберите аватар", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (dateEditText.getText().toString().trim().length() < 10) {
+            dateEditText.setError("Введите полную дату в формате ДД.ММ.ГГГГ");
+            return false;
+        }
+        if (dateEditText.getError() != null) {
             return false;
         }
         return true;
