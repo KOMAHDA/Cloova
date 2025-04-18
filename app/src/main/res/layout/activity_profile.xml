@@ -47,17 +47,18 @@ tools:context=".ProfileActivity">
         android:id="@+id/gobackbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@android:color/white"
-        android:contentDescription="@string/strelka"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:padding="8dp"
+        android:backgroundTint="@android:color/white"
         android:text="@string/strelka"
         android:textColor="@color/blue"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="24sp"
+        android:contentDescription="@string/strelka"/>
 
     <ScrollView
     android:layout_width="0dp"

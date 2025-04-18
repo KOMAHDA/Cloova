@@ -13,16 +13,17 @@ import android.widget.Toast;
 import android.content.Intent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.EditText;
-import java.util.Calendar;
 import android.text.InputType;
+
+import android.view.ViewGroup;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
+import android.graphics.drawable.GradientDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Registration_step1 extends AppCompatActivity {
     private Button goNextButton;
     private Button selectAvatarButton;
     private ImageView avatarImageView;
-    private int selectedAvatarResId = 0; // ID выбранного аватара
+    private int selectedAvatarResId = R.drawable.default_avatar1; // ID выбранного аватара
     private List<String> selectedStyles = new ArrayList<>(); // Список выбранных стилей
 
     @Override
@@ -106,7 +107,7 @@ public class Registration_step1 extends AppCompatActivity {
                 android.R.layout.simple_spinner_item
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        citySpinner.setAdapter(adapter);
+        sexSpinner.setAdapter(adapter);
     }
 
     // Выбор города. Нужно будет брать его из привязанного источника с погодой наверное
@@ -126,85 +127,91 @@ public class Registration_step1 extends AppCompatActivity {
         View dialogView = inflater.inflate(R.layout.dialog_avatar_selection, null);
         builder.setView(dialogView);
 
-        // Получаем массив аватаров из ресурсов
         final int[] avatarResources = {
                 R.drawable.default_avatar1,
                 R.drawable.default_avatar2,
-                R.drawable.default_avatar3,
-                R.drawable.default_avatar4,
-                R.drawable.default_avatar5
+                R.drawable.default_avatar3
         };
 
         LinearLayout avatarsContainer = dialogView.findViewById(R.id.avatarsContainer);
+        AlertDialog dialog = builder.create();
 
-        // Создаем сетку аватаров (3 в строку)
-        LinearLayout currentRow = null;
-        for (int i = 0; i < avatarResources.length; i++) {
-            if (i % 3 == 0) {
-                currentRow = new LinearLayout(this);
-                currentRow.setOrientation(LinearLayout.HORIZONTAL);
-                avatarsContainer.addView(currentRow);
-            }
-
-            final ImageView avatarImage = new ImageView(this);
-            // Устанавливаем аватар в круглую форму
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), avatarResources[i]);
-            Bitmap circularBitmap = getCircularBitmap(bitmap);
-            avatarImage.setImageBitmap(circularBitmap);
-
-            // Параметры для изображения
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    dpToPx(80), // ширина
-                    dpToPx(80)  // высота
-            );
-            params.setMargins(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
-            avatarImage.setLayoutParams(params);
-
-            final int position = i;
-            avatarImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedAvatarResId = avatarResources[position];
-                    // Устанавливаем выбранный аватар
-                    Bitmap selectedBitmap = BitmapFactory.decodeResource(getResources(), selectedAvatarResId);
-                    avatarImageView.setImageBitmap(getCircularBitmap(selectedBitmap));
-                    ((AlertDialog) v.getTag()).dismiss();
-                }
-            });
-
-            currentRow.addView(avatarImage);
+        // Настройка прозрачного фона для закругленных углов
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
-        AlertDialog dialog = builder.create();
-        // Сохраняем ссылку на диалог для закрытия при выборе аватара
-        for (int i = 0; i < avatarsContainer.getChildCount(); i++) {
-            LinearLayout row = (LinearLayout) avatarsContainer.getChildAt(i);
-            for (int j = 0; j < row.getChildCount(); j++) {
-                row.getChildAt(j).setTag(dialog);
+        // Создаем сетку 3x2
+        for (int i = 0; i < 2; i++) { // 2 строки
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setGravity(Gravity.CENTER);
+
+            for (int j = 0; j < 3; j++) { // 3 столбца
+                int index = i * 3 + j;
+                if (index >= avatarResources.length) break;
+
+                ImageView avatarImage = new ImageView(this);
+
+                // Основные параметры
+                int size = dpToPx(80);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
+                params.setMargins(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
+                avatarImage.setLayoutParams(params);
+
+                // Круглая маска
+                GradientDrawable mask = new GradientDrawable();
+                mask.setShape(GradientDrawable.OVAL);
+                mask.setSize(size, size);
+
+                // Внешняя обводка
+                mask.setStroke(dpToPx(2), Color.LTGRAY);
+
+                // Применяем маску
+                avatarImage.setBackground(mask);
+                avatarImage.setClipToOutline(true);
+
+                // Загрузка изображения
+                avatarImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                avatarImage.setImageResource(avatarResources[index]);
+
+                // Обработчик выбора
+                final int selectedIndex = index;
+                avatarImage.setOnClickListener(v -> {
+                    selectedAvatarResId = avatarResources[selectedIndex];
+                    updateMainAvatar(selectedAvatarResId);
+                    dialog.dismiss();
+                });
+
+                row.addView(avatarImage);
             }
+
+            avatarsContainer.addView(row);
         }
 
         dialog.show();
     }
 
-    // Преобразование Bitmap в круглую форму
-    private Bitmap getCircularBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        android.graphics.Canvas canvas = new android.graphics.Canvas(output);
+    private void updateMainAvatar(int avatarResId) {
+        // Создаем круглую маску для основного аватара
+        GradientDrawable mask = new GradientDrawable();
+        mask.setShape(GradientDrawable.OVAL);
+        mask.setStroke(dpToPx(2), Color.LTGRAY);
 
-        final int color = 0xff424242;
-        final android.graphics.Paint paint = new android.graphics.Paint();
-        final android.graphics.Rect rect = new android.graphics.Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
-                bitmap.getWidth() / 2, paint);
-        paint.setXfermode(new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        return output;
+        avatarImageView.setBackground(mask);
+        avatarImageView.setClipToOutline(true);
+        avatarImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        avatarImageView.setImageResource(avatarResId);
+    }
+    private void setDialogTagToChildren(ViewGroup container, Dialog dialog) {
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                setDialogTagToChildren((ViewGroup) child, dialog);
+            } else {
+                child.setTag(dialog);
+            }
+        }
     }
 
     // Преобразование dp в пиксели
@@ -300,10 +307,6 @@ public class Registration_step1 extends AppCompatActivity {
         }
         if (citySpinner.getSelectedItemPosition() == 0) {  // Проверка выбора города
             Toast.makeText(this, "Выберите город", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (selectedAvatarResId == 0) {
-            Toast.makeText(this, "Выберите аватар", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (dateEditText.getText().toString().trim().length() < 10) {
