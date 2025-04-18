@@ -66,7 +66,7 @@ public class Registration_step2 extends AppCompatActivity {
     }
 
     public void Back(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, Registration_step1.class);
         startActivity(intent);
     }
 
