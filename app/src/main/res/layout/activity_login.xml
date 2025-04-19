@@ -109,7 +109,7 @@
             android:id="@+id/usernameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/manrope_medium"
+            android:fontFamily="@font/manrope_bold"
             android:text="@string/login_hint"
             android:labelFor="@id/usernameEditText"
             android:textSize="19sp" />
@@ -119,6 +119,10 @@
             android:layout_width="280dp"
             android:layout_height="35dp"
             android:minHeight="48dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
             android:layout_gravity="center"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
@@ -129,6 +133,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_marginBottom="16dp"
     android:orientation="vertical">
 
@@ -137,7 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/password_hint"
-        android:fontFamily="@font/manrope_medium"
+        android:fontFamily="@font/manrope_bold"
         android:labelFor="@id/passwordEditText"
         android:textSize="19sp" />
 
@@ -146,6 +151,10 @@
         android:layout_width="280dp"
         android:layout_height="35dp"
         android:minHeight="48dp"
+        android:paddingLeft="16dp"
+        android:paddingStart="16dp"
+        android:paddingRight="16dp"
+        android:paddingEnd="16dp"
         android:layout_gravity="center"
         android:background="@drawable/rounded_gray_edittext_bg"
         android:backgroundTint="@color/login_input_gray"
@@ -174,19 +183,20 @@
 
     <Button
         android:id="@+id/gobackbutton"
-        android:layout_width="83dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/white"
-        android:contentDescription="@string/strelka"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:padding="8dp"
+        android:backgroundTint="@android:color/white"
         android:text="@string/strelka"
         android:textColor="@color/blue"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="24sp"
+        android:contentDescription="@string/strelka"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
