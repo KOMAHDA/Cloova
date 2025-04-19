@@ -94,9 +94,10 @@ public class Registration_step1 extends AppCompatActivity {
     public void Next(View v) {
         Intent intent = new Intent(this, Registration_step2.class);
         intent.putExtra("name", nameEditText.getText().toString());
-        intent.putExtra("city", citySpinner.getSelectedItem().toString());  // Передаём выбранный город
-        intent.putStringArrayListExtra("styles", new ArrayList<>(selectedStyles)); // Список стилей
-        intent.putExtra("avatar", selectedAvatarResId); // Передаем ID выбранного аватара
+        intent.putExtra("gender", sexSpinner.getSelectedItem().toString());
+        intent.putExtra("birthDate", dateEditText.getText().toString());
+        intent.putExtra("city", citySpinner.getSelectedItem().toString());
+        intent.putExtra("avatar", selectedAvatarResId);
         startActivity(intent);
     }
 

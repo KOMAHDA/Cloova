@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.content.Intent;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 public class Registration_step3 extends AppCompatActivity {
 
@@ -46,36 +49,26 @@ public class Registration_step3 extends AppCompatActivity {
 
     }
 
-    public void Back (View v) {
+    public void Back(View v) {
         Intent intent = new Intent(this, Registration_step2.class);
         startActivity(intent);
     }
 
-/*    public void Create (View v) {
-
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("name", nameEditText.getText().toString());
-        intent.putExtra("city", citySpinner.getSelectedItem().toString());  // Передаём выбранный город
-        intent.putStringArrayListExtra("styles", new ArrayList<>(selectedStyles)); // Список стилей
-        if (profileBitmap != null) {
-            // Сохраняем фото во временный файл
-            String imagePath = saveImageToInternalStorage(profileBitmap);
-            // Передаем путь к файлу
-            intent.putExtra("profileImagePath", imagePath);
+    public void Create(View v) {
+        // Проверка полей ввода
+        if (loginEditText.getText() == null || passwordEditText.getText() == null ||
+                confPasswordEditText.getText() == null) {
+            Toast.makeText(this, "Ошибка ввода данных", Toast.LENGTH_SHORT).show();
+            return;
         }
-        startActivity(intent);
-    }*/
 
-
-    public void Create (View v) {
-        // Получаем данные с текущего экрана
         String username = loginEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confPasswordEditText.getText().toString().trim();
 
-        // Валидация
-        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+        // Валидация данных
+        if (username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Логин и пароль обязательны", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -84,35 +77,76 @@ public class Registration_step3 extends AppCompatActivity {
             return;
         }
 
-        if (password.length() < 6) {
-            Toast.makeText(this, "Пароль должен содержать минимум 6 символов", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Получаем данные с первого шага
+        // Получаем данные из предыдущих шагов
         Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
-        String city = intent.getStringExtra("city");
-        String birthDate = intent.getStringExtra("birthDate");
-        String profileImagePath = intent.getStringExtra("profileImagePath");
+        String name = intent != null ? intent.getStringExtra("name") : "";
+        String gender = intent != null ? intent.getStringExtra("gender") : "";
+        String birthDate = intent != null ? intent.getStringExtra("birthDate") : "";
+        String city = intent != null ? intent.getStringExtra("city") : "";
+        int avatarResId = intent != null ? intent.getIntExtra("avatar", R.drawable.default_avatar1) : R.drawable.default_avatar1;
 
-        // Сохраняем пользователя в БД
-        long userId = dbHelper.addUser(
-                username,
-                password,
-                name,
-                city,
-                birthDate,
-                profileImagePath
-        );
+        // Получаем списки из Registration_step2
+        ArrayList<String> colors = intent != null ? intent.getStringArrayListExtra("colors") : new ArrayList<>();
+        ArrayList<String> styles = intent != null ? intent.getStringArrayListExtra("styles") : new ArrayList<>();
+        ArrayList<String> wardrobe = intent != null ? intent.getStringArrayListExtra("wardrobe") : new ArrayList<>();
+        ArrayList<String> accessories = intent != null ? intent.getStringArrayListExtra("accessories") : new ArrayList<>();
 
-        if (userId != -1) {
+        // Логирование для отладки
+        Log.d("REG_DEBUG", "Colors: " + colors.toString());
+        Log.d("REG_DEBUG", "Wardrobe: " + wardrobe.toString());
+        Log.d("REG_DEBUG", "Styles: " + styles.toString());
+        Log.d("REG_DEBUG", "Accessories: " + accessories.toString());
+
+        // Регистрируем пользователя
+        try {
+            // Проверка занятости логина
+            if (dbHelper.checkLoginExists(username)) {
+                Toast.makeText(this, "Логин уже занят", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Добавляем пользователя
+            long userId = dbHelper.addUser(username, password, name, gender, birthDate, city, avatarResId);
+
+            if (userId == -1) {
+                Toast.makeText(this, "Ошибка регистрации", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Сохраняем дополнительные данные
+            if (!colors.isEmpty()) {
+                dbHelper.addUserColors(userId, colors);
+                Log.d("DB_DEBUG", "Colors saved for user: " + userId);
+            }
+
+            if (!styles.isEmpty()) {
+                dbHelper.addUserStyles(userId, styles);
+                Log.d("DB_DEBUG", "Styles saved for user: " + userId);
+            }
+
+            if (!wardrobe.isEmpty()) {
+                dbHelper.addWardrobeItems(userId, wardrobe);
+                Log.d("DB_DEBUG", "Wardrobe saved for user: " + userId);
+            }
+
+            if (!accessories.isEmpty()) {
+                dbHelper.addAccessories(userId, accessories);
+                Log.d("DB_DEBUG", "Accessories saved for user: " + userId);
+            }
+
+            // Успешная регистрация
             Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
-            // Переходим на главный экран
-            startActivity(new Intent(this, MainActivity.class));
-            finishAffinity(); // Закрываем все предыдущие активности
-        } else {
-            Toast.makeText(this, "Ошибка регистрации. Логин занят", Toast.LENGTH_SHORT).show();
+
+            // Переход на экран входа
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            loginIntent.putExtra("username", username);
+            loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(loginIntent);
+            finish();
+
+        } catch (Exception e) {
+            Log.e("REG_ERROR", "Registration failed", e);
+            Toast.makeText(this, "Ошибка регистрации: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

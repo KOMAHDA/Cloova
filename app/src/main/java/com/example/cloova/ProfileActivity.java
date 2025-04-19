@@ -1,98 +1,86 @@
 package com.example.cloova;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileActivity extends AppCompatActivity {
-
-    private EditText nameEditText;
-    private Spinner citySpinner;
-    private Spinner sexSpinner;
-    private TextView ageEditText;
-    private Button saveButton;
-    private Button goBackButton;
-
+    private DatabaseHelper dbHelper;
+    private long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        try {
+            setContentView(R.layout.activity_profile);
 
-        nameEditText = findViewById(R.id.nameEditText);
-        citySpinner = findViewById(R.id.citySpinner);
-        sexSpinner = findViewById(R.id.sexSpinner);
-        ageEditText = findViewById(R.id.ageEditText);
-        saveButton = findViewById(R.id.saveButton);
-        goBackButton = findViewById(R.id.gobackbutton);
-
-        // Настройка Spinner для городов
-        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(this,
-                R.array.cities_array, android.R.layout.simple_spinner_item);
-        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        citySpinner.setAdapter(cityAdapter);
-
-        // Настройка Spinner для пола
-        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
-                R.array.sex_array, android.R.layout.simple_spinner_item);
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sexSpinner.setAdapter(genderAdapter);
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleSubmit();
+            // Получаем ID пользователя
+            userId = getIntent().getLongExtra("USER_ID", -1);
+            if (userId == -1) {
+                SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                userId = prefs.getLong("user_id", -1);
             }
-        });
-        goBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, Registration_step1.class);
-                startActivity(intent);
+
+            if (userId == -1) {
+                Toast.makeText(this, "Ошибка авторизации", Toast.LENGTH_SHORT).show();
                 finish();
+                return;
             }
-        });
+
+            dbHelper = new DatabaseHelper(this);
+            displayUserProfile();
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Ошибка при загрузке профиля", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            finish();
+        }
     }
 
-    private void handleSubmit() {
-        String name = nameEditText.getText().toString().trim();
-        String age = ageEditText.getText().toString().trim();
-        String city = citySpinner.getSelectedItem().toString().trim();
-        String gender = sexSpinner.getSelectedItem().toString().trim();
+    private void displayUserProfile() {
+        User user = dbHelper.getUserInfo(userId);
 
-        if (name.isEmpty()) {
-            Toast.makeText(this, "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show();
+        if (user == null) {
+            Toast.makeText(this, "Данные пользователя не найдены", Toast.LENGTH_SHORT).show();
+            finish();
             return;
         }
 
-        if (age.isEmpty()) {
-            Toast.makeText(this, "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show();
-            return;
+        TextView tvName = findViewById(R.id.tv_name);
+        TextView tvGender = findViewById(R.id.tv_gender);
+        TextView tvBirthDate = findViewById(R.id.tv_birth_date);
+        TextView tvCity = findViewById(R.id.tv_city);
+        ImageView ivAvatar = findViewById(R.id.iv_avatar);
+
+        // Установка значений с проверками
+        tvName.setText(user.getName() != null ? user.getName() : "Не указано");
+        tvGender.setText(user.getGender() != null ? user.getGender() : "Не указано");
+        tvBirthDate.setText(user.getBirthDate() != null ? formatBirthDate(user.getBirthDate()) : "Не указана");
+        tvCity.setText(user.getCity() != null ? user.getCity() : "Не указан");
+
+        if (user.getAvatarResId() != 0) {
+            ivAvatar.setImageResource(user.getAvatarResId());
+        } else {
+            ivAvatar.setImageResource(R.drawable.default_avatar1);
         }
+    }
 
-        if (city.isEmpty()) {
-            Toast.makeText(this, "Пожалуйста, выберите город.", Toast.LENGTH_SHORT).show();
-            return;
+    private String formatBirthDate(String rawDate) {
+        // Простой форматировщик даты (можно заменить на более сложный)
+        if (rawDate == null || rawDate.isEmpty()) {
+            return "Не указана";
         }
+        return rawDate; // или преобразуйте формат по вашему усмотрению
+    }
 
-        if (gender.isEmpty()) {
-            Toast.makeText(this, "Пожалуйста, выберите пол.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Toast.makeText(this, "Добро пожаловать в CLOOVA!", Toast.LENGTH_LONG).show();
-
-        Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-        startActivity(intent);
-
-        finish();
+    @Override
+    protected void onDestroy() {
+        dbHelper.close();
+        super.onDestroy();
     }
 }
