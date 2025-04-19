@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
@@ -16,7 +17,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginWindow;
     private EditText passWindow;
     private Button loginButton;
-    private Button goBackButton;
+    private ImageView goBackButton;
     private DatabaseHelper databaseHelper;
     private SharedPreferences sharedPreferences;
 
