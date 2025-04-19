@@ -154,7 +154,7 @@ public class Registration_step2 extends AppCompatActivity {
         final boolean[] checkedItems = new boolean[clothes.length]; // Массив для хранения выбранных элементов
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Выберите стили")
+        builder.setTitle("Выберите вещи")
                 .setMultiChoiceItems(clothes, checkedItems, (dialog, which, isChecked) -> {
                     checkedItems[which] = isChecked;
                 })
@@ -176,11 +176,11 @@ public class Registration_step2 extends AppCompatActivity {
     }
 
     private void showAccessoriesDialog() {
-        final String[] accessories = {"Очки", "Галстук", "Ремены"};
+        final String[] accessories = {"Очки", "Галстук", "Ремень"};
         final boolean[] checkedItems = new boolean[accessories.length]; // Массив для хранения выбранных элементов
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Выберите стили")
+        builder.setTitle("Выберите аксессуары")
                 .setMultiChoiceItems(accessories, checkedItems, (dialog, which, isChecked) -> {
                     checkedItems[which] = isChecked;
                 })

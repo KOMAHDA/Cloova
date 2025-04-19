@@ -132,8 +132,8 @@ tools:context=".Registration_step1">
                     <Button
                         android:id="@+id/selectAvatarButton"
                         android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/circle_button_bg"
+                        android:layout_height="50dp"
+                        android:backgroundTint="@color/blue"
                         android:contentDescription="↺"
                         android:stateListAnimator="@null"
                         android:textSize="20sp" />
@@ -147,7 +147,7 @@ tools:context=".Registration_step1">
                         android:text="↺"
                         android:textColor="@color/white"
                         android:layout_marginStart="6dp"
-                        android:layout_marginTop="0dp"
+                        android:layout_marginTop="4dp"
                         android:textSize="25sp" />
 
                 </FrameLayout>
@@ -303,7 +303,7 @@ tools:context=".Registration_step1">
         android:layout_width="240dp"
         android:layout_height="55dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_blue_button_bg"
+        android:backgroundTint="@color/blue"
         android:fontFamily="@font/manrope_bold"
         android:text="@string/next"
         android:textColor="@color/white"
