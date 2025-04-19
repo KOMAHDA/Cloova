@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">CLOOVA</string>
     <string name="logo_text">CLOOVA</string>
     <string name="nach">Начать знакомство</string>
     <string name="prof">У меня уже есть профиль</string>
@@ -12,7 +12,7 @@
     <string name="login_hint">Имя пользователя</string>
     <string name="confirm_password_hint">Подтвердите пароль:</string>
     <string name="register_button_text">Зарегистрироваться</string>
-    <string name="strelka">Назад</string>
+    <string name="strelka">&lt;</string>
     <string name="sozdanie">Создание профиля</string>
     <string name="step_1">Шаг 1: Заполните информацию о себе</string>
     <string name="step_2">Шаг 2: Расскажите про ваш стиль</string>

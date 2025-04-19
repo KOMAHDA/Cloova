@@ -47,8 +47,8 @@
         android:id="@+id/gobackbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:padding="8dp"
@@ -57,6 +57,7 @@
         android:textColor="@color/blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="24sp"
         android:contentDescription="@string/strelka"/>
 
     <TextView
@@ -154,6 +155,7 @@
             <Button
                 android:id="@+id/btnSelectColors"
                 android:layout_width="match_parent"
+                android:backgroundTint="@color/blue"
                 android:layout_height="wrap_content"
                 android:text="Выбрать цвета"/>
 
@@ -181,6 +183,7 @@
             <Button
                 android:id="@+id/btnSelectStyles"
                 android:layout_width="match_parent"
+                android:backgroundTint="@color/blue"
                 android:layout_height="wrap_content"
                 android:text="Выбрать стили"/>
 
@@ -224,6 +227,7 @@
 
             <Button
                 android:id="@+id/btnSelectClothes"
+                android:backgroundTint="@color/blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Выбрать одежду"/>
@@ -252,6 +256,7 @@
 
             <Button
                 android:id="@+id/btnSelectAccessories"
+                android:backgroundTint="@color/blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Выбрать аксессуары"/>
@@ -299,7 +304,7 @@
         android:layout_width="240dp"
         android:layout_height="55dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_blue_button_bg"
+        android:backgroundTint="@color/blue"
         android:fontFamily="@font/manrope_bold"
         android:text="@string/next"
         android:textColor="@color/white"

@@ -66,22 +66,33 @@ public class Registration_step2 extends AppCompatActivity {
     }
 
     public void Back(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, Registration_step1.class);
         startActivity(intent);
     }
 
     public void Next(View v) {
-
         Intent intent = new Intent(this, Registration_step3.class);
-/*        intent.putExtra("name", nameEditText.getText().toString());
-        intent.putExtra("city", citySpinner.getSelectedItem().toString());  // Передаём выбранный город
-        intent.putStringArrayListExtra("styles", new ArrayList<>(selectedStyles)); // Список стилей
-        if (profileBitmap != null) {
-            // Сохраняем фото во временный файл
-            String imagePath = saveImageToInternalStorage(profileBitmap);
-            // Передаем путь к файлу
-            intent.putExtra("profileImagePath", imagePath);
-        }*/
+
+        // Передаем данные из первого шага
+        intent.putExtra("name", getIntent().getStringExtra("name"));
+        intent.putExtra("gender", getIntent().getStringExtra("gender"));
+        intent.putExtra("birthDate", getIntent().getStringExtra("birthDate"));
+        intent.putExtra("city", getIntent().getStringExtra("city"));
+        intent.putExtra("avatar", getIntent().getIntExtra("avatar", R.drawable.default_avatar1));
+
+        // Передаем списки с проверкой
+        intent.putStringArrayListExtra("colors",
+                selectedColors != null ? new ArrayList<>(selectedColors) : new ArrayList<>());
+
+        intent.putStringArrayListExtra("styles",
+                selectedStyles != null ? new ArrayList<>(selectedStyles) : new ArrayList<>());
+
+        intent.putStringArrayListExtra("wardrobe",
+                selectedClothes != null ? new ArrayList<>(selectedClothes) : new ArrayList<>());
+
+        intent.putStringArrayListExtra("accessories",
+                selectedAccessories != null ? new ArrayList<>(selectedAccessories) : new ArrayList<>());
+
         startActivity(intent);
     }
 
@@ -143,7 +154,7 @@ public class Registration_step2 extends AppCompatActivity {
         final boolean[] checkedItems = new boolean[clothes.length]; // Массив для хранения выбранных элементов
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Выберите стили")
+        builder.setTitle("Выберите вещи")
                 .setMultiChoiceItems(clothes, checkedItems, (dialog, which, isChecked) -> {
                     checkedItems[which] = isChecked;
                 })
@@ -165,11 +176,11 @@ public class Registration_step2 extends AppCompatActivity {
     }
 
     private void showAccessoriesDialog() {
-        final String[] accessories = {"Очки", "Галстук", "Ремены"};
+        final String[] accessories = {"Очки", "Галстук", "Ремень"};
         final boolean[] checkedItems = new boolean[accessories.length]; // Массив для хранения выбранных элементов
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Выберите стили")
+        builder.setTitle("Выберите аксессуары")
                 .setMultiChoiceItems(accessories, checkedItems, (dialog, which, isChecked) -> {
                     checkedItems[which] = isChecked;
                 })
@@ -191,25 +202,4 @@ public class Registration_step2 extends AppCompatActivity {
         builder.create().show();
     }
 }
-
-
-/*
-    // Проверка заполнения полей
-    private boolean isDataValid() {
-        if (nameEditText.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "Введите имя", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (citySpinner.getSelectedItemPosition() == 0) {  // Проверка выбора города
-            Toast.makeText(this, "Выберите город", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (selectedStyles.isEmpty()) {
-            Toast.makeText(this, "Выберите хотя бы один стиль", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
-}
-*/
 

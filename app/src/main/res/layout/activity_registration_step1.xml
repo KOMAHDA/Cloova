@@ -48,8 +48,8 @@ tools:context=".Registration_step1">
         android:id="@+id/gobackbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:padding="8dp"
@@ -58,6 +58,7 @@ tools:context=".Registration_step1">
         android:textColor="@color/blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="24sp"
         android:contentDescription="@string/strelka"/>
 
     <TextView
@@ -105,8 +106,9 @@ tools:context=".Registration_step1">
             android:orientation="horizontal"
             >
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="120dp"
+                android:layout_marginTop="15dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -115,18 +117,42 @@ tools:context=".Registration_step1">
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/default_avatar1"
-                    android:scaleType="centerCrop"
+                    android:background="@drawable/circle_mask"
                     android:clipToOutline="true"
-                    android:background="@drawable/circle_shape"/>
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_avatar1" />
 
-                <Button
-                    android:id="@+id/selectAvatarButton"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Выбрать аватар"/>
-            </LinearLayout>
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="60dp"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/selectAvatarButton"
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:backgroundTint="@color/blue"
+                        android:contentDescription="↺"
+                        android:stateListAnimator="@null"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/changeAvatar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/manrope_bold"
+                        android:labelFor="@id/nameEditText"
+                        android:text="↺"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="4dp"
+                        android:textSize="25sp" />
+
+                </FrameLayout>
+
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -147,6 +173,10 @@ tools:context=".Registration_step1">
                     android:id="@+id/nameEditText"
                     android:layout_height="35dp"
                     android:layout_width="match_parent"
+                    android:paddingLeft="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingEnd="16dp"
                     android:background="@drawable/rounded_gray_edittext_bg"
                     android:backgroundTint="@color/login_input_gray"
                     android:inputType="textPersonName"
@@ -166,6 +196,8 @@ tools:context=".Registration_step1">
                     android:id="@+id/sexSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
                     android:background="@drawable/rounded_gray_edittext_bg"
                     android:backgroundTint="@color/login_input_gray"
                     android:entries="@array/sex_array"
@@ -191,6 +223,10 @@ tools:context=".Registration_step1">
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
             android:maxLength="10"
@@ -214,6 +250,8 @@ tools:context=".Registration_step1">
             android:id="@+id/citySpinner"
             android:layout_width="match_parent"
             android:layout_height="35dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
             android:entries="@array/cities_array"
@@ -265,7 +303,7 @@ tools:context=".Registration_step1">
         android:layout_width="240dp"
         android:layout_height="55dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_blue_button_bg"
+        android:backgroundTint="@color/blue"
         android:fontFamily="@font/manrope_bold"
         android:text="@string/next"
         android:textColor="@color/white"
