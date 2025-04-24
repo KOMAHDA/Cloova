@@ -19,6 +19,8 @@ public class Registration_step3 extends AppCompatActivity {
     private Button createButton;
     private DatabaseHelper dbHelper;
 
+    String userLanguage = "Русский";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +108,7 @@ public class Registration_step3 extends AppCompatActivity {
             }
 
             // Добавляем пользователя
-            long userId = dbHelper.addUser(username, password, name, gender, birthDate, city, avatarResId);
+            long userId = dbHelper.addUser(username, password, name, gender, birthDate, city, userLanguage, avatarResId);
 
             if (userId == -1) {
                 Toast.makeText(this, "Ошибка регистрации", Toast.LENGTH_SHORT).show();

@@ -80,7 +80,7 @@ tools:context=".Registration_step1">
         android:layout_height="100dp"
         android:layout_marginTop="0dp"
         android:fontFamily="@font/manrope_bold"
-        android:text="@string/stil"
+        android:text="@string/register_subtitle"
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -166,7 +166,7 @@ tools:context=".Registration_step1">
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/manrope_bold"
                     android:labelFor="@id/nameEditText"
-                    android:text="@string/name"
+                    android:text="@string/name_label_colon"
                     android:textSize="19sp" />
 
                 <EditText
@@ -189,7 +189,7 @@ tools:context=".Registration_step1">
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/manrope_bold"
                     android:labelFor="@id/sexSpinner"
-                    android:text="@string/sex"
+                    android:text="@string/gender_label_colon"
                     android:textSize="19sp" />
 
                 <Spinner
@@ -215,7 +215,7 @@ tools:context=".Registration_step1">
             android:layout_marginTop="10dp"
             android:fontFamily="@font/manrope_bold"
             android:labelFor="@id/nameEditText"
-            android:text="@string/happy"
+            android:text="@string/birth_date_label_colon"
             android:textSize="19sp" />
 
         <EditText
@@ -243,7 +243,7 @@ tools:context=".Registration_step1">
             android:layout_marginTop="10dp"
             android:fontFamily="@font/manrope_bold"
             android:labelFor="@id/nameEditText"
-            android:text="@string/profile_city_label"
+            android:text="@string/city_label_colon"
             android:textSize="19sp" />
 
         <Spinner
@@ -280,7 +280,7 @@ tools:context=".Registration_step1">
             android:layout_marginBottom="0dp"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/manrope_bold"
-            android:text="@string/sozdanie"
+            android:text="@string/title_create_profile"
             android:textColor="@color/black"
             android:textSize="27sp" />
 
@@ -305,7 +305,7 @@ tools:context=".Registration_step1">
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/blue"
         android:fontFamily="@font/manrope_bold"
-        android:text="@string/next"
+        android:text="@string/button_next_short"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "CloovaDB.db";
@@ -43,6 +44,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ACCESSORY_ID = "accessory_id";
     private static final String COLUMN_ACCESSORY_NAME = "accessory_name";
 
+    public static final String COLUMN_LANGUAGE = "language";
+
+
+    public static final String SHARED_PREFS_NAME = "CloovaUserPrefs"; // Имя файла SharedPreferences
+    public static final String PREF_KEY_LOGGED_IN_USER_ID = "logged_in_user_id"; // Ключ для хранения ID
+    public static final long DEFAULT_USER_ID = -1L; // Значение по умолчанию (означает "не вошел")
+
+    // --- Константа для Intent Extra ---
+    public static final String EXTRA_USER_ID = "USER_ID";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -58,6 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_GENDER + " TEXT,"
                 + COLUMN_BIRTH_DATE + " TEXT,"
                 + COLUMN_CITY + " TEXT,"
+                + COLUMN_LANGUAGE + " TEXT DEFAULT 'Русский',"
                 + COLUMN_AVATAR + " INTEGER"
                 + ")";
         db.execSQL(CREATE_USERS_TABLE);
@@ -111,16 +123,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Метод для добавления нового пользователя
     public long addUser(String login, String password, String name, String gender,
-                        String birthDate, String city, int avatarResId) {
+                        String birthDate, String city, String language, int avatarResId) {
+        if (checkLoginExists(login)) {
+            return -1;
+        }
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
         values.put(COLUMN_LOGIN, login);
-        values.put(COLUMN_PASSWORD, password);
+        values.put(COLUMN_PASSWORD, hashedPassword);
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_GENDER, gender);
         values.put(COLUMN_BIRTH_DATE, birthDate);
         values.put(COLUMN_CITY, city);
+        values.put(COLUMN_LANGUAGE, language != null ? language : "Русский");
         values.put(COLUMN_AVATAR, avatarResId);
 
         // ВАЖНО: Используйте insertWithOnConflict или отдельную проверку
@@ -139,7 +158,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.insert(TABLE_USER_COLORS, null, values);
             }
         } finally {
-            db.close();
         }
     }
 
@@ -155,7 +173,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
         finally {
-            db.close();
         }
     }
 
@@ -171,7 +188,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
         finally {
-            db.close();
         }
     }
 
@@ -188,7 +204,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
         finally {
-            db.close();
         }
     }
 
@@ -205,23 +220,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         boolean exists = cursor.getCount() > 0;
         cursor.close();
-        db.close();
         return exists;
     }
 
     // Проверка логина и пароля
-    public boolean checkUserCredentials(String login, String password) {
+    public boolean checkUserCredentials(String login, String enteredPassword) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_USERS,
-                new String[]{COLUMN_USER_ID},
-                COLUMN_LOGIN + "=? AND " + COLUMN_PASSWORD + "=?",
-                new String[]{login, password},
-                null, null, null);
+        Cursor cursor = null;
+        String storedHash = null;
 
-        boolean valid = cursor.getCount() > 0;
-        cursor.close();
-        db.close();
-        return valid;
+        try {
+            // 1. Ищем пользователя по ЛОГИНУ и получаем его СОХРАНЕННЫЙ ХЭШ ПАРОЛЯ
+            cursor = db.query(TABLE_USERS,
+                    new String[]{COLUMN_PASSWORD}, // Получаем только колонку с хэшем пароля
+                    COLUMN_LOGIN + "=?",           // Условие WHERE по логину
+                    new String[]{login},           // Значение для логина
+                    null, null, null);
+
+            // 2. Если пользователь найден, извлекаем хэш
+            if (cursor.moveToFirst()) {
+                // Индекс 0, так как мы запросили только одну колонку (COLUMN_PASSWORD)
+                storedHash = cursor.getString(0);
+            }
+        } catch (Exception e) {
+            // Логирование ошибки
+            android.util.Log.e("DB_HELPER", "Error checking user credentials", e);
+            return false; // В случае ошибки - доступ запрещен
+        } finally {
+            if (cursor != null) {
+                cursor.close(); // !!! ОБЯЗАТЕЛЬНО ЗАКРЫТЬ КУРСОР !!!
+            }
+
+        }
+
+
+        // 3. Сравниваем введенный пароль с сохраненным хэшем
+        if (storedHash != null) {
+            // BCrypt.checkpw сама извлекает соль из storedHash и сравнивает
+            try {
+                return BCrypt.checkpw(enteredPassword, storedHash);
+            } catch (IllegalArgumentException e) {
+                // Это может случиться, если storedHash имеет неверный формат
+                android.util.Log.e("DB_HELPER", "Error checking password - invalid hash format?", e);
+                return false;
+            }
+        } else {
+            // Пользователь с таким логином не найден
+            return false;
+        }
     }
 
     // Получение ID пользователя по логину
@@ -238,7 +284,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             userId = cursor.getLong(0);
         }
         cursor.close();
-        db.close();
         return userId;
     }
 
@@ -258,7 +303,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return colors;
     }
 
@@ -278,7 +322,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return styles;
     }
 
@@ -298,7 +341,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return wardrobe;
     }
 
@@ -318,30 +360,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return accessories;
     }
 
     // В методе getUserInfo() DatabaseHelper исправьте:
     public User getUserInfo(long userId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_USERS,
-                new String[]{COLUMN_NAME, COLUMN_GENDER, COLUMN_BIRTH_DATE, COLUMN_CITY, COLUMN_AVATAR},
-                COLUMN_USER_ID + "=?",
-                new String[]{String.valueOf(userId)},
-                null, null, null);
-
+        Cursor cursor = null;
         User user = null;
-        if (cursor.moveToFirst()) {
-            user = new User();
-            user.setName(cursor.getString(0)); // name
-            user.setGender(cursor.getString(1)); // gender
-            user.setBirthDate(cursor.getString(2)); // birth date
-            user.setCity(cursor.getString(3)); // city
-            user.setAvatarResId(cursor.getInt(4)); // avatar
+        try {
+            cursor = db.query(TABLE_USERS,
+                    new String[]{COLUMN_NAME, COLUMN_GENDER, COLUMN_BIRTH_DATE, COLUMN_CITY, COLUMN_LANGUAGE, COLUMN_AVATAR, COLUMN_LOGIN}, // Добавлен язык и логин
+                    COLUMN_USER_ID + "=?",
+                    new String[]{String.valueOf(userId)},
+                    null, null, null);
+
+            if (cursor.moveToFirst()) {
+                user = new User(); // Убедитесь, что класс User существует
+                user.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)));
+                user.setGender(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GENDER)));
+                user.setBirthDate(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_BIRTH_DATE)));
+                user.setCity(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CITY)));
+                user.setLanguage(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LANGUAGE))); // Получаем язык
+                user.setAvatarResId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_AVATAR)));
+                user.setLogin(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LOGIN))); // Получаем логин
+                // Добавьте поле и сеттер/геттер для language и login в класс User
+            }
+        } catch (Exception e) {
+            android.util.Log.e("DB_HELPER", "Error getting user info", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        cursor.close();
-        db.close();
         return user;
     }
 }

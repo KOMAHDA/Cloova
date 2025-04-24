@@ -2,9 +2,12 @@ package com.example.cloova;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -14,6 +17,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d("MainActivity", "onCreate: Checking login status...");
+        SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+        long loggedInUserId = prefs.getLong(DatabaseHelper.PREF_KEY_LOGGED_IN_USER_ID, DatabaseHelper.DEFAULT_USER_ID);
+        Log.d("MainActivity", "onCreate: Found userId in Prefs: " + loggedInUserId);
+
+        if (loggedInUserId != DatabaseHelper.DEFAULT_USER_ID) {
+            Log.d("MainActivity", "onCreate: User is logged in. Redirecting to ProfileActivity...");
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            intent.putExtra(DatabaseHelper.EXTRA_USER_ID, loggedInUserId);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        } else {
+            Log.d("MainActivity", "onCreate: User is NOT logged in. Showing MainActivity layout.");
+        }
+
         setContentView(R.layout.activity_main);
 
         // Обработчик для иконки Telegram
