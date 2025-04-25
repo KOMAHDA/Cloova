@@ -119,4 +119,14 @@
     <string name="filter_night">Ночь</string>
     <string name="filter_outfit">Образ</string>
     <string name="monthly_forecast_button">Прогноз на месяц</string>
+
+    <string name="day_detail_activity_title">Прогноз на %1$s</string> <!-- %1$s будет заменен на дату -->
+    <string name="wind_label">Ветер</string>
+    <string name="humidity_label">Влажность</string>
+    <string name="weekly_forecast_link">Прогноз на неделю</string>
+    <string name="outfit_suggestion_placeholder">Сегодня хороший день для новых открытий!</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="edit_outfit_button">Редактировать образ</string>
+    <string name="save_outfit_button">Сохранить образ</string>
+    <string name="refresh_button">Обновить</string>
 </resources>

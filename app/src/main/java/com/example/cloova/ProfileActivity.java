@@ -49,6 +49,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private TextView drawerHeaderName;
     private TextView drawerHeaderLogin;
     private ImageView drawerHeaderImage;
+    private User currentUser = null;
 
 
     @Override
@@ -262,6 +263,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 // redirectToLogin();
             } else {
                 Log.d(TAG, "LoadProfileTask: Displaying profile data");
+                currentUser = profileData.user;
                 displayUserProfileData(profileData);
                 updateDrawerHeader(profileData.user);
             }
@@ -308,13 +310,16 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         updateSettingValue(settingSavedLooks, null, "");
         updateSettingValue(settingPlannedLooks, null, "");
 
+        Log.d(TAG, "Avatar Res ID from User object: " + user.getAvatarResId());
+
         // Отображение аватара (лучше использовать Glide/Picasso для URL или сложных путей)
         if (user.getAvatarResId() != 0) {
             profileImage.setImageResource(user.getAvatarResId());
+            Log.d(TAG, "Setting avatar to Res ID: " + user.getAvatarResId());
         } else {
-            profileImage.setImageResource(R.drawable.default_avatar1); // Убедитесь, что ресурс существует
+            profileImage.setImageResource(R.drawable.default_avatar1);
+            Log.d(TAG, "Avatar Res ID is 0 or invalid, setting default: R.drawable.default_avatar1");
         }
-        Log.d(TAG, "displayUserProfileData: UI updated");
     }
 
     // --- Вспомогательный метод для обновления значения в строке настроек ---
@@ -392,11 +397,19 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         Log.d(TAG, "onNavigationItemSelected: Item selected: " + item.getTitle());
+        String userCity = null;
+        if (currentUser != null) {
+            userCity = currentUser.getCity();
+            Log.d(TAG, "onNavigationItemSelected: User city from currentUser: " + userCity);
+        } else {
+            Toast.makeText(this, "Данные пользователя еще загружаются", Toast.LENGTH_SHORT).show();
+        }
 
         if (id == R.id.nav_home) {
             // TODO: Переход на главный экран
             Log.d(TAG, "Navigation to WeatherForecastActivity");
             Intent weatherIntent = new Intent(this, WeatherForecastActivity.class);
+            weatherIntent.putExtra(WeatherForecastActivity.EXTRA_CITY_NAME, (userCity != null && !userCity.isEmpty()) ? userCity : WeatherForecastActivity.FALLBACK_CITY);
             startActivity(weatherIntent);
         } else if (id == R.id.nav_profile) {
             // Мы уже здесь, ничего не делаем
@@ -417,17 +430,25 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(DatabaseHelper.PREF_KEY_LOGGED_IN_USER_ID);
-        editor.apply(); // Используем apply() для асинхронного сохранения
-        redirectToLogin();
+        boolean removed = editor.commit(); // !!! ВОТ ЗДЕСЬ СОХРАНЕНИЕ ИЗМЕНЕНИЙ (УДАЛЕНИЯ) !!!
+        if (!removed) {
+            Log.e(TAG, "logoutUser: Failed to commit SharedPreferences changes!");
+        }
+        redirectToMain(); // Используем новый метод
     }
 
     // --- Метод перенаправления ---
-    private void redirectToLogin() {
-        Log.d(TAG, "redirectToLogin: Redirecting to MainActivity");
-        Intent intent = new Intent(this, MainActivity.class);
+    private void redirectToLogin() { // Переименовать бы в redirectToMain
+        Log.d(TAG, "redirectToMain: Redirecting to MainActivity"); // Изменили лог
+        Intent intent = new Intent(this, MainActivity.class); // !!! ИДЕМ В MainActivity !!!
+        // !!! ОСТАВЛЯЕМ ФЛАГИ ОЧИСТКИ СТЕКА !!!
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish(); // Закрываем текущую ProfileActivity
+        finish();
+    }
+
+    private void redirectToMain() {
+        redirectToLogin(); // Пока просто вызываем старый, т.к. он делает то же самое
     }
 
     // --- Обработка кнопки "Назад" ---

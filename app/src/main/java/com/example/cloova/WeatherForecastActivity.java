@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,11 +32,13 @@ public class WeatherForecastActivity extends AppCompatActivity {
     private static final String TAG = "WeatherForecastActivity";
     // !!! ЗАМЕНИТЕ НА ВАШ КЛЮЧ !!!
     private static final String API_KEY = "579ae8495e7443b3aa9185358252404";
-    private static final String DEFAULT_CITY = "Samara";
     private static final int FORECAST_DAYS = 7; // Запрашиваем 7 дней
     private static final String AQI = "no";
     private static final String ALERTS = "no";
     private static final String LANGUAGE = "ru";
+
+    public static final String EXTRA_CITY_NAME = "CITY_NAME";
+    public static final String FALLBACK_CITY = "Самара";
 
     private RecyclerView recyclerView;
     private ForecastAdapter adapter;
@@ -43,6 +46,8 @@ public class WeatherForecastActivity extends AppCompatActivity {
     private ApiService apiService;
     private ProgressBar progressBar;
     private Button btnMonthlyForecast;
+
+    private String currentCity = FALLBACK_CITY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,21 @@ public class WeatherForecastActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(EXTRA_CITY_NAME)) {
+            String receivedCity = intent.getStringExtra(EXTRA_CITY_NAME);
+            if (receivedCity != null && !receivedCity.isEmpty()) {
+                currentCity = receivedCity;
+                Log.d(TAG, "onCreate: Received city from Intent: " + currentCity);
+            } else {
+                Log.w(TAG, "onCreate: Received empty or null city from Intent, using fallback: " + FALLBACK_CITY);
+                currentCity = FALLBACK_CITY;
+            }
+        } else {
+            Log.d(TAG, "onCreate: No city found in Intent, using fallback: " + FALLBACK_CITY);
+            currentCity = FALLBACK_CITY;
+        }
+
         // progressBar = findViewById(R.id.progress_bar_weather); // Найдите ProgressBar
         btnMonthlyForecast = findViewById(R.id.btn_monthly_forecast);
         recyclerView = findViewById(R.id.rv_daily_forecast);
@@ -66,7 +86,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
 
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        fetchWeatherData(DEFAULT_CITY);
+        fetchWeatherData(currentCity);
 
         btnMonthlyForecast.setOnClickListener(v -> {
             Toast.makeText(this, "Загрузка прогноза на месяц (TODO)", Toast.LENGTH_SHORT).show();

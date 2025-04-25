@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putLong(DatabaseHelper.PREF_KEY_LOGGED_IN_USER_ID, userIdResult);
-                editor.apply();
+                boolean saved = editor.commit(); // !!! ВОТ ЗДЕСЬ СОХРАНЕНИЕ !!!
 
                 Toast.makeText(LoginActivity.this, "Вход выполнен успешно!", Toast.LENGTH_LONG).show();
 
