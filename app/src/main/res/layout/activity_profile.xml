@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fon_reg"
-    tools:context=".activity_profile1">
+    tools:context=".ProfileActivity">
 
     <ImageView
         android:id="@+id/gobackbutton"
@@ -122,8 +122,8 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/rounded_edit_text"
         android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         app:layout_constraintTop_toBottomOf="@id/profile_username"
@@ -580,6 +580,7 @@
             android:textColor="@color/white"
             android:background="@drawable/underline"
             android:textSize="15sp"
+            android:fontFamily="@font/manrope_bold"
             android:clickable="true"
             android:focusable="true"/>
 
