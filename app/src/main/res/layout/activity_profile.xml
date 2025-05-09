@@ -14,7 +14,8 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@color/fon_reg">
 
-<com.google.android.material.appbar.AppBarLayout
+    <!--Верхняя навигация-->
+<!--<com.google.android.material.appbar.AppBarLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
@@ -28,17 +29,49 @@ android:background="@color/fon_reg">
     app:navigationIconTint="@color/login_dark_blue"
     app:title="" />
 
-</com.google.android.material.appbar.AppBarLayout>
+</com.google.android.material.appbar.AppBarLayout>-->
 
 <androidx.core.widget.NestedScrollView
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     android:paddingBottom="32dp">
+
+    <ImageView
+        android:id="@+id/gobackbutton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/chevron_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageEditProf"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/edit_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -84,7 +117,29 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@null"/>
 
-    <ImageView
+    <FrameLayout
+        android:id="@+id/frameAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_mask"
+            android:src="@drawable/default_avatar1"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
+
+<!--    <ImageView
         android:id="@+id/profile_image"
         android:layout_width="120dp"
         android:layout_height="120dp"
@@ -94,7 +149,7 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/default_avatar1"
         android:scaleType="centerCrop"
-        android:background="@drawable/circle_background"/>
+        android:background="@drawable/circle_background"/>-->
 
     <TextView
         android:id="@+id/profile_username"
@@ -104,7 +159,7 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
         tools:text="\@viktoria666"
         android:textColor="@color/login_dark_blue"
         android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintTop_toBottomOf="@id/profile_image"
+        app:layout_constraintTop_toBottomOf="@id/frameAvatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -177,6 +232,7 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
         android:drawablePadding="8dp"
         android:layout_marginTop="32dp"
         android:padding="8dp"
+
         app:layout_constraintTop_toBottomOf="@id/settings_section_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -190,12 +246,14 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-<com.google.android.material.navigation.NavigationView
+
+<!--<com.google.android.material.navigation.NavigationView
 android:id="@+id/navigation_view"
 android:layout_width="wrap_content"
 android:layout_height="match_parent"
+
 android:layout_gravity="start"
 app:headerLayout="@menu/drawer_header"
-app:menu="@menu/drawer_menu" />
+app:menu="@menu/drawer_menu" />-->
 
     </androidx.drawerlayout.widget.DrawerLayout>

@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#0013A0</color>
     <color name="fon_reg">#ADDFFF</color>
-    <color name="ser">#A9A9A9</color>
+    <color name="grey">#A9A9A9</color>
     <color name="login_background_light_blue">#E0F2FF</color>
     <color name="login_dark_blue">#003399</color>
     <color name="login_input_gray">#EAEAEA</color>
@@ -13,4 +13,5 @@
     <color name="temperature_background">#E0E0E0</color>
     <color name="temperature_text_day">#000000</color>
     <color name="temperature_text_night">#424242</color>
+    <color name="navigation_panel_color">#1F4DA9</color>
 </resources>
