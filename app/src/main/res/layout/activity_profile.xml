@@ -1,47 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".ProfileActivity"
-    tools:openDrawer="start">
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/fon_reg">
-
-    <!--Верхняя навигация-->
-<!--<com.google.android.material.appbar.AppBarLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
-    app:elevation="0dp">
-
-<com.google.android.material.appbar.MaterialToolbar
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    app:navigationIcon="@drawable/menu"
-    app:navigationIconTint="@color/login_dark_blue"
-    app:title="" />
-
-</com.google.android.material.appbar.AppBarLayout>-->
-
-<androidx.core.widget.NestedScrollView
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
-    android:paddingBottom="32dp">
+    android:background="@color/fon_reg"
+    tools:context=".activity_profile1">
 
     <ImageView
         android:id="@+id/gobackbutton"
@@ -77,7 +41,7 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="180dp"
-        android:src="@drawable/svetli_2"
+        android:src="@drawable/light_shape_profile"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,8 +51,8 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="0dp"
-        android:layout_height="82dp"
-        android:src="@drawable/temni_2"
+        android:layout_height="90dp"
+        android:src="@drawable/dark_shape_profile"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -117,6 +81,7 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@null"/>
 
+
     <FrameLayout
         android:id="@+id/frameAvatar"
         android:layout_width="wrap_content"
@@ -136,20 +101,7 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
             android:background="@drawable/circle_mask"
             android:src="@drawable/default_avatar1"
             android:layout_gravity="center" />
-
     </FrameLayout>
-
-<!--    <ImageView
-        android:id="@+id/profile_image"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/default_avatar1"
-        android:scaleType="centerCrop"
-        android:background="@drawable/circle_background"/>-->
 
     <TextView
         android:id="@+id/profile_username"
@@ -163,97 +115,537 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
         android:id="@+id/profile_info_card"
-        android:layout_width="0dp"
+        android:layout_width="345dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="24dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_edit_text"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         app:layout_constraintTop_toBottomOf="@id/profile_username"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <TextView
+            android:id="@+id/info_name"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_gray_edittext_bg"
+            android:backgroundTint="@color/login_input_gray"
+            android:gravity="center_vertical|start"
+            android:minHeight="48dp"
+            android:paddingStart="16dp"
+            android:paddingLeft="16dp"
+            android:paddingEnd="16dp"
+            android:paddingRight="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="17sp" />
+        <TextView
+            android:id="@+id/info_dob"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_gray_edittext_bg"
+            android:backgroundTint="@color/login_input_gray"
+            android:gravity="center_vertical|start"
+            android:minHeight="48dp"
+            android:paddingStart="16dp"
+            android:paddingLeft="16dp"
+            android:paddingEnd="16dp"
+            android:paddingRight="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="17sp" />
+        <TextView
+            android:id="@+id/info_username_in_card"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_gray_edittext_bg"
+            android:backgroundTint="@color/login_input_gray"
+            android:gravity="center_vertical|start"
+            android:minHeight="48dp"
+            android:paddingStart="16dp"
+            android:paddingLeft="16dp"
+            android:paddingEnd="16dp"
+            android:paddingRight="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="17sp" />
+        <TextView
+            android:id="@+id/info_style"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_gray_edittext_bg"
+            android:backgroundTint="@color/login_input_gray"
+            android:gravity="center_vertical|start"
+            android:minHeight="48dp"
+            android:paddingStart="16dp"
+            android:paddingLeft="16dp"
+            android:paddingEnd="16dp"
+            android:paddingRight="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="345dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/settings_section_1"
+        android:layout_marginTop="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/rounded_edit_text"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_info_card"
+        >
+
         <LinearLayout
+            android:id="@+id/block1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView android:id="@+id/info_name" tools:text="Виктория" style="@style/ProfileInfoTextViewStyle"/>
-            <View style="@style/DividerStyle"/>
-            <TextView android:id="@+id/info_dob" tools:text="11.01.2006" style="@style/ProfileInfoTextViewStyle"/>
-            <View style="@style/DividerStyle"/>
-            <TextView android:id="@+id/info_username_in_card" tools:text="\@viktoria666" style="@style/ProfileInfoTextViewStyle"/>
-            <View style="@style/DividerStyle"/>
-            <TextView android:id="@+id/info_style" tools:text="Классический" style="@style/ProfileInfoTextViewStyle"/>
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/location_shape"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/location_shape"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/setting_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|start"
+                    android:layout_marginStart="15dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/login_dark_blue"
+                    android:fontFamily="@font/manrope_bold"
+                    tools:text="Местоположение" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/info_city"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:textSize="18sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/manrope_bold"
+                tools:text="Самара" />
+
+            <ImageView
+                android:id="@+id/edit_location_shape"
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/edit_pointer_shape"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"  />
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+        <View
+            android:id="@+id/separator1"
+            style="@style/DividerStyle"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintTop_toBottomOf="@id/block1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    <LinearLayout
-        android:id="@+id/settings_section_1"
-        style="@style/SettingsSectionStyle"
-        app:layout_constraintTop_toBottomOf="@id/profile_info_card"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+            android:id="@+id/block2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/separator1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <include layout="@layout/item_profile_setting" android:id="@+id/setting_location"/>
-        <View style="@style/DividerStyle"/>
-        <include layout="@layout/item_profile_setting" android:id="@+id/setting_language"/>
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/language_shape"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/language_shape"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/settings_section_2"
-        style="@style/SettingsSectionStyle"
-        app:layout_constraintTop_toBottomOf="@id/settings_section_1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+                <TextView
+                    android:id="@+id/setting_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|start"
+                    android:layout_marginStart="15dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/login_dark_blue"
+                    android:fontFamily="@font/manrope_bold"
+                    tools:text="Язык" />
 
-        <include layout="@layout/item_profile_setting" android:id="@+id/setting_questionnaire"/>
-        <View style="@style/DividerStyle"/>
-        <include layout="@layout/item_profile_setting" android:id="@+id/setting_saved_looks"/>
-        <View style="@style/DividerStyle"/>
-        <include layout="@layout/item_profile_setting" android:id="@+id/setting_planned_looks"/>
+            </LinearLayout>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/info_language"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:textSize="18sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/manrope_bold"
+                tools:text="Русский" />
 
+            <ImageView
+                android:id="@+id/edit_language_shape"
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/edit_pointer_shape"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"  />
 
-    <TextView
-        android:id="@+id/contact_developers_link"
-        android:layout_width="wrap_content"
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="345dp"
         android:layout_height="wrap_content"
-        android:text="@string/contact_devs"
-        android:textColor="@color/login_dark_blue"
-        android:drawablePadding="8dp"
-        android:layout_marginTop="32dp"
-        android:padding="8dp"
-
-        app:layout_constraintTop_toBottomOf="@id/settings_section_2"
+        android:id="@+id/settings_section_2"
+        android:layout_marginTop="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/rounded_edit_text"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"/>
+        app:layout_constraintTop_toBottomOf="@id/settings_section_1"
+        >
+
+        <LinearLayout
+            android:id="@+id/block3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/anketa_shape"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/anketa_shape"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/setting_anketa"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:layout_marginStart="15dp"
+                android:textSize="18sp"
+                android:textColor="@color/login_dark_blue"
+                android:fontFamily="@font/manrope_bold"
+                tools:text="Моя анкета" />
+
+            <ImageView
+                android:id="@+id/edit_anketa_shape"
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/edit_pointer_shape"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"  />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/separator2"
+            style="@style/DividerStyle"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintTop_toBottomOf="@id/block3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/block4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toBottomOf="@id/separator2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/saved_shape"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/saved_shape"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/setting_saved"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:layout_marginStart="15dp"
+                android:textSize="18sp"
+                android:textColor="@color/login_dark_blue"
+                android:fontFamily="@font/manrope_bold"
+                tools:text="Сохраненные образы" />
+
+            <ImageView
+                android:id="@+id/edit_saved_shape"
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/edit_pointer_shape"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"  />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/separator3"
+            style="@style/DividerStyle"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintTop_toBottomOf="@id/block4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/block5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toBottomOf="@id/separator3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/planed_shape"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/planed_shape"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/setting_planed"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:layout_marginStart="15dp"
+                android:textSize="18sp"
+                android:textColor="@color/login_dark_blue"
+                android:fontFamily="@font/manrope_bold"
+                tools:text="Запланированные образы" />
+
+            <ImageView
+                android:id="@+id/edit_planed_shape"
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/edit_pointer_shape"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"  />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/settings_section_2">
+
+        <TextView
+            android:id="@+id/contact_developers_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_devs"
+            android:textColor="@color/white"
+            android:background="@drawable/underline"
+            android:textSize="15sp"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/telegram" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@color/navigation_panel_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/profile_shape"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_shape"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/main_house_shape"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/main_house_shape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/heart_shape"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/heart_shape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-<!--<com.google.android.material.navigation.NavigationView
-android:id="@+id/navigation_view"
-android:layout_width="wrap_content"
-android:layout_height="match_parent"
-
-android:layout_gravity="start"
-app:headerLayout="@menu/drawer_header"
-app:menu="@menu/drawer_menu" />-->
-
-    </androidx.drawerlayout.widget.DrawerLayout>
