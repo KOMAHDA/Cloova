@@ -7,7 +7,7 @@
     android:background="@color/fon_reg"
     tools:context=".ProfileActivity">
 
-    <ImageView
+<!--    <ImageView
         android:id="@+id/gobackbutton"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -20,7 +20,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/chevron_left"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageView
         android:id="@+id/imageEditProf"
@@ -138,6 +138,7 @@
             android:backgroundTint="@color/login_input_gray"
             android:gravity="center_vertical|start"
             android:minHeight="48dp"
+            android:fontFamily="@font/manrope_bold"
             android:paddingStart="16dp"
             android:paddingLeft="16dp"
             android:paddingEnd="16dp"
@@ -146,13 +147,14 @@
             android:layout_marginBottom="5dp"
             android:textSize="17sp" />
         <TextView
-            android:id="@+id/info_dob"
+            android:id="@+id/info_birth_date"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
             android:gravity="center_vertical|start"
             android:minHeight="48dp"
+            android:fontFamily="@font/manrope_bold"
             android:paddingStart="16dp"
             android:paddingLeft="16dp"
             android:paddingEnd="16dp"
@@ -161,13 +163,14 @@
             android:layout_marginBottom="5dp"
             android:textSize="17sp" />
         <TextView
-            android:id="@+id/info_username_in_card"
+            android:id="@+id/info_username"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
             android:gravity="center_vertical|start"
             android:minHeight="48dp"
+            android:fontFamily="@font/manrope_bold"
             android:paddingStart="16dp"
             android:paddingLeft="16dp"
             android:paddingEnd="16dp"
@@ -183,6 +186,7 @@
             android:backgroundTint="@color/login_input_gray"
             android:gravity="center_vertical|start"
             android:minHeight="48dp"
+            android:fontFamily="@font/manrope_bold"
             android:paddingStart="16dp"
             android:paddingLeft="16dp"
             android:paddingEnd="16dp"
@@ -229,12 +233,12 @@
                     android:id="@+id/location_shape"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginTop="4dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@null"
                     android:clickable="true"
                     android:focusable="true"
                     android:scaleType="centerCrop"
-                    android:layout_marginTop="5dp"
                     android:src="@drawable/location_shape"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -243,13 +247,11 @@
                     android:id="@+id/setting_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical|start"
                     android:layout_marginStart="15dp"
                     android:textSize="18sp"
                     android:textColor="@color/login_dark_blue"
                     android:fontFamily="@font/manrope_bold"
-                    tools:text="Местоположение" />
-
+                    android:text="@string/setting_location_label" />
             </LinearLayout>
 
             <TextView
@@ -261,7 +263,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/grey"
                 android:fontFamily="@font/manrope_bold"
-                tools:text="Самара" />
+                android:text="Самара" />
 
             <ImageView
                 android:id="@+id/edit_location_shape"
@@ -312,12 +314,12 @@
                     android:id="@+id/language_shape"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginTop="4dp"
                     android:adjustViewBounds="true"
-                    android:contentDescription="@null"
                     android:clickable="true"
+                    android:contentDescription="@null"
                     android:focusable="true"
                     android:scaleType="centerCrop"
-                    android:layout_marginTop="5dp"
                     android:src="@drawable/language_shape"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -331,7 +333,7 @@
                     android:textSize="18sp"
                     android:textColor="@color/login_dark_blue"
                     android:fontFamily="@font/manrope_bold"
-                    tools:text="Язык" />
+                    android:text="Язык приложения" />
 
             </LinearLayout>
 
@@ -344,7 +346,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/grey"
                 android:fontFamily="@font/manrope_bold"
-                tools:text="Русский" />
+                android:text="Русский" />
 
             <ImageView
                 android:id="@+id/edit_language_shape"
@@ -399,7 +401,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerCrop"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/anketa_shape"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -414,7 +416,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/login_dark_blue"
                 android:fontFamily="@font/manrope_bold"
-                tools:text="Моя анкета" />
+                android:text="Моя анкета" />
 
             <ImageView
                 android:id="@+id/edit_anketa_shape"
@@ -464,7 +466,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerCrop"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/saved_shape"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -479,7 +481,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/login_dark_blue"
                 android:fontFamily="@font/manrope_bold"
-                tools:text="Сохраненные образы" />
+                android:text="Сохраненные образы" />
 
             <ImageView
                 android:id="@+id/edit_saved_shape"
@@ -527,7 +529,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerCrop"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/planed_shape"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -542,7 +544,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/login_dark_blue"
                 android:fontFamily="@font/manrope_bold"
-                tools:text="Запланированные образы" />
+                android:text="Запланированные образы" />
 
             <ImageView
                 android:id="@+id/edit_planed_shape"
