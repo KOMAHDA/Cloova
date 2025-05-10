@@ -50,6 +50,7 @@
     <string name="profile_clothes_label">Главный принцип в одежде:</string> <!-- Метка на экране ввода данных -->
     <string name="profile_clothes_hint">Какая одежда есть в вашем гардеробе?</string> <!-- Подсказка на экране ввода данных -->
     <string name="save_button_text">Сохранить</string>
+    <string name="save">Сохраненные образы</string>
 
     <!-- Массивы для Spinner/Выбора -->
     <string-array name="cities_array">
