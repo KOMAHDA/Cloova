@@ -7,21 +7,6 @@
     android:background="@color/fon_reg"
     tools:context=".ProfileActivity">
 
-<!--    <ImageView
-        android:id="@+id/gobackbutton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@null"
-        android:clickable="true"
-        android:focusable="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/chevron_left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
-
     <ImageView
         android:id="@+id/imageEditProf"
         android:layout_width="50dp"
@@ -108,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        tools:text="\@viktoria666"
+        tools:text="\@noname"
         android:textColor="@color/login_dark_blue"
         android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintTop_toBottomOf="@id/frameAvatar"
@@ -567,11 +552,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+        android:id="@+id/contact_telega"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintTop_toBottomOf="@id/settings_section_2">
 
         <TextView
@@ -583,8 +571,8 @@
             android:background="@drawable/underline"
             android:textSize="15sp"
             android:fontFamily="@font/manrope_bold"
-            android:clickable="true"
-            android:focusable="true"/>
+            android:clickable="false"
+            android:focusable="false"/>
 
         <ImageView
             android:layout_width="30dp"
@@ -593,6 +581,21 @@
             android:src="@drawable/telegram" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/log_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выйти"
+        android:gravity="center"
+        android:fontFamily="@font/manrope_bold"
+        android:textColor="@color/red"
+        android:textSize="15sp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contact_telega"/>
 
     <LinearLayout
         android:layout_width="match_parent"

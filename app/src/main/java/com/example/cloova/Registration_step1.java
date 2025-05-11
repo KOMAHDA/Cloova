@@ -34,7 +34,7 @@ public class Registration_step1 extends AppCompatActivity {
     private EditText nameEditText, dateEditText;
     private Spinner citySpinner;
     private Spinner sexSpinner;
-    private Button goBackButton;
+    private ImageView goBackButton;
     private Button goNextButton;
     private Button selectAvatarButton;
     private ImageView avatarImageView;

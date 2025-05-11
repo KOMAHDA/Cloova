@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.content.Intent;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import android.app.AlertDialog;
 
 public class Registration_step2 extends AppCompatActivity {
 
-    private Button goBackButton;
+    private ImageView goBackButton;
     private Button goNextButton;
 
     private List<String> selectedColors = new ArrayList<>(); // Список выбранных цветов

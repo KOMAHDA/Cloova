@@ -470,13 +470,16 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
 package com.example.cloova;
 
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.net.Uri;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -484,10 +487,11 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ProfileActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private long userId;
-/*    private ImageView goBackButton;*/
+    private TextView logOutButton;
     private ImageView editProfileButton;
     private ImageView mainPageButton;
     private ImageView likedLooksButton;
+    private LinearLayout contactTelegaLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -518,13 +522,19 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         }
 
-/*        goBackButton = findViewById(R.id.gobackbutton);
-        goBackButton.setOnClickListener(new View.OnClickListener() {
+        logOutButton = findViewById(R.id.log_out);
+        logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Back(v);
+                Vihod(v);
             }
-        });*/
+        });
+
+        contactTelegaLayout = findViewById(R.id.contact_telega);
+        contactTelegaLayout.setOnClickListener(v -> openSocialLink(
+                "tg://resolve?domain=cloova_app",  // Intent для приложения Telegram
+                "https://t.me/cloova_app"          // Fallback ссылка
+        ));
 
         editProfileButton = findViewById(R.id.imageEditProf);
         editProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -542,34 +552,58 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-/*        likedLooksButton = findViewById(R.id.heart_shape);
+        likedLooksButton = findViewById(R.id.heart_shape);
         likedLooksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LooksPage(v);
             }
-        });*/
+        });
     }
 
-/*    public void Back(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }*/
+    public void Vihod(View v) {
+        // 1. Очищаем SharedPreferences (сессию)
+        SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, MODE_PRIVATE);
+        prefs.edit().remove(DatabaseHelper.PREF_KEY_LOGGED_IN_USER_ID).apply();
 
-    public void Edit(View v) {
+        // 2. Создаем Intent для MainActivity с полным сбросом стека
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        // 3. Запускаем и закрываем текущую Activity
+        startActivity(intent);
+        finish();
+    }
+    private void openSocialLink(String appUri, String webUrl) {
+        try {
+            // Пробуем открыть в приложении
+            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(appUri));
+            startActivity(appIntent);
+        } catch (Exception e) {
+            try {
+                // Если приложение не установлено, открываем в браузере
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl));
+                startActivity(browserIntent);
+            } catch (Exception ex) {
+                Toast.makeText(this, "Не удалось открыть ссылку", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private  void Edit(View v) {
         Intent intent = new Intent(this, EditProfileActivity.class);
         startActivity(intent);
     }
 
-    public void DayPage(View v) {
+    private  void DayPage(View v) {
         Intent intent = new Intent(this, DayDetailActivity.class);
         startActivity(intent);
     }
 
-/*    public void LooksPage(View v) {
-        Intent intent = new Intent(this, EditProfileActivity.class);
+    private  void LooksPage(View v) {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-    }*/
+    }
 
 
     private void displayUserProfile() {
