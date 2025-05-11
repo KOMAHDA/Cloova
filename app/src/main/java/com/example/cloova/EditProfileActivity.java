@@ -1,4 +1,6 @@
 package com.example.cloova;
 
-public class EditProfileActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class EditProfileActivity extends AppCompatActivity {
 }
