@@ -34,7 +34,13 @@
         tools:layout_editor_absoluteX="-3dp"
         tools:layout_editor_absoluteY="598dp" />
 
-
+    <ImageView
+        android:id="@+id/imageView22"
+        android:layout_width="412dp"
+        android:layout_height="101dp"
+        app:srcCompat="@drawable/fon"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="791dp" />
 
     <ImageView
         android:id="@+id/gobackbutton"
@@ -122,62 +128,48 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView14"
         app:srcCompat="@drawable/okno" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:background="@color/navigation_panel_color"
+    <ImageView
+        android:id="@+id/imageView18"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toEndOf="@+id/imageView19"
+        app:srcCompat="@drawable/love" />
 
-        <ImageView
-            android:id="@+id/profile_shape"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile_shape"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imageView19"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/dom" />
 
-        <ImageView
-            android:id="@+id/main_house_shape"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginEnd="80dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/main_house_shape"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imageView23"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="87dp"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView19"
+        app:srcCompat="@drawable/golova" />
 
-        <ImageView
-            android:id="@+id/heart_shape"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/heart_shape"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/imageView24"
+        android:layout_width="34dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView19"
+        app:layout_constraintTop_toBottomOf="@+id/imageView23"
+        app:srcCompat="@drawable/telo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

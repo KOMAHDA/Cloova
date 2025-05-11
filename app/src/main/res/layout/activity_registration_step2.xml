@@ -43,22 +43,20 @@
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@null"/>
 
-    <Button
+    <ImageView
         android:id="@+id/gobackbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:padding="8dp"
-        android:backgroundTint="@android:color/white"
-        android:text="@string/strelka"
-        android:textColor="@color/blue"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/chevron_left"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="24sp"
-        android:contentDescription="@string/strelka"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/logoTextView"
