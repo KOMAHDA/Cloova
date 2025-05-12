@@ -22,6 +22,10 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView goBackButton;
     private DatabaseHelper databaseHelper;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @SuppressLint("MissingInflatedId")
     @Override

@@ -471,6 +471,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 package com.example.cloova;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -499,7 +500,13 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView mainPageButton;
     private ImageView likedLooksButton;
     private LinearLayout contactTelegaLayout;
+    private LinearLayout changeLanguage;
     private Spinner stylesSpinner;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -544,6 +551,15 @@ public class ProfileActivity extends AppCompatActivity {
                 "https://t.me/cloova_app"          // Fallback ссылка
         ));
 
+        changeLanguage = findViewById(R.id.block2);
+        changeLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangeLanguage(v);
+            }
+        });
+
+
         editProfileButton = findViewById(R.id.imageEditProf);
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -567,7 +583,10 @@ public class ProfileActivity extends AppCompatActivity {
                 LooksPage(v);
             }
         });
+
+
     }
+
 
     public void Vihod(View v) {
         // 1. Очищаем SharedPreferences (сессию)
@@ -598,17 +617,24 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private  void Edit(View v) {
+    private void ChangeLanguage(View v) {
+        Intent intent = new Intent(this, LanguagesActivity.class);
+        intent.putExtra("USER_ID", userId); // Убедитесь, что userId получен
+        startActivity(intent);
+        // Не вызываем finish() - оставляем ProfileActivity в стеке
+    }
+
+    private void Edit(View v) {
         Intent intent = new Intent(this, EditProfileActivity.class);
         startActivity(intent);
     }
 
-    private  void DayPage(View v) {
+    private void DayPage(View v) {
         Intent intent = new Intent(this, DayDetailActivity.class);
         startActivity(intent);
     }
 
-    private  void LooksPage(View v) {
+    private void LooksPage(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -646,6 +672,13 @@ public class ProfileActivity extends AppCompatActivity {
             infoAvatar.setImageResource(user.getAvatarResId());
         } else {
             infoAvatar.setImageResource(R.drawable.default_avatar1);
+        }
+
+        if (user.getLanguage() != null) {
+            String langCode = user.getLanguage().equals("Русский") ? "ru" : "en";
+            SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
+            editor.putString("app_lang", langCode);
+            editor.apply();
         }
 
         loadUserStyles();

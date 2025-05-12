@@ -93,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        tools:text="\@noname"
+        android:text="@string/profile_username"
         android:textColor="@color/login_dark_blue"
         android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintTop_toBottomOf="@id/frameAvatar"
@@ -315,7 +315,7 @@
                     android:textSize="18sp"
                     android:textColor="@color/login_dark_blue"
                     android:fontFamily="@font/manrope_bold"
-                    android:text="Язык приложения" />
+                    android:text="@string/setting_language_label" />
 
             </LinearLayout>
 
@@ -398,7 +398,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/login_dark_blue"
                 android:fontFamily="@font/manrope_bold"
-                android:text="Моя анкета" />
+                android:text="@string/setting_anketa_label" />
 
             <ImageView
                 android:id="@+id/edit_anketa_shape"
@@ -463,7 +463,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/login_dark_blue"
                 android:fontFamily="@font/manrope_bold"
-                android:text="Сохраненные образы" />
+                android:text="@string/setting_saved_label" />
 
             <ImageView
                 android:id="@+id/edit_saved_shape"
@@ -526,7 +526,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/login_dark_blue"
                 android:fontFamily="@font/manrope_bold"
-                android:text="Запланированные образы" />
+                android:text="@string/setting_planed_label" />
 
             <ImageView
                 android:id="@+id/edit_planed_shape"
@@ -583,7 +583,7 @@
         android:id="@+id/log_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Выйти"
+        android:text="@string/logout_label"
         android:gravity="center"
         android:fontFamily="@font/manrope_bold"
         android:textColor="@color/red"

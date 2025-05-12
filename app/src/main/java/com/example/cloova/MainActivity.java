@@ -13,6 +13,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
     private static final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,5 +1,6 @@
 package com.example.cloova;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -48,6 +49,11 @@ public class WeatherForecastActivity extends AppCompatActivity {
     private Button btnMonthlyForecast;
 
     private String currentCity = FALLBACK_CITY;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

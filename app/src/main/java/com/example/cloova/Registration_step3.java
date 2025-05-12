@@ -2,6 +2,7 @@ package com.example.cloova;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,11 @@ public class Registration_step3 extends AppCompatActivity {
     private DatabaseHelper dbHelper;
 
     String userLanguage = "Русский";
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

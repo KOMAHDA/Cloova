@@ -3,6 +3,7 @@ package com.example.cloova;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,11 @@ public class Registration_step1 extends AppCompatActivity {
     private ImageView avatarImageView;
     private int selectedAvatarResId = R.drawable.default_avatar1; // ID выбранного аватара
     private List<String> selectedStyles = new ArrayList<>(); // Список выбранных стилей
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

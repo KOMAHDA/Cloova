@@ -395,4 +395,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return user;
     }
+
+    public boolean updateUserLanguage(long userId, String language) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LANGUAGE, language);
+
+        int rowsAffected = db.update(TABLE_USERS, values,
+                COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(userId)});
+
+        return rowsAffected > 0;
+    }
 }
