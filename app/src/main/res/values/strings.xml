@@ -52,6 +52,7 @@
     <string name="save_button_text">Сохранить</string>
     <string name="save">Сохраненные образы</string>
     <string name="plan">Запланированные образы</string>
+    <string name="delete">Удалить профиль</string>
 
     <!-- Массивы для Spinner/Выбора -->
     <string-array name="cities_array">
