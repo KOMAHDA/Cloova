@@ -15,5 +15,7 @@
     <color name="temperature_text_day">#000000</color>
     <color name="temperature_text_night">#424242</color>
     <color name="navigation_panel_color">#1F4DA9</color>
-    <color name="red">#ff0000</color>
+    <color name="dark_gray_background">#FFEEEEEE</color> <!-- Серый фон -->
+    <color name="dark_arrow">#FF333333</color> <!-- Темная стрелочка -->
+    <color name="gray_border">#FFCCCCCC</color> <!-- Граница -->
 </resources>

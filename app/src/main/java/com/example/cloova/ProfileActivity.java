@@ -473,16 +473,23 @@ package com.example.cloova;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.net.Uri;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+
+import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
@@ -492,6 +499,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView mainPageButton;
     private ImageView likedLooksButton;
     private LinearLayout contactTelegaLayout;
+    private Spinner stylesSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -619,7 +627,7 @@ public class ProfileActivity extends AppCompatActivity {
         TextView infoBirthDate= findViewById(R.id.info_birth_date);
         TextView profileUsername = findViewById(R.id.profile_username);
         TextView infoUsername = findViewById(R.id.info_username);
-        TextView infoStyle = findViewById(R.id.info_style);
+        stylesSpinner = findViewById(R.id.info_style);
         TextView infoCity = findViewById(R.id.info_city);
         TextView infoLanguage = findViewById(R.id.info_language);
         ImageView infoAvatar = findViewById(R.id.iv_avatar);
@@ -639,8 +647,46 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             infoAvatar.setImageResource(R.drawable.default_avatar1);
         }
+
+        loadUserStyles();
     }
 
+    private void loadUserStyles() {
+        List<String> styles = dbHelper.getUserStyles(userId);
+
+        // Кастомный адаптер с нашими layout-файлами
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                styles != null && !styles.isEmpty() ? styles.toArray(new String[0]) : new String[]{"Стили не выбраны"}
+       ) {
+            // Для закрытого состояния Spinner
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView = view.findViewById(android.R.id.text1);
+                textView.setTypeface(ResourcesCompat.getFont(ProfileActivity.this, R.font.manrope_bold));
+                return view;
+            }
+
+            // Для выпадающего списка
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                textView.setTypeface(ResourcesCompat.getFont(ProfileActivity.this, R.font.manrope_bold));
+                return view;
+            }
+        };
+
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        stylesSpinner.setAdapter(adapter);
+
+        // Применяем стиль к Spinner (для API 21+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            stylesSpinner.setPopupBackgroundResource(R.drawable.spinner_dropdown_bg);
+        }
+    }
     private String formatBirthDate(String rawDate) {
         // Простой форматировщик даты (можно заменить на более сложный)
         if (rawDate == null || rawDate.isEmpty()) {

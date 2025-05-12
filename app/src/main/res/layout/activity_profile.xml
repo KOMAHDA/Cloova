@@ -163,22 +163,19 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textSize="17sp" />
-        <TextView
+        <Spinner
             android:id="@+id/info_style"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:background="@drawable/rounded_gray_edittext_bg"
-            android:backgroundTint="@color/login_input_gray"
             android:gravity="center_vertical|start"
             android:minHeight="48dp"
-            android:fontFamily="@font/manrope_bold"
-            android:paddingStart="16dp"
-            android:paddingLeft="16dp"
-            android:paddingEnd="16dp"
-            android:paddingRight="16dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:textSize="17sp" />
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textSize="17sp"
+            style="@style/VisibleSpinnerStyle"
+            android:spinnerMode="dropdown"  />
     </LinearLayout>
 
 
