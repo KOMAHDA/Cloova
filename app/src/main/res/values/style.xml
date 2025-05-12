@@ -107,4 +107,25 @@
         <item name="android:focusable">true</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
+
+    <style name="CustomSpinnerTheme" parent="android:Widget.Material.Spinner">
+        <item name="android:popupBackground">@drawable/spinner_dropdown_bg</item>
+        <item name="android:colorControlNormal">@color/black</item>
+    </style>
+    <style name="NoArrowSpinner" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/rounded_gray_edittext_bg</item>
+        <item name="android:backgroundTint">@color/login_input_gray</item>
+        <item name="backgroundTint">@color/login_input_gray</item>
+        <item name="android:colorControlNormal">@color/black</item>
+    </style>
+    <style name="VisibleSpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <!-- Основной фон -->
+        <item name="android:background">@drawable/spinner_visible_bg</item>
+        <!-- Цвет стрелочки -->
+        <item name="colorControlNormal">@color/black</item>
+        <!-- Цвет текста -->
+        <item name="android:textColor">@color/black</item>
+        <!-- Шрифт -->
+        <item name="android:fontFamily">@font/manrope_bold</item>
+    </style>
 </resources>

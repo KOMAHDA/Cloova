@@ -115,7 +115,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
+        <EditText
             android:id="@+id/info_name"
             android:layout_width="match_parent"
             android:layout_height="35dp"
@@ -130,7 +130,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textSize="17sp" />
-        <TextView
+        <EditText
             android:id="@+id/info_dob"
             android:layout_width="match_parent"
             android:layout_height="35dp"
@@ -145,7 +145,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textSize="17sp" />
-        <TextView
+        <EditText
             android:id="@+id/info_username_in_card"
             android:layout_width="match_parent"
             android:layout_height="35dp"
