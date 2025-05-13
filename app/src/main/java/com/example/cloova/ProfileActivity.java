@@ -655,7 +655,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void DayPage(View v) {
-        Intent intent = new Intent(this, DayDetailActivity.class);
+        Intent intent = new Intent(this, WeatherForecastActivity.class);
         startActivity(intent);
     }
 

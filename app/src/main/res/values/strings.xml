@@ -145,4 +145,7 @@
     <string name="edit_outfit_button">Редактировать образ</string>
     <string name="save_outfit_button">Сохранить образ</string>
     <string name="refresh_button">Обновить</string>
+
+    <string name="wind_label_short">Ветер</string>
+    <string name="humidity_label_short">Влажность</string>
 </resources>

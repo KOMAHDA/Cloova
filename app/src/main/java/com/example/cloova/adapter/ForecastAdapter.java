@@ -1,6 +1,7 @@
 package com.example.cloova.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.cloova.DayDetailActivity;
 import com.example.cloova.R;
+import com.example.cloova.WeatherForecastActivity;
 import com.example.cloova.model.ForecastDay;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,12 +25,14 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     private List<ForecastDay> forecastDays; // Список объектов ForecastDay
     private Context context;
+    private String currentCityName;
     private static final String TAG = "ForecastAdapter";
 
     // Конструктор
-    public ForecastAdapter(Context context, List<ForecastDay> forecastDays) {
+    public ForecastAdapter(Context context, List<ForecastDay> forecastDays, String cityName) {
         this.context = context;
         this.forecastDays = forecastDays;
+        this.currentCityName = cityName;
     }
 
     @NonNull
@@ -40,7 +45,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     @Override
     public void onBindViewHolder(@NonNull ForecastViewHolder holder, int position) {
         ForecastDay forecastDay = forecastDays.get(position);
-        holder.bind(forecastDay);
+        holder.bind(forecastDay, context, currentCityName);
     }
 
     @Override
@@ -49,7 +54,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     }
 
     // Метод для обновления данных
-    public void updateData(List<ForecastDay> newForecasts) {
+    public void updateData(List<ForecastDay> newForecasts, String cityName) {
+        this.currentCityName = cityName;
         this.forecastDays.clear();
         if (newForecasts != null) {
             this.forecastDays.addAll(newForecasts);
@@ -74,12 +80,10 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             btnOutfit = itemView.findViewById(R.id.btn_outfit);
         }
 
-        void bind(ForecastDay forecast) {
-            // Форматируем и устанавливаем дату
+        void bind(final ForecastDay forecast, final Context context, final String cityName) {
             tvDate.setText(formatDisplayDate(forecast.date));
             tvDayOfWeek.setText(formatDisplayDayOfWeek(forecast.date));
 
-            // Устанавливаем температуры (из объекта day)
             if (forecast.day != null) {
                 tvTempDay.setText(String.format(Locale.getDefault(), "%.0f°", forecast.day.maxTempC));
                 tvTempNight.setText(String.format(Locale.getDefault(), "%.0f°", forecast.day.minTempC));
@@ -88,20 +92,43 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 tvTempNight.setText("N/A");
             }
 
-            // Установка иконки погоды (из объекта condition внутри day)
-            if (forecast.day.condition != null) {
-                int weatherCode = forecast.day.condition.code;
-                int iconResId = getWeatherIconResourceByCode(weatherCode);
-                ivWeatherIcon.setImageResource(iconResId);
-                Log.d(TAG, "Binding item for date " + forecast.date + ", Weather code: " + weatherCode + ", Icon Res ID: " + iconResId);
+            if (forecast.day != null && forecast.day.condition != null) {
+                String iconUrl = forecast.day.condition.iconUrlPath;
+                if (iconUrl != null && !iconUrl.isEmpty()) {
+                    // Glide.with(context).load("https:" + iconUrl).into(ivWeatherIcon);
+                    ivWeatherIcon.setImageResource(R.drawable.cloud); // Заглушка
+                } else {
+                    ivWeatherIcon.setImageResource(R.drawable.cloud);
+                }
             } else {
-                tvTempDay.setText("N/A");
-                tvTempNight.setText("N/A");
-                ivWeatherIcon.setImageResource(R.drawable.cloud); // Иконка по умолчанию
-                Log.w(TAG, "Binding item for date " + forecast.date + ", Day object is null. Setting default icon.");
+                ivWeatherIcon.setImageResource(R.drawable.cloud);
             }
 
-            btnOutfit.setOnClickListener(v -> { /* Действие */ });
+            // !!! УСТАНАВЛИВАЕМ OnClickListener ДЛЯ КНОПКИ "ВЕШАЛКИ" !!!
+            btnOutfit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("ForecastAdapter", "Outfit button clicked for date: " + forecast.date);
+                    Intent intent = new Intent(context, DayDetailActivity.class);
+
+                    // Передаем данные о выбранном дне
+                    intent.putExtra(DayDetailActivity.EXTRA_DATE_STR, forecast.date);
+                    if (forecast.day != null) {
+                        intent.putExtra(DayDetailActivity.EXTRA_MAX_TEMP, forecast.day.maxTempC);
+                        intent.putExtra(DayDetailActivity.EXTRA_MIN_TEMP, forecast.day.minTempC);
+                        intent.putExtra(DayDetailActivity.EXTRA_WIND_KPH, forecast.day.maxwind_kph); // Максимальный ветер за день
+                        intent.putExtra(DayDetailActivity.EXTRA_HUMIDITY, forecast.day.avghumidity);   // Средняя влажность за день
+                        if (forecast.day.condition != null) {
+                            intent.putExtra(DayDetailActivity.EXTRA_WEATHER_ICON_URL, forecast.day.condition.iconUrlPath);
+                            intent.putExtra(DayDetailActivity.EXTRA_WEATHER_DESCRIPTION, forecast.day.condition.text);
+                            intent.putExtra(DayDetailActivity.EXTRA_WEATHER_CODE, forecast.day.condition.code);
+                        }
+                    }
+                    intent.putExtra(DayDetailActivity.EXTRA_CITY_NAME, cityName); // Передаем имя города
+
+                    context.startActivity(intent);
+                }
+            });
         }
 
         // --- Вспомогательные методы форматирования даты ---

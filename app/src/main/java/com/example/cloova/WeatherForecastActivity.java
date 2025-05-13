@@ -71,15 +71,8 @@ public class WeatherForecastActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra(EXTRA_CITY_NAME)) {
             String receivedCity = intent.getStringExtra(EXTRA_CITY_NAME);
             if (receivedCity != null && !receivedCity.isEmpty()) {
-                currentCity = receivedCity;
-                Log.d(TAG, "onCreate: Received city from Intent: " + currentCity);
-            } else {
-                Log.w(TAG, "onCreate: Received empty or null city from Intent, using fallback: " + FALLBACK_CITY);
-                currentCity = FALLBACK_CITY;
+                this.currentCity = receivedCity; // Используем this.currentCity
             }
-        } else {
-            Log.d(TAG, "onCreate: No city found in Intent, using fallback: " + FALLBACK_CITY);
-            currentCity = FALLBACK_CITY;
         }
 
         // progressBar = findViewById(R.id.progress_bar_weather); // Найдите ProgressBar
@@ -87,7 +80,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv_daily_forecast);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // !!! Создаем адаптер с новым списком !!!
-        adapter = new ForecastAdapter(this, displayList);
+        adapter = new ForecastAdapter(this, displayList, this.currentCity);
         recyclerView.setAdapter(adapter);
 
         apiService = ApiClient.getClient().create(ApiService.class);
@@ -128,7 +121,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
                     if (forecastDays != null) {
                         Log.d(TAG, "onResponse: Received " + forecastDays.size() + " forecast days.");
                         // !!! Просто передаем список в адаптер !!!
-                        adapter.updateData(forecastDays);
+                        adapter.updateData(forecastDays, city);
                     } else {
                         Log.w(TAG, "onResponse: forecastDay list is null");
                         Toast.makeText(WeatherForecastActivity.this, "Нет данных прогноза", Toast.LENGTH_SHORT).show();
@@ -136,6 +129,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
                 } else {
                     Log.e(TAG, "onResponse: Error - Code: " + response.code() + ", Message: " + response.message());
                     Toast.makeText(WeatherForecastActivity.this, "Ошибка загрузки: " + response.message(), Toast.LENGTH_SHORT).show();
+                    adapter.updateData(new ArrayList<>(), city);
                 }
             }
 
@@ -144,6 +138,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
                 // if (progressBar != null) progressBar.setVisibility(View.GONE);
                 Log.e(TAG, "onFailure: Network request failed", t);
                 Toast.makeText(WeatherForecastActivity.this, "Ошибка сети: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                adapter.updateData(new ArrayList<>(), city);
             }
         });
     }
