@@ -93,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        tools:text="\@viktoria666"
+        android:text="@string/profile_username"
         android:textColor="@color/login_dark_blue"
         android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintTop_toBottomOf="@id/frameAvatar"
@@ -177,12 +177,26 @@
             android:textSize="17sp" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="240dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/manrope_bold"
+        android:text="@string/button_save"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_info_card" />
+
     <TextView
         android:id="@+id/delete_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Удалить профиль"
+        android:text="@string/button_delete_profile"
         android:gravity="center"
         android:fontFamily="@font/manrope_bold"
         android:textColor="@color/red"
@@ -191,7 +205,7 @@
         android:focusable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profile_info_card"/>
+        app:layout_constraintTop_toBottomOf="@id/save_button"/>
 
     <LinearLayout
         android:id="@+id/contact_telega"

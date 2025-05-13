@@ -609,8 +609,6 @@ public class ProfileActivity extends AppCompatActivity {
                 LikedLooks(v);
             }
         });
-
-
     }
 
 
@@ -652,6 +650,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void Edit(View v) {
         Intent intent = new Intent(this, EditProfileActivity.class);
+        intent.putExtra("USER_ID", userId); // Добавьте эту строку
         startActivity(intent);
     }
 

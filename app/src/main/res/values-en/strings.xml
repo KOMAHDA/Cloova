@@ -66,6 +66,10 @@
     <string name="logout_label">Log out</string>
     <string name="delete">Delete profile</string>
 
+    <!-- Изменение профиля -->
+    <string name="button_save">Save</string>
+    <string name="button_delete_profile">Delete profile</string>
+
     <!-- Смена языка -->
     <string name="app_language">App language</string>
     <string name="notific_lang">Unfortunately, Cloova does not yet support other languages, but we are actively working on adding them soon!</string>

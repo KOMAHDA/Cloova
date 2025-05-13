@@ -407,4 +407,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return rowsAffected > 0;
     }
+
+    public boolean updateUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, user.getName());
+        values.put(COLUMN_BIRTH_DATE, user.getBirthDate());
+        values.put(COLUMN_LOGIN, user.getLogin());
+        values.put(COLUMN_GENDER, user.getGender());
+        values.put(COLUMN_CITY, user.getCity());
+        values.put(COLUMN_LANGUAGE, user.getLanguage());
+        values.put(COLUMN_AVATAR, user.getAvatarResId());
+
+        int rowsAffected = db.update(
+                TABLE_USERS,
+                values,
+                COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(user.getUserId())}
+        );
+
+        return rowsAffected > 0;
+    }
 }

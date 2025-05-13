@@ -68,6 +68,10 @@
     <string name="profile_activity_title">Профиль</string> <!-- Добавлено название экрана -->
     <string name="style_not_selected">Стиль не выбран</string>
 
+    <!-- Изменение профиля -->
+    <string name="button_save">Сохранить</string>
+    <string name="button_delete_profile">Удалить профиль</string>
+
     <!-- Смена языка -->
     <string name="app_language">Язык приложения</string>
     <string name="notific_lang">К сожалению, в Cloova пока не доступны другие языки, но мы активно работаем над их добавлением в ближайшее время!</string>

@@ -80,7 +80,7 @@ public class LanguagesActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.heart_shape).setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, Sohranenki.class);
             intent.putExtra("USER_ID", userId);
             startActivity(intent);
         });
