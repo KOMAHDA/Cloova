@@ -471,6 +471,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 package com.example.cloova;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -499,7 +500,16 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView mainPageButton;
     private ImageView likedLooksButton;
     private LinearLayout contactTelegaLayout;
+    private LinearLayout myAnketaLayout;
+    private LinearLayout likedLooksLayout;
+    private LinearLayout plannedLooksLayout;
+    private LinearLayout changeLanguage;
     private Spinner stylesSpinner;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -544,6 +554,38 @@ public class ProfileActivity extends AppCompatActivity {
                 "https://t.me/cloova_app"          // Fallback ссылка
         ));
 
+        changeLanguage = findViewById(R.id.block2);
+        changeLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangeLanguage(v);
+            }
+        });
+
+        myAnketaLayout = findViewById(R.id.block3);
+        myAnketaLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyAnketa(v);
+            }
+        });
+
+        likedLooksLayout = findViewById(R.id.block4);
+        likedLooksLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LikedLooks(v);
+            }
+        });
+
+        plannedLooksLayout = findViewById(R.id.block5);
+        plannedLooksLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlannedLooks(v);
+            }
+        });
+
         editProfileButton = findViewById(R.id.imageEditProf);
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -564,10 +606,11 @@ public class ProfileActivity extends AppCompatActivity {
         likedLooksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LooksPage(v);
+                LikedLooks(v);
             }
         });
     }
+
 
     public void Vihod(View v) {
         // 1. Очищаем SharedPreferences (сессию)
@@ -598,21 +641,38 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private  void Edit(View v) {
+    private void ChangeLanguage(View v) {
+        Intent intent = new Intent(this, LanguagesActivity.class);
+        intent.putExtra("USER_ID", userId); // Убедитесь, что userId получен
+        startActivity(intent);
+        // Не вызываем finish() - оставляем ProfileActivity в стеке
+    }
+
+    private void Edit(View v) {
         Intent intent = new Intent(this, EditProfileActivity.class);
+        intent.putExtra("USER_ID", userId); // Добавьте эту строку
         startActivity(intent);
     }
 
-    private  void DayPage(View v) {
+    private void DayPage(View v) {
         Intent intent = new Intent(this, DayDetailActivity.class);
         startActivity(intent);
     }
 
-    private  void LooksPage(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void LikedLooks(View v) {
+        Intent intent = new Intent(this, Sohranenki.class);
         startActivity(intent);
     }
 
+    private void PlannedLooks(View v) {
+        Intent intent = new Intent(this, Zaplanerki.class);
+        startActivity(intent);
+    }
+
+    private void MyAnketa(View v) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
 
     private void displayUserProfile() {
         User user = dbHelper.getUserInfo(userId);
@@ -646,6 +706,13 @@ public class ProfileActivity extends AppCompatActivity {
             infoAvatar.setImageResource(user.getAvatarResId());
         } else {
             infoAvatar.setImageResource(R.drawable.default_avatar1);
+        }
+
+        if (user.getLanguage() != null) {
+            String langCode = user.getLanguage().equals("Русский") ? "ru" : "en";
+            SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
+            editor.putString("app_lang", langCode);
+            editor.apply();
         }
 
         loadUserStyles();

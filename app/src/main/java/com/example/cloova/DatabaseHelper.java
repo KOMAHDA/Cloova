@@ -395,4 +395,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return user;
     }
+
+    public boolean updateUserLanguage(long userId, String language) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LANGUAGE, language);
+
+        int rowsAffected = db.update(TABLE_USERS, values,
+                COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(userId)});
+
+        return rowsAffected > 0;
+    }
+
+    public boolean updateUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, user.getName());
+        values.put(COLUMN_BIRTH_DATE, user.getBirthDate());
+        values.put(COLUMN_LOGIN, user.getLogin());
+        values.put(COLUMN_GENDER, user.getGender());
+        values.put(COLUMN_CITY, user.getCity());
+        values.put(COLUMN_LANGUAGE, user.getLanguage());
+        values.put(COLUMN_AVATAR, user.getAvatarResId());
+
+        int rowsAffected = db.update(
+                TABLE_USERS,
+                values,
+                COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(user.getUserId())}
+        );
+
+        return rowsAffected > 0;
+    }
+
+    // В DatabaseHelper.java
+    public boolean deleteUser(long userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            // 1. Удаляем связанные данные (цвета, стили и т.д.)
+            db.delete(TABLE_USER_COLORS, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
+            db.delete(TABLE_USER_STYLES, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
+            db.delete(TABLE_WARDROBE, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
+            db.delete(TABLE_ACCESSORIES, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
+
+            // 2. Удаляем самого пользователя
+            int rowsAffected = db.delete(TABLE_USERS, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
+
+            db.setTransactionSuccessful();
+            return rowsAffected > 0;
+        } finally {
+            db.endTransaction();
+        }
+    }
 }

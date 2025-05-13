@@ -52,7 +52,32 @@
     <string name="save_button_text">Сохранить</string>
     <string name="save">Сохраненные образы</string>
     <string name="plan">Запланированные образы</string>
+
+
+    <!-- Профиль -->
+    <string name="profile_username">\@noname</string>
+    <string name="setting_location_label">Город</string>
+    <string name="setting_language_label">Язык приложения</string>
+    <string name="language_value">Русский</string>
+    <string name="setting_anketa_label">Моя анкета</string>
+    <string name="setting_saved_label">Сохраненные образы</string>
+    <string name="setting_planed_label">Запланированные образы</string>
+    <string name="contact_devs">Связаться с разработчиками</string>
+    <string name="logout_label">Выйти</string>
     <string name="delete">Удалить профиль</string>
+    <string name="profile_activity_title">Профиль</string> <!-- Добавлено название экрана -->
+    <string name="style_not_selected">Стиль не выбран</string>
+
+    <!-- Изменение профиля -->
+    <string name="button_save">Сохранить</string>
+    <string name="button_delete_profile">Удалить профиль</string>
+
+    <!-- Смена языка -->
+    <string name="app_language">Язык приложения</string>
+    <string name="notific_lang">К сожалению, в Cloova пока не доступны другие языки, но мы активно работаем над их добавлением в ближайшее время!</string>
+    <string name="choose_language">Выберете язык приложения:</string>
+    <string name="russian_lang">Русский</string>
+    <string name="english_lang">Английский</string>
 
     <!-- Массивы для Spinner/Выбора -->
     <string-array name="cities_array">
@@ -75,19 +100,6 @@
         <item>Свободный</item>
         <!-- Добавьте другие стили -->
     </string-array>
-
-    <!-- ProfileActivity -->
-    <string name="profile_activity_title">Профиль</string> <!-- Добавлено название экрана -->
-    <string name="default_surname">Фамилия</string> <!-- Используется как заглушка/метка -->
-    <string name="style_not_selected">Стиль не выбран</string>
-    <!-- setting_..._label строки уже определены в секции Registration -->
-    <string name="setting_location_label">Местоположение</string>
-    <string name="setting_language_label">Язык приложения</string>
-    <string name="setting_questionnaire_label">Моя анкета</string>
-    <string name="setting_saved_looks_label">Сохраненные образы</string>
-    <string name="setting_planned_looks_label">Запланированные образы</string>
-    <string name="contact_devs">Для связи с разработчиками</string> <!-- Один раз -->
-
 
     <!-- Меню Toolbar -->
     <string name="edit_profile_title">Редактировать</string> <!-- Один раз -->

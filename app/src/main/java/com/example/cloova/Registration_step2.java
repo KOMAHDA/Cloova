@@ -2,6 +2,7 @@ package com.example.cloova;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,11 @@ public class Registration_step2 extends AppCompatActivity {
     private List<String> selectedPrinciple = new ArrayList<>(); // Список выбранных принципов
     private List<String> selectedClothes = new ArrayList<>(); // Список выбранных вещей одежды
     private List<String> selectedAccessories = new ArrayList<>(); // Список выбранных аксессуаров
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
