@@ -116,7 +116,8 @@
             android:layout_marginStart="15dp"
             android:fontFamily="@font/manrope_bold"
             android:text="@string/choose_language"
-            android:textSize="18sp"
+            android:textSize="20sp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -130,19 +131,40 @@
             <RadioButton
                 android:id="@+id/radio_russian"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="15dp"
                 android:layout_marginStart="15dp"
                 android:checked="true"
                 android:fontFamily="@font/manrope_bold"
-                android:text="@string/russian_lang" />
+                android:textSize="20sp"
+                android:textColor="@color/blue"
+                android:text="@string/russian_lang"
+                android:buttonTint="@color/blue"
+                android:layoutDirection="rtl"
+                android:gravity="start|center_vertical"
+                android:paddingEnd="15dp"/>
+
+            <View
+                android:id="@+id/separator2"
+                style="@style/DividerStyle"
+                app:layout_constraintTop_toBottomOf="@id/block3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <RadioButton
                 android:id="@+id/radio_english"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="15dp"
                 android:layout_marginStart="15dp"
                 android:fontFamily="@font/manrope_bold"
-                android:text="@string/english_lang" />
+                android:textSize="20sp"
+                android:textColor="@color/blue"
+                android:text="@string/english_lang"
+                android:buttonTint="@color/blue"
+                android:layoutDirection="rtl"
+                android:gravity="start|center_vertical"
+                android:paddingEnd="15dp" />
         </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

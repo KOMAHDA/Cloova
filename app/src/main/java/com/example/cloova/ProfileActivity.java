@@ -500,6 +500,9 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView mainPageButton;
     private ImageView likedLooksButton;
     private LinearLayout contactTelegaLayout;
+    private LinearLayout myAnketaLayout;
+    private LinearLayout likedLooksLayout;
+    private LinearLayout plannedLooksLayout;
     private LinearLayout changeLanguage;
     private Spinner stylesSpinner;
 
@@ -559,6 +562,29 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        myAnketaLayout = findViewById(R.id.block3);
+        myAnketaLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyAnketa(v);
+            }
+        });
+
+        likedLooksLayout = findViewById(R.id.block4);
+        likedLooksLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LikedLooks(v);
+            }
+        });
+
+        plannedLooksLayout = findViewById(R.id.block5);
+        plannedLooksLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlannedLooks(v);
+            }
+        });
 
         editProfileButton = findViewById(R.id.imageEditProf);
         editProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -580,7 +606,7 @@ public class ProfileActivity extends AppCompatActivity {
         likedLooksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LooksPage(v);
+                LikedLooks(v);
             }
         });
 
@@ -634,11 +660,20 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void LooksPage(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void LikedLooks(View v) {
+        Intent intent = new Intent(this, Sohranenki.class);
         startActivity(intent);
     }
 
+    private void PlannedLooks(View v) {
+        Intent intent = new Intent(this, Zaplanerki.class);
+        startActivity(intent);
+    }
+
+    private void MyAnketa(View v) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
 
     private void displayUserProfile() {
         User user = dbHelper.getUserInfo(userId);
