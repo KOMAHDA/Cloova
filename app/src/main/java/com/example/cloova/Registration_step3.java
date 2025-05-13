@@ -147,7 +147,7 @@ public class Registration_step3 extends AppCompatActivity {
             Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
 
             // Переход на экран входа
-            Intent loginIntent = new Intent(this, LoginActivity.class);
+            Intent loginIntent = new Intent(this, ProfileActivity.class);
             loginIntent.putExtra("username", username);
             loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(loginIntent);

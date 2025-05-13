@@ -3,6 +3,7 @@ package com.example.cloova;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -82,6 +84,9 @@ public class EditProfileActivity extends AppCompatActivity {
             intent.putExtra("USER_ID", userId);
             startActivity(intent);
         });
+
+        TextView deleteProfileButton = findViewById(R.id.delete_profile);
+        deleteProfileButton.setOnClickListener(v -> showDeleteConfirmationDialog());
     }
 
     private void loadUserData() {
@@ -162,5 +167,36 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onDestroy() {
         dbHelper.close();
         super.onDestroy();
+    }
+
+    private void showDeleteConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Удаление профиля")
+                .setMessage("Вы уверены, что хотите удалить профиль? Это действие нельзя отменить.")
+                .setPositiveButton("Удалить", (dialog, which) -> deleteUserProfile())
+                .setNegativeButton("Отмена", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void deleteUserProfile() {
+        // 1. Удаляем пользователя из базы данных
+        boolean isDeleted = dbHelper.deleteUser(userId);
+
+        if (isDeleted) {
+            // 2. Очищаем SharedPreferences (сессию)
+            SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, MODE_PRIVATE);
+            prefs.edit().clear().apply();
+
+            // 3. Переходим на главный экран с очисткой стека
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+
+            Toast.makeText(this, "Профиль успешно удален", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Ошибка при удалении профиля", Toast.LENGTH_SHORT).show();
+        }
     }
 }
