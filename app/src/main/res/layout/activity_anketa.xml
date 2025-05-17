@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/sohr"
+    android:background="@color/fon_reg"
+    tools:context=".Anketa">
+
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="412dp"
+        android:layout_height="282dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/temn"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="414dp"
+        android:layout_height="345dp"
+        app:srcCompat="@drawable/svetl"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/gobackbutton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/chevron_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="349dp"
+        android:layout_height="72dp"
+        android:fontFamily="@font/manrope_bold"
+        android:gravity="center"
+        android:text="@string/my_anketa"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="80dp"
+        tools:ignore="MissingConstraints" />
+
+    <ScrollView
+        android:id="@+id/Scroll"
+        android:layout_width="334dp"
+        android:layout_height="554dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="425dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_white_bg"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <LinearLayout
+            android:padding="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/Text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope_bold"
+                android:text="@string/profile_colors_label"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btnSelectColors"
+                android:layout_width="match_parent"
+                android:backgroundTint="@color/blue"
+                android:layout_height="wrap_content"
+                android:text="@string/vibor"/>
+
+
+            <TextView
+                android:id="@+id/Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
+                android:labelFor="@id/nameEditText"
+                android:text="@string/nolove"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/colors"
+                android:layout_width="match_parent"
+                android:backgroundTint="@color/blue"
+                android:layout_height="wrap_content"
+                android:text="@string/vibor"/>
+
+            <TextView
+                android:id="@+id/Text9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
+                android:labelFor="@id/nameEditText"
+                android:text="@string/profile_clothes_label"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/bnSelectStyles"
+                android:layout_width="match_parent"
+                android:backgroundTint="@color/blue"
+                android:layout_height="wrap_content"
+                android:text="@string/vibor"/>
+
+            <TextView
+                android:id="@+id/Text6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
+                android:text="@string/profile_accessories_question"
+                android:textSize="15sp"
+                />
+
+            <Button
+                android:id="@+id/btnSelectAccessories"
+                android:backgroundTint="@color/blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vibor"/>
+
+            <TextView
+                android:id="@+id/Text5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
+                android:text="@string/profile_clothes_hint"
+                android:textSize="15sp"
+                />
+
+            <Button
+                android:id="@+id/btnSelectClothes"
+                android:backgroundTint="@color/blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vibor"/>
+
+
+            <TextView
+                android:id="@+id/Text8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
+                android:labelFor="@id/nameEditText"
+                android:text="@string/sochetanie"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btnSelectSoch"
+                android:layout_width="match_parent"
+                android:backgroundTint="@color/blue"
+                android:layout_height="wrap_content"
+                android:text="@string/vibor"/>
+
+            <TextView
+                android:id="@+id/Text86"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
+                android:labelFor="@id/nameEditText"
+                android:text="@string/situazia"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btnSelectStyles"
+                android:layout_width="match_parent"
+                android:backgroundTint="@color/blue"
+                android:layout_height="wrap_content"
+                android:text="@string/vibor"/>
+
+            <TextView
+                android:id="@+id/Textt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/manrope_bold"
+                android:labelFor="@id/nameEditText"
+                android:text="@string/komfort"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btnSelectVid"
+                android:layout_width="match_parent"
+                android:backgroundTint="@color/blue"
+                android:layout_height="wrap_content"
+                android:text="@string/vibor"/>
+
+
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/createButton"
+        android:layout_width="240dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/manrope_bold"
+        android:text="@string/saave"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Scroll" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@color/navigation_panel_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/profile_shape"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_shape"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/main_house_shape"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/main_house_shape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/heart_shape"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/heart_shape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

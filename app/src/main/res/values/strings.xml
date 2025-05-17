@@ -53,6 +53,13 @@
     <string name="save">Сохраненные образы</string>
     <string name="plan">Запланированные образы</string>
     <string name="delete">Удалить профиль</string>
+    <string name="my_anketa">Моя анкета</string>
+    <string name="saave">Сохранить</string>
+    <string name="sochetanie">Есть ли одежда, которую ты не будешь сочетать друг с другом?</string>
+    <string name="nolove">Цвет, которой бы не носил(а)</string>
+    <string name="situazia">Для каких ситуаций тебе чаще всего нужно собирать образы?</string>
+    <string name="komfort">Что для тебя важнее в образе: комфорт или внешний вид?</string>
+    <string name="vibor">Выбрать</string>
 
     <!-- Массивы для Spinner/Выбора -->
     <string-array name="cities_array">
