@@ -250,22 +250,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
+        <Button
             android:id="@+id/profile_shape"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:adjustViewBounds="true"
+            android:background="@null"
+            android:backgroundTint="@color/navigation_panel_color"
+            android:foreground="@drawable/profile_shape"
             android:contentDescription="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile_shape"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <Button
             android:id="@+id/main_house_shape"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -275,12 +273,13 @@
             android:contentDescription="@null"
             android:clickable="true"
             android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/main_house_shape"
+            android:background="@null"
+            android:backgroundTint="@color/navigation_panel_color"
+            android:foreground="@drawable/main_house_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <Button
             android:id="@+id/heart_shape"
             android:layout_width="45dp"
             android:layout_height="40dp"
@@ -288,8 +287,9 @@
             android:contentDescription="@null"
             android:clickable="true"
             android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/heart_shape"
+            android:background="@null"
+            android:backgroundTint="@color/navigation_panel_color"
+            android:foreground="@drawable/heart_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
