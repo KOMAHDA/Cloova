@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import com.example.cloova.R;  // Ваш пакет
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -44,32 +45,24 @@ public class Anketa extends AppCompatActivity {
     private void openSelectionDialog(Button button) {
         // Определяем, какой текст отображать в диалоге выбора
         String dialogTitle = "";
-        switch (button.getId()) {
-            case R.id.btnSelectColors:
-                dialogTitle = getString(R.string.profile_colors_label);
-                break;
-            case R.id.colors:
-                dialogTitle = getString(R.string.nolove);
-                break;
-            case R.id.bnSelectStyles:
-                dialogTitle = getString(R.string.profile_clothes_label);
-                break;
-            case R.id.btnSelectAccessories:
-                dialogTitle = getString(R.string.profile_accessories_question);
-                break;
-            case R.id.btnSelectClothes:
-                dialogTitle = getString(R.string.profile_clothes_hint);
-                break;
-            case R.id.btnSelectSoch:
-                dialogTitle = getString(R.string.sochetanie);
-                break;
-            case R.id.btnSelectStyles:
-                dialogTitle = getString(R.string.situazia);
-                break;
-            case R.id.btnSelectVid:
-                dialogTitle = getString(R.string.komfort);
-                break;
+        if (button.getId() == R.id.btnSelectColors) {
+            dialogTitle = getString(R.string.profile_colors_label);
+        } else if (button.getId() == R.id.colors) {
+            dialogTitle = getString(R.string.nolove);
+        } else if (button.getId() == R.id.bnSelectStyles) {
+            dialogTitle = getString(R.string.profile_clothes_label);
+        } else if (button.getId() == R.id.btnSelectAccessories) {
+            dialogTitle = getString(R.string.profile_accessories_question);
+        } else if (button.getId() == R.id.btnSelectClothes) {
+            dialogTitle = getString(R.string.profile_clothes_hint);
+        } else if (button.getId() == R.id.btnSelectSoch) {
+            dialogTitle = getString(R.string.sochetanie);
+        } else if (button.getId() == R.id.btnSelectStyles) {
+            dialogTitle = getString(R.string.situazia);
+        } else if (button.getId() == R.id.btnSelectVid) {
+            dialogTitle = getString(R.string.komfort);
         }
+
 
         // Создаем Intent для перехода к активности выбора
         Intent intent = new Intent(this, SelectionActivity.class);
