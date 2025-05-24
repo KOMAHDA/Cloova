@@ -25,8 +25,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random; // Для простого выбора одежды из категории
 
 public class DayDetailActivity extends AppCompatActivity {
@@ -254,32 +256,53 @@ public class DayDetailActivity extends AppCompatActivity {
             List<ClothingItem> suggestedOutfit = null;
 
             if (user != null && user.getGender() != null && !user.getGender().isEmpty()) {
-                // Предполагаемый стиль пользователя (первый из его списка или другой механизм)
-                List<String> userStyles = dbHelper.getUserStyles(userId);
-                String preferredStyle = (userStyles != null && !userStyles.isEmpty()) ? userStyles.get(0) : "Повседневный";
+                List<String> userStyles = dbHelper.getUserStyles(userId); // Получаем все стили пользователя
+                String preferredStyle;
+
+                if (userStyles != null && !userStyles.isEmpty()) {
+                    // --- ВЫБИРАЕМ СЛУЧАЙНЫЙ СТИЛЬ ИЗ СПИСКА ПОЛЬЗОВАТЕЛЯ ---
+                    Random randomStyleGenerator = new Random();
+                    int randomIndex = randomStyleGenerator.nextInt(userStyles.size());
+                    preferredStyle = userStyles.get(randomIndex);
+                    Log.d(TAG, "Randomly selected user style: " + preferredStyle);
+                    // ---------------------------------------------------------
+                } else {
+                    preferredStyle = "Повседневный"; // Стиль по умолчанию, если у пользователя нет стилей
+                    Log.d(TAG, "User has no styles, using default: " + preferredStyle);
+                }
 
                 // Маппинг описания погоды из API в названия из нашего каталога
-                // Это ОЧЕНЬ упрощенный маппинг, его нужно расширить
+                // ... (ваш код маппинга погоды) ...
                 List<String> conditionNamesForDB = new ArrayList<>();
                 if (weatherDescription != null) {
                     String descLower = weatherDescription.toLowerCase();
-                    if (descLower.contains("солн") || descLower.contains("ясно")) conditionNamesForDB.add("Солнечно");
-                    if (descLower.contains("облач")) conditionNamesForDB.add("Облачно"); // Учитывает и "переменная"
-                    if (descLower.contains("дожд")) conditionNamesForDB.add("Дождь"); // Учитывает и "небольшой"
+                    if (descLower.contains("солн") || descLower.contains("ясно"))
+                        conditionNamesForDB.add("Солнечно");
+                    if (descLower.contains("облач")) conditionNamesForDB.add("Облачно");
+                    if (descLower.contains("дожд")) conditionNamesForDB.add("Дождь");
                     if (descLower.contains("снег")) conditionNamesForDB.add("Снег");
-                    if (descLower.contains("ветер") || descLower.contains("ветрен")) conditionNamesForDB.add("Ветрено");
+                    if (descLower.contains("ветер") || descLower.contains("ветрен"))
+                        conditionNamesForDB.add("Ветрено");
                     if (descLower.contains("туман")) conditionNamesForDB.add("Туман");
-                    if (conditionNamesForDB.isEmpty()) conditionNamesForDB.add("Переменная облачность"); // Запасной вариант
+                    if (conditionNamesForDB.isEmpty())
+                        conditionNamesForDB.add("Переменная облачность");
                 } else {
-                    conditionNamesForDB.add("Переменная облачность"); // Если описания нет
+                    conditionNamesForDB.add("Переменная облачность");
                 }
 
+                Log.d(TAG, "Calling getSuggestedOutfit with:");
+                Log.d(TAG, "  Temperature: " + ((int) Math.round(DayDetailActivity.this.maxTemp)));
+                Log.d(TAG, "  DB Weather Conditions: " + conditionNamesForDB.toString());
+                Log.d(TAG, "  Preferred Style (Randomly Selected): " + preferredStyle);
+                Log.d(TAG, "  User Gender: " + user.getGender());
+
                 suggestedOutfit = dbHelper.getSuggestedOutfit(
-                        (int) Math.round(maxTemp), // Используем maxTemp как основную температуру для подбора
+                        (int) Math.round(DayDetailActivity.this.maxTemp),
                         conditionNamesForDB,
-                        preferredStyle,
+                        preferredStyle, // Используем случайно выбранный стиль
                         user.getGender()
                 );
+                Log.d(TAG, "getSuggestedOutfit returned: " + (suggestedOutfit != null ? suggestedOutfit.size() : "null") + " items");
             }
             return new UserOutfitData(user, suggestedOutfit);
         }
@@ -291,7 +314,7 @@ public class DayDetailActivity extends AppCompatActivity {
                 Log.d(TAG, "User data loaded: " + currentUser.getName());
                 if (result.outfit != null) {
                     Log.d(TAG, "Suggested outfit loaded, items: " + result.outfit.size());
-                    displaySuggestedOutfit(result.outfit);
+                    displaySuggestedOutfit(result.outfit, maxTemp);
                 } else {
                     Log.w(TAG, "Suggested outfit is null.");
                     tvOutfitSuggestionDetail.setText("Не удалось подобрать образ.");
@@ -314,59 +337,117 @@ public class DayDetailActivity extends AppCompatActivity {
     }
 
 
-    private void displaySuggestedOutfit(List<ClothingItem> outfitItems) {
-        if (suggestedOutfitContainer == null) {
-            Log.e(TAG, "suggestedOutfitContainer is null, cannot display outfit.");
+    private void displaySuggestedOutfit(List<ClothingItem> allSuitableItems, double currentTemperature) {
+        Log.d(TAG, "displaySuggestedOutfit: Received " + (allSuitableItems != null ? allSuitableItems.size() : 0) + " suitable items.");
+        if (suggestedOutfitContainer != null) {
+            suggestedOutfitContainer.removeAllViews(); // Очищаем предыдущий вывод
+        }
+
+        if (allSuitableItems == null || allSuitableItems.isEmpty()) {
+            tvOutfitSuggestionDetail.setText(getString(R.string.outfit_no_suitable_clothes));
+            ivMannequin.setVisibility(View.GONE);
             return;
         }
-        suggestedOutfitContainer.removeAllViews(); // Очищаем предыдущие
 
-        if (outfitItems == null || outfitItems.isEmpty()) {
-            tvOutfitSuggestionDetail.setText("Подходящей одежды не найдено.");
-            ivMannequin.setVisibility(View.GONE); // Скрываем манекен, если нет одежды
-            return;
+        ivMannequin.setVisibility(View.VISIBLE);
+
+        // --- Усложненная логика выбора одежды ---
+        Map<String, List<ClothingItem>> itemsByCategory = new HashMap<>();
+        for (ClothingItem item : allSuitableItems) {
+            // Приводим категории к нижнему регистру для унификации ключей
+            itemsByCategory.computeIfAbsent(item.getCategory().toLowerCase(), k -> new ArrayList<>()).add(item);
         }
 
-        tvOutfitSuggestionDetail.setText(getString(R.string.outfit_suggestion_placeholder)); // Восстанавливаем текст
-        ivMannequin.setVisibility(View.VISIBLE); // Показываем манекен
+        Random random = new Random(); // Для случайного выбора, если несколько подходят
 
-        // *** УПРОЩЕННАЯ ЛОГИКА ВЫБОРА ОДНОГО ПРЕДМЕТА НА КАТЕГОРИЮ ***
-        // В реальном приложении здесь должна быть более сложная система
-        // для "надевания" на манекен или формирования комплекта.
+        // --- Выбор для каждой категории ---
+        ClothingItem selectedTop = chooseBestItemForCategory(itemsByCategory.get("верх"), (int)currentTemperature);
+        ClothingItem selectedBottom = chooseBestItemForCategory(itemsByCategory.get("низ"), (int)currentTemperature);
+        ClothingItem selectedShoes = chooseBestItemForCategory(itemsByCategory.get("обувь"), (int)currentTemperature);
+        ClothingItem selectedOuterwear = null;
+        ClothingItem selectedHeadwear = null;
 
-        ClothingItem top = null;
-        ClothingItem bottom = null;
-        ClothingItem outerwear = null;
-        ClothingItem shoes = null;
-
-        List<ClothingItem> availableTops = new ArrayList<>();
-        List<ClothingItem> availableBottoms = new ArrayList<>();
-        List<ClothingItem> availableOuterwear = new ArrayList<>();
-        List<ClothingItem> availableShoes = new ArrayList<>();
-
-        for (ClothingItem item : outfitItems) {
-            if (item.getCategory().equalsIgnoreCase("Верх")) availableTops.add(item);
-            if (item.getCategory().equalsIgnoreCase("Низ")) availableBottoms.add(item);
-            if (item.getCategory().equalsIgnoreCase("Верхняя одежда")) availableOuterwear.add(item);
-            if (item.getCategory().equalsIgnoreCase("Обувь")) availableShoes.add(item);
-            // TODO: Добавить другие категории (Головной убор, Аксессуары)
+        // Логика для верхней одежды
+        boolean needsOuterwear = (int)currentTemperature < 15 || weatherDescription.toLowerCase().contains("дождь") || weatherDescription.toLowerCase().contains("снег");
+        if (needsOuterwear) {
+            selectedOuterwear = chooseBestItemForCategory(itemsByCategory.get("верхняя одежда"), (int)currentTemperature);
         }
 
-        Random random = new Random();
-        if (!availableTops.isEmpty()) top = availableTops.get(random.nextInt(availableTops.size()));
-        if (!availableBottoms.isEmpty()) bottom = availableBottoms.get(random.nextInt(availableBottoms.size()));
-        if (!availableOuterwear.isEmpty()) outerwear = availableOuterwear.get(random.nextInt(availableOuterwear.size()));
-        if (!availableShoes.isEmpty()) shoes = availableShoes.get(random.nextInt(availableShoes.size()));
+        // Логика для головного убора
+        boolean needsHeadwearForSun = (int)currentTemperature > 20 && weatherDescription.toLowerCase().contains("солн");
+        boolean needsHeadwearForCold = (int)currentTemperature < 5 || weatherDescription.toLowerCase().contains("снег") || weatherDescription.toLowerCase().contains("ветер");
+        if (needsHeadwearForSun || needsHeadwearForCold) {
+            selectedHeadwear = chooseBestItemForCategory(itemsByCategory.get("головной убор"), (int)currentTemperature);
+        }
 
-        // Отображаем просто названиями (для начала)
-        if (outerwear != null) addOutfitItemToView(outerwear.getName() + " (" + outerwear.getCategory() + ")");
-        if (top != null) addOutfitItemToView(top.getName() + " (" + top.getCategory() + ")");
-        if (bottom != null) addOutfitItemToView(bottom.getName() + " (" + bottom.getCategory() + ")");
-        if (shoes != null) addOutfitItemToView(shoes.getName() + " (" + shoes.getCategory() + ")");
 
-        // TODO: Более сложная логика отображения на манекене с использованием item.getImageResourceName()
-        // Например, можно иметь несколько ImageView для слоев одежды на манекене и устанавливать им src.
-        // Glide.with(this).load(getResources().getIdentifier(selectedTop.getImageResourceName(), "drawable", getPackageName())).into(mannequinTopLayerImageView);
+        // --- Формируем текстовое описание образа ---
+        StringBuilder outfitTextBuilder = new StringBuilder("Рекомендуемый образ:\n");
+        int itemCount = 0;
+
+        if (selectedOuterwear != null) {
+            outfitTextBuilder.append("🧥 ").append(selectedOuterwear.getName()).append("\n");
+            itemCount++;
+        }
+        if (selectedTop != null) {
+            outfitTextBuilder.append("👕 ").append(selectedTop.getName()).append("\n");
+            itemCount++;
+        } else if (itemsByCategory.containsKey("платья/юбки") && currentUser.getGender().equalsIgnoreCase("Женский")){
+            // Если нет "Верха", но есть платье/юбка и пользователь женщина
+            ClothingItem dressOrSkirt = chooseBestItemForCategory(itemsByCategory.get("платья/юбки"), (int)currentTemperature);
+            if (dressOrSkirt != null) {
+                outfitTextBuilder.append("👗 ").append(dressOrSkirt.getName()).append("\n");
+                itemCount++;
+                // Если выбрали платье, то "Низ" уже не нужен
+                selectedBottom = null;
+            }
+        }
+
+        if (selectedBottom != null) { // Проверяем, не выбрали ли мы уже платье
+            outfitTextBuilder.append("👖 ").append(selectedBottom.getName()).append("\n");
+            itemCount++;
+        }
+
+        if (selectedShoes != null) {
+            outfitTextBuilder.append("👟 ").append(selectedShoes.getName()).append("\n");
+            itemCount++;
+        }
+        if (selectedHeadwear != null) {
+            outfitTextBuilder.append("🧢 ").append(selectedHeadwear.getName()).append("\n");
+            itemCount++;
+        }
+
+        if (itemCount > 0) {
+            if (outfitTextBuilder.length() > 0 && outfitTextBuilder.charAt(outfitTextBuilder.length() - 1) == '\n') {
+                outfitTextBuilder.setLength(outfitTextBuilder.length() - 1); // Убираем последнее \n
+            }
+            tvOutfitSuggestionDetail.setText(outfitTextBuilder.toString());
+        } else {
+            tvOutfitSuggestionDetail.setText(getString(R.string.outfit_no_complete_set));
+        }
+
+        // TODO: Визуализация на манекене
+        // visualizeOnMannequin(selectedTop, selectedBottom, selectedOuterwear, selectedShoes, selectedHeadwear);
+    }
+
+    // Улучшенный метод выбора предмета для категории (можно усложнять)
+    @Nullable
+    private ClothingItem chooseBestItemForCategory(@Nullable List<ClothingItem> items, double currentTemperature) {
+        if (items == null || items.isEmpty()) {
+            return null;
+        }
+        // Простая логика: выбираем первый попавшийся или случайный.
+        // Можно добавить логику выбора наиболее подходящего по температуре внутри категории
+        // Например, отсортировать по близости (item.getMinTemp() + item.getMaxTemp()) / 2 к currentTemp
+        return items.get(new Random().nextInt(items.size()));
+    }
+
+    @Nullable
+    private ClothingItem chooseRandomItem(@Nullable List<ClothingItem> items) {
+        if (items == null || items.isEmpty()) {
+            return null;
+        }
+        return items.get(new Random().nextInt(items.size()));
     }
 
     private void addOutfitItemToView(String itemName) {
