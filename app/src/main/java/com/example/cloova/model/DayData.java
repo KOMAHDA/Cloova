@@ -7,4 +7,9 @@ public class DayData {
     public double minTempC; // Наша "Ночная" температура
     @SerializedName("condition")
     public Condition condition;
+    @SerializedName("maxwind_kph")
+    public double maxwind_kph; // Максимальная скорость ветра в км/ч
+
+    @SerializedName("avghumidity")
+    public int avghumidity;   // Средняя влажность в %
 }

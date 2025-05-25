@@ -9,238 +9,426 @@
     android:fitsSystemWindows="true"
     tools:context=".DayDetailActivity">
 
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/detail_background_top_light"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_gravity="top"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/light_shape_profile" />
+
+        <ImageView
+            android:id="@+id/detail_background_top_dark"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_gravity="top"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/dark_shape_profile" />
+
+        <ImageView
+            android:id="@+id/detail_background_bottom_dark_far"
+            android:layout_width="match_parent"
+            android:layout_height="268dp"
+            android:layout_gravity="bottom"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/temni_2_3_snizu" />
+
+        <ImageView
+            android:id="@+id/detail_background_bottom_dark_near"
+            android:layout_width="match_parent"
+            android:layout_height="134dp"
+            android:layout_gravity="bottom"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/temni_2_2_snizu" />
+    </FrameLayout>
+
     <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBarLayout_detail"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
-    app:elevation="0dp">
-
-<com.google.android.material.appbar.MaterialToolbar
-    android:id="@+id/toolbar_day_detail"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    app:navigationIcon="@drawable/menu"
-    app:navigationIconTint="@color/login_dark_blue"
-    app:title="" />
-
-</com.google.android.material.appbar.AppBarLayout>
-
-
-<androidx.core.widget.NestedScrollView
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:fillViewport="true"
-app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="100dp">
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_location"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        android:layout_width="wrap_content"
+        android:id="@+id/appBarLayout_detail"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:icon="@drawable/location_on"
-        app:iconTint="@color/login_dark_blue"
-        android:textColor="@color/login_dark_blue"
-        android:text="Самарская обл."
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@android:color/transparent"
+        app:elevation="0dp"/>
 
-    <ImageButton
-        android:id="@+id/btn_favorite"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/favorite_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-        app:tint="@color/login_dark_blue"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/add_to_favorites"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btn_location"
-        app:layout_constraintBottom_toBottomOf="@id/btn_location"/>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/weather_main_card"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
-        app:layout_constraintTop_toBottomOf="@id/btn_location"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/content_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingBottom="80dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:paddingTop="16dp">
 
-            <TextView
-                android:id="@+id/tv_detail_temp"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_location_detail"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="48sp"
-                android:textStyle="bold"
+                app:icon="@drawable/near_me_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                app:iconTint="@color/login_dark_blue"
                 android:textColor="@color/login_dark_blue"
-                app:layout_constraintTop_toTopOf="parent"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                tools:text="Самарская обл."
+                app:backgroundTint="@android:color/white"
+                app:cornerRadius="20dp"
+                app:iconPadding="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="12°"/>
-
-            <ImageView
-                android:id="@+id/iv_detail_weather_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintStart_toEndOf="@id/tv_detail_temp"
-                app:layout_constraintTop_toTopOf="@id/tv_detail_temp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_detail_temp"
-                tools:srcCompat="@drawable/wb_sunny"/>
-
-            <TextView
-                android:id="@+id/tv_wind_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/wind_label"
-                android:textSize="10sp"
-                android:textAllCaps="true"
-                android:textColor="?android:attr/textColorSecondary"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/tv_wind_value"/>
-
-            <TextView
-                android:id="@+id/tv_wind_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:textStyle="bold"
-                android:textColor="@color/login_dark_blue"
-                app:layout_constraintTop_toBottomOf="@id/tv_wind_label"
-                app:layout_constraintEnd_toStartOf="@id/tv_humidity_value"
-                tools:text="до 3 м/с"/>
-
-            <TextView
-                android:id="@+id/tv_humidity_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/humidity_label"
-                android:textSize="10sp"
-                android:textAllCaps="true"
-                android:textColor="?android:attr/textColorSecondary"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/tv_humidity_value"/>
-
-            <TextView
-                android:id="@+id/tv_humidity_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/login_dark_blue"
-                app:layout_constraintTop_toBottomOf="@id/tv_humidity_label"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="31%"/>
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/weather_info_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/btn_location_detail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/temp_icon_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="@color/navigation_panel_color"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/wind_humidity_container"
+                    app:layout_constraintHorizontal_weight="1"
+                    android:layout_marginEnd="8dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/tv_detail_temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="48sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            tools:text="12°"/>
+
+                        <ImageView
+                            android:id="@+id/iv_detail_weather_icon"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginStart="8dp"
+                            app:layout_constraintStart_toEndOf="@id/tv_detail_temp"
+                            app:layout_constraintTop_toTopOf="@id/tv_detail_temp"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_detail_temp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:srcCompat="@drawable/wb_sunny"
+                            app:tint="@android:color/white"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:id="@+id/wind_humidity_container"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="@id/temp_icon_card"
+                    app:layout_constraintBottom_toBottomOf="@id/temp_icon_card"
+                    app:layout_constraintStart_toEndOf="@id/temp_icon_card"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="1">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/wind_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="@color/navigation_panel_color">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="8dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/wind_label_short"
+                                android:textSize="10sp"
+                                android:textAllCaps="true"
+                                android:textColor="#B0FFFFFF"/>
+                            <TextView
+                                android:id="@+id/tv_wind_value_detail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                tools:text="3 м/с"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/humidity_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="8dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="@color/navigation_panel_color">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="8dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/humidity_label_short"
+                                android:textSize="10sp"
+                                android:textAllCaps="true"
+                                android:textColor="#B0FFFFFF"/>
+                            <TextView
+                                android:id="@+id/tv_humidity_value_detail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                tools:text="31%"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/btn_back_to_weekly_detail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_white_button_bg"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:gravity="center"
+                    android:text="@string/weekly_forecast_link"
+                    android:textColor="@color/login_dark_blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/temp_icon_card"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/btn_back_to_weekly"
+                android:id="@+id/tv_outfit_suggestion_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="24dp"
+                android:gravity="center_horizontal"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/login_dark_blue"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/weather_info_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Рекомендуемый образ:\n👕 Футболка\n👖 Джинсы\n👟 Кроссовки летние"
+                tools:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/tv_no_outfit_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_white_bg"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:text="@string/weekly_forecast_link"
+                android:text="@string/outfit_no_complete_set_fallback"
                 android:textColor="@color/login_dark_blue"
-                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tv_outfit_suggestion_detail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mannequin_background_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:layout_constraintTop_toBottomOf="@id/tv_no_outfit_message"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            <FrameLayout
+                android:id="@+id/mannequin_outfit_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:minHeight="270dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/iv_mannequin"
+                    android:layout_width="260dp"
+                    android:layout_height="390dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/maneken_nak"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="Манекеныч" />
+
+                <ImageView
+                    android:id="@+id/iv_outfit_shoes"
+                    android:layout_width="260dp"
+                    android:layout_height="390dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:src="@drawable/sneakerswhite"
+                    android:contentDescription="Обувь"/>
+
+                <ImageView
+                    android:id="@+id/iv_outfit_bottom"
+                    android:layout_width="260dp"
+                    android:layout_height="390dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:src="@drawable/pantsfamiliarblue"
+                    android:contentDescription="Нижняя одежда"/>
+
+                <ImageView
+                    android:id="@+id/iv_outfit_top"
+                    android:layout_width="260dp"
+                    android:layout_height="390dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:src="@drawable/tshirtblue"
+                    android:contentDescription="Верхняя одежда"/>
+
+                <ImageView
+                    android:id="@+id/iv_outfit_outerwear"
+                    android:layout_width="260dp"
+                    android:layout_height="390dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:src="@drawable/jacketblue"
+                    android:contentDescription="Верхняя одежда"/>
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:id="@+id/fab_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/mannequin_background_card"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_humidity_value"
-                android:clickable="true"
-                android:focusable="true"/>
+                app:layout_constraintBottom_toBottomOf="parent">
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_add_favorite_detail"
+                    style="@style/Widget.MaterialComponents.FloatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    app:srcCompat="@drawable/heart_shape"
+                    app:tint="@color/login_dark_blue"
+                    app:backgroundTint="@android:color/white"
+                    app:elevation="4dp"
+                    android:contentDescription="@string/save_outfit_button" />
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_refresh_detail"
+                    style="@style/Widget.MaterialComponents.FloatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/refresh"
+                    app:tint="@color/login_dark_blue"
+                    app:backgroundTint="@android:color/white"
+                    app:elevation="4dp"
+                    android:contentDescription="@string/refresh_button" />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    </com.google.android.material.card.MaterialCardView>
-
-    <TextView
-        android:id="@+id/tv_outfit_suggestion"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="24dp"
+    <LinearLayout
+        android:id="@+id/bottom_navigation_custom"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:gravity="center"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        android:textColor="@color/login_dark_blue"
-        android:text="@string/outfit_suggestion_placeholder"
-        app:layout_constraintTop_toBottomOf="@id/weather_main_card"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:orientation="horizontal"
+        android:background="@color/navigation_panel_color"
+        android:layout_gravity="bottom">
+        <ImageView
+            android:id="@+id/nav_profile_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/menu_profile"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_shape" />
+        <ImageView
+            android:id="@+id/nav_home_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/menu_home"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/main_house_shape" />
+        <ImageView
+            android:id="@+id/nav_favorites_icon"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="Меню"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/heart_shape" />
+    </LinearLayout>
 
-
-    <FrameLayout
-        android:id="@+id/outfit_placeholder"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="16dp"
-        android:background="#E0E0E0"
-        app:layout_constraintTop_toBottomOf="@id/tv_outfit_suggestion"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
-
-<LinearLayout
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:orientation="horizontal"
-android:layout_gravity="bottom|center_horizontal"
-android:layout_marginBottom="16dp">
-
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fab_edit_outfit"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    app:srcCompat="@drawable/baseline_create_24"
-    app:tint="@color/login_dark_blue"
-    app:backgroundTint="@android:color/white"
-    app:elevation="4dp"
-    android:contentDescription="@string/edit_outfit_button" />
-
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fab_add_favorite"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    app:srcCompat="@drawable/favorite_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-    app:tint="@color/login_dark_blue"
-    app:backgroundTint="@android:color/white"
-    app:elevation="4dp"
-    android:contentDescription="@string/save_outfit_button" />
-
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fab_refresh"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:srcCompat="@drawable/baseline_create_24"
-    app:tint="@color/login_dark_blue"
-    app:backgroundTint="@android:color/white"
-    app:elevation="4dp"
-    android:contentDescription="@string/refresh_button" />
-
-</LinearLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

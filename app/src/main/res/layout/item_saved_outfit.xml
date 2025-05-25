@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_saved_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_delete_outfit"
+            tools:text="25 мая 2025, 15:30"/>
+
+        <ImageButton
+            android:id="@+id/btn_delete_outfit"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/delete_outfit_cd"
+            android:src="@drawable/telegram"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/red"/>
+
+        <TextView
+            android:id="@+id/tv_saved_weather_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_saved_date"
+            tools:text="20°C, Солнечно, Повседневный стиль"/>
+
+        <FrameLayout
+            android:id="@+id/saved_mannequin_outfit_frame"
+            android:layout_width="150dp"
+            android:layout_height="225dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_saved_weather_info">
+
+        <ImageView
+            android:id="@+id/iv_saved_mannequin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/maneken_nak"
+            android:scaleType="fitCenter"
+            android:contentDescription="Манекеныч"/>
+
+        <ImageView
+            android:id="@+id/iv_saved_outfit_shoes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            tools:src="@drawable/sneakerswhite"
+            android:contentDescription="Обувь"/>
+
+        <ImageView
+            android:id="@+id/iv_saved_outfit_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            tools:src="@drawable/pantsfamiliarblue"
+            android:contentDescription="Нижняя одежда"/>
+
+        <ImageView
+            android:id="@+id/iv_saved_outfit_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            tools:src="@drawable/tshirtblue"
+            android:contentDescription="Верхняя одежда"/>
+
+        <ImageView
+            android:id="@+id/iv_saved_outfit_outerwear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            tools:src="@drawable/jacketblue"
+            android:contentDescription="Верхняя одежда"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_saved_outfit_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/saved_mannequin_outfit_frame"
+        tools:text="Верх: Футболка\nНиз: Джинсы\nОбувь: Кроссовки"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>

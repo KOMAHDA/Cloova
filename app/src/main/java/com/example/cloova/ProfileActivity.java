@@ -471,14 +471,18 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 package com.example.cloova;
 
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.net.Uri;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -490,6 +494,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -506,6 +511,7 @@ public class ProfileActivity extends AppCompatActivity {
     private LinearLayout changeCity;
     private LinearLayout changeLanguage;
     private Spinner stylesSpinner;
+    private String selectedUserStyle;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -539,6 +545,22 @@ public class ProfileActivity extends AppCompatActivity {
             e.printStackTrace();
             finish();
         }
+
+        stylesSpinner = findViewById(R.id.info_style);
+        stylesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedUserStyle = parent.getItemAtPosition(position).toString();
+                Log.d(TAG, "Style selected in Spinner: " + selectedUserStyle);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Если ничего не выбрано, убедитесь, что selectedUserStyle имеет значение по умолчанию
+                if (selectedUserStyle == null || selectedUserStyle.isEmpty() || "Стили не выбраны".equals(selectedUserStyle)) {
+                    selectedUserStyle = "Повседневный";
+                }
+            }
+        });
 
         logOutButton = findViewById(R.id.log_out);
         logOutButton.setOnClickListener(new View.OnClickListener() {
@@ -607,7 +629,7 @@ public class ProfileActivity extends AppCompatActivity {
         mainPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DayPage(v);
+                navigateToWeatherWithSelectedStyle();
             }
         });
 
@@ -618,6 +640,27 @@ public class ProfileActivity extends AppCompatActivity {
                 LikedLooks(v);
             }
         });
+
+
+    }
+
+    private void navigateToWeatherWithSelectedStyle() {
+        User user = dbHelper.getUserInfo(userId);
+        String cityToPass = (user != null && user.getCity() != null && !user.getCity().isEmpty()) ?
+                user.getCity() : WeatherForecastActivity.FALLBACK_CITY;
+
+        if (selectedUserStyle == null || selectedUserStyle.isEmpty() || "Стили не выбраны".equals(selectedUserStyle)) {
+            List<String> userStyles = dbHelper.getUserStyles(userId);
+            selectedUserStyle = (userStyles != null && !userStyles.isEmpty()) ?
+                    userStyles.get(0) : "Повседневный";
+        }
+
+        Log.d(TAG, "Navigating to Weather. City: " + cityToPass + ", Style: " + selectedUserStyle);
+
+        Intent weatherIntent = new Intent(this, WeatherForecastActivity.class);
+        weatherIntent.putExtra(WeatherForecastActivity.EXTRA_CITY_NAME, cityToPass);
+        weatherIntent.putExtra(WeatherForecastActivity.EXTRA_USER_STYLE, selectedUserStyle);
+        startActivity(weatherIntent);
     }
 
 
@@ -680,7 +723,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void DayPage(View v) {
-        Intent intent = new Intent(this, DayDetailActivity.class);
+        Intent intent = new Intent(this, WeatherForecastActivity.class);
         startActivity(intent);
     }
 
@@ -695,7 +738,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void MyAnketa(View v) {
-        Intent intent = new Intent(this, ProfileActivity.class);
+        Intent intent = new Intent(this, Anketa.class);
         startActivity(intent);
     }
 
@@ -722,15 +765,17 @@ public class ProfileActivity extends AppCompatActivity {
         infoName.setText(user.getName() != null ? user.getName() : "Не указано");
         infoBirthDate.setText(user.getBirthDate() != null ? formatBirthDate(user.getBirthDate()) : "Не указана");
         infoUsername.setText(user.getLogin() != null ? user.getLogin() : "Не указано");
-        /*infoStyle.setText(user.getStyles() != null ? user.getStyles() : "Не указан");*/ // нужен список
 
         infoCity.setText(user.getCity() != null ? user.getCity() : "Не указано");
         infoLanguage.setText(user.getLanguage() != null ? user.getLanguage() : "Русский");
 
+        Log.d("ProfileActivity", "User avatar ID from DB: " + user.getAvatarResId());
         if (user.getAvatarResId() != 0) {
             infoAvatar.setImageResource(user.getAvatarResId());
+            Log.d("ProfileActivity", "Setting avatar with ID: " + getResources().getResourceEntryName(user.getAvatarResId()));
         } else {
             infoAvatar.setImageResource(R.drawable.default_avatar1);
+            Log.d("ProfileActivity", "Setting default avatar: default_avatar1");
         }
 
         if (user.getLanguage() != null) {
@@ -741,12 +786,26 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         loadUserStyles();
+
+        if (selectedUserStyle != null && stylesSpinner.getAdapter() != null) {
+            ArrayAdapter<String> adapter = (ArrayAdapter<String>) stylesSpinner.getAdapter();
+            int position = adapter.getPosition(selectedUserStyle);
+            if (position >= 0) {
+                stylesSpinner.setSelection(position);
+            }
+        }
     }
 
     private void loadUserStyles() {
         List<String> styles = dbHelper.getUserStyles(userId);
+        if (styles != null && !styles.isEmpty()) {
+            selectedUserStyle = styles.get(0);
+        } else {
+            selectedUserStyle = "Повседневный"; // Если стилей нет, используем дефолтный
+            styles = new ArrayList<>(); // Инициализируем пустой список для адаптера
+            styles.add("Стили не выбраны"); // Добавляем заглушку для Spinner
+        }
 
-        // Кастомный адаптер с нашими layout-файлами
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_spinner_item,
@@ -769,10 +828,25 @@ public class ProfileActivity extends AppCompatActivity {
                 textView.setTypeface(ResourcesCompat.getFont(ProfileActivity.this, R.font.manrope_bold));
                 return view;
             }
+
+
         };
+
+        if (styles != null && !styles.isEmpty()) {
+            if (selectedUserStyle == null || !styles.contains(selectedUserStyle)) { // Если еще не установлен или нет в списке
+                selectedUserStyle = styles.get(0); // Берем первый как дефолтный
+            }
+        } else {
+            selectedUserStyle = "Повседневный"; // Если стилей нет
+        }
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         stylesSpinner.setAdapter(adapter);
+
+        if (styles.contains(selectedUserStyle)) {
+            int position = adapter.getPosition(selectedUserStyle);
+            stylesSpinner.setSelection(position);
+        }
 
         // Применяем стиль к Spinner (для API 21+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

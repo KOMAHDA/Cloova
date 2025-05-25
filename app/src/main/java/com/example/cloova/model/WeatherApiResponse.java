@@ -6,4 +6,6 @@ public class WeatherApiResponse {
     public Location location; // Можно добавить, если нужна инфо о городе
     @SerializedName("forecast")
     public Forecast forecast;
+    @SerializedName("current")
+    public DayData current;
 }

@@ -148,9 +148,43 @@
     <string name="wind_label">Ветер</string>
     <string name="humidity_label">Влажность</string>
     <string name="weekly_forecast_link">Прогноз на неделю</string>
-    <string name="outfit_suggestion_placeholder">Сегодня хороший день для новых открытий!</string>
     <string name="add_to_favorites">Добавить в избранное</string>
     <string name="edit_outfit_button">Редактировать образ</string>
     <string name="save_outfit_button">Сохранить образ</string>
     <string name="refresh_button">Обновить</string>
+
+    <string name="wind_label_short">Ветер</string>
+    <string name="humidity_label_short">Влажность</string>
+
+    <string name="outfit_suggestion_placeholder">Подбираем ваш сегодняшний образ...</string>
+    <string name="outfit_no_suitable_clothes">К сожалению, не удалось найти подходящую одежду по вашим критериям.</string>
+    <string name="outfit_no_complete_set">Не удалось собрать полный комплект, но вот что мы подобрали:</string>
+    <string name="mannequin_desc">Манекен с предложенной одеждой</string>
+    <string name="my_anketa">Моя анкета</string>
+    <string name="saave">Сохранить</string>
+    <string name="sochetanie">Есть ли одежда, которую ты не будешь сочетать друг с другом?</string>
+    <string name="nolove">Цвет, которой бы не носил(а)</string>
+    <string name="situazia">Для каких ситуаций тебе чаще всего нужно собирать образы?</string>
+    <string name="komfort">Что для тебя важнее в образе: комфорт или внешний вид?</string>
+    <string name="vibor">Выбрать</string>
+    <string name="outfit_no_complete_set_fallback">Не удалось собрать полный комплект. Попробуйте изменить критерии или обновить каталог одежды.</string>
+    <string name="recommended_outfit_title">Рекомендуемый образ:</string>
+    <string name="error_loading_user_data">Ошибка загрузки данных пользователя.</string>
+
+    <string name="error_auth_save_outfit">Ошибка: пользователь не авторизован для сохранения образа.</string>
+    <string name="outfit_cannot_save_empty">Невозможно сохранить пустой образ.</string>
+    <string name="saving_outfit">Сохранение образа...</string>
+    <string name="outfit_saved_successfully">Образ успешно сохранен!</string>
+    <string name="error_saving_outfit">Ошибка при сохранении образа.</string>
+
+    <string name="saved_looks_title">Сохраненные образы</string>
+    <string name="no_saved_looks_message">У вас пока нет сохраненных образов.</string>
+    <string name="back_button_text">Назад</string>
+    <string name="delete_outfit_cd">Удалить образ</string>
+    <string name="outfit_delete_successful">Образ удален.</string>
+    <string name="outfit_delete_failed">Ошибка при удалении образа.</string>
+    <string name="delete_confirmation_title">Удалить образ?</string>
+    <string name="delete_confirmation_message">Вы уверены, что хотите удалить этот образ? Это действие нельзя отменить.</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 </resources>

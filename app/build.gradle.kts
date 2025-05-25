@@ -52,7 +52,6 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.google.android.material:material:1.12.0")
-
     // Yandex Maps (обновленные версии)
     implementation("com.yandex.android:maps.mobile:4.3.1-lite")
     /*implementation("com.yandex.android:search.mobile:4.3.1-lite")*/

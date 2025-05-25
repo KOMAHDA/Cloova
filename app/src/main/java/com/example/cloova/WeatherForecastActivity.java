@@ -39,6 +39,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
     private static final String LANGUAGE = "ru";
 
     public static final String EXTRA_CITY_NAME = "CITY_NAME";
+    public static final String EXTRA_USER_STYLE = "USER_STYLE";
     public static final String FALLBACK_CITY = "Самара";
 
     private RecyclerView recyclerView;
@@ -49,6 +50,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
     private Button btnMonthlyForecast;
 
     private String currentCity = FALLBACK_CITY;
+    private String currentUserStyle = "Повседневный";
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -71,15 +73,15 @@ public class WeatherForecastActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra(EXTRA_CITY_NAME)) {
             String receivedCity = intent.getStringExtra(EXTRA_CITY_NAME);
             if (receivedCity != null && !receivedCity.isEmpty()) {
-                currentCity = receivedCity;
-                Log.d(TAG, "onCreate: Received city from Intent: " + currentCity);
-            } else {
-                Log.w(TAG, "onCreate: Received empty or null city from Intent, using fallback: " + FALLBACK_CITY);
-                currentCity = FALLBACK_CITY;
+                this.currentCity = receivedCity; // Используем this.currentCity
             }
-        } else {
-            Log.d(TAG, "onCreate: No city found in Intent, using fallback: " + FALLBACK_CITY);
-            currentCity = FALLBACK_CITY;
+        }
+
+        if (intent.hasExtra(EXTRA_USER_STYLE)) {
+            String receivedStyle = intent.getStringExtra(EXTRA_USER_STYLE);
+            if (receivedStyle != null && !receivedStyle.isEmpty()) {
+                this.currentUserStyle = receivedStyle;
+            }
         }
 
         // progressBar = findViewById(R.id.progress_bar_weather); // Найдите ProgressBar
@@ -87,7 +89,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv_daily_forecast);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // !!! Создаем адаптер с новым списком !!!
-        adapter = new ForecastAdapter(this, displayList);
+        adapter = new ForecastAdapter(this, displayList, this.currentCity, this.currentUserStyle);
         recyclerView.setAdapter(adapter);
 
         apiService = ApiClient.getClient().create(ApiService.class);
@@ -128,7 +130,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
                     if (forecastDays != null) {
                         Log.d(TAG, "onResponse: Received " + forecastDays.size() + " forecast days.");
                         // !!! Просто передаем список в адаптер !!!
-                        adapter.updateData(forecastDays);
+                        adapter.updateData(forecastDays, city, WeatherForecastActivity.this.currentUserStyle);
                     } else {
                         Log.w(TAG, "onResponse: forecastDay list is null");
                         Toast.makeText(WeatherForecastActivity.this, "Нет данных прогноза", Toast.LENGTH_SHORT).show();
@@ -136,6 +138,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
                 } else {
                     Log.e(TAG, "onResponse: Error - Code: " + response.code() + ", Message: " + response.message());
                     Toast.makeText(WeatherForecastActivity.this, "Ошибка загрузки: " + response.message(), Toast.LENGTH_SHORT).show();
+                    adapter.updateData(new ArrayList<>(), city, WeatherForecastActivity.this.currentUserStyle);
                 }
             }
 
@@ -144,6 +147,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
                 // if (progressBar != null) progressBar.setVisibility(View.GONE);
                 Log.e(TAG, "onFailure: Network request failed", t);
                 Toast.makeText(WeatherForecastActivity.this, "Ошибка сети: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                adapter.updateData(new ArrayList<>(), city, WeatherForecastActivity.this.currentUserStyle);
             }
         });
     }

@@ -1,168 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/sohr"
+    android:orientation="vertical"
     android:background="@color/fon_reg"
     tools:context=".Sohranenki">
 
+    <!-- Верхняя панель (можно скопировать из DayDetailActivity, если хотите единообразия) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="412dp"
-        android:layout_height="282dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/temn"
-        tools:layout_editor_absoluteY="0dp" />
+        <TextView
+            android:id="@+id/sohranenki_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/back_button_text"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true" />
 
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="414dp"
-        android:layout_height="345dp"
-        app:srcCompat="@drawable/svetl"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="0dp" />
+        <Space android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
 
-    <ImageView
-        android:id="@+id/gobackbutton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@null"
-        android:clickable="true"
-        android:focusable="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/chevron_left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/saved_looks_title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/login_dark_blue"/>
 
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="412dp"
-        android:layout_height="101dp"
-        app:srcCompat="@drawable/fon"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="793dp" />
+        <Space android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/sohranenki_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="32dp"/>
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="349dp"
-        android:layout_height="72dp"
-        android:fontFamily="@font/manrope_bold"
+        android:id="@+id/sohranenki_empty_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:text="@string/no_saved_looks_message"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_saved_outfits"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_saved_outfit"/>
+
+    <!-- Нижняя навигация (копируем из DayDetailActivity, чтобы была одинаковой) -->
+    <LinearLayout
+        android:id="@+id/bottom_navigation_custom_sohranenki"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:gravity="center"
-        android:text="@string/save"
-        android:textColor="@color/white"
-        android:textSize="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="80dp" />
+        android:orientation="horizontal"
+        android:background="@color/navigation_panel_color">
+        <ImageView
+            android:id="@+id/nav_profile_icon_sohranenki"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/menu_profile"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_shape" />
+        <ImageView
+            android:id="@+id/nav_home_icon_sohranenki"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/menu_home"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/main_house_shape" />
+        <ImageView
+            android:id="@+id/nav_favorites_icon_sohranenki"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="Меню"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/heart_shape" />
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/okno"
-        tools:layout_editor_absoluteY="192dp" />
-
-    <ImageView
-        android:id="@+id/imageView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/okno"
-        tools:layout_editor_absoluteY="192dp" />
-
-    <ImageView
-        android:id="@+id/imageView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="23dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView11"
-        app:srcCompat="@drawable/okno" />
-
-    <ImageView
-        android:id="@+id/imageView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView12"
-        app:srcCompat="@drawable/okno" />
-
-    <ImageView
-        android:id="@+id/imageView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="23dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView13"
-        app:srcCompat="@drawable/okno" />
-
-    <ImageView
-        android:id="@+id/imageView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView14"
-        app:srcCompat="@drawable/okno" />
-
-    <ImageView
-        android:id="@+id/imageView18"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView19"
-        app:srcCompat="@drawable/love" />
-
-    <ImageView
-        android:id="@+id/imageView19"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/dom" />
-
-    <ImageView
-        android:id="@+id/imageView23"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="87dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView19"
-        app:srcCompat="@drawable/golova" />
-
-    <ImageView
-        android:id="@+id/imageView24"
-        android:layout_width="34dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView19"
-        app:layout_constraintTop_toBottomOf="@+id/imageView23"
-        app:srcCompat="@drawable/telo" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
