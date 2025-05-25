@@ -45,9 +45,6 @@ public class CityActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Инициализация MapKit должна быть ДО super.onCreate()
-        MapKitFactory.setApiKey("ed7e3518-2afb-4989-a0b1-0cbf9283558b");
-        MapKitFactory.initialize(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);

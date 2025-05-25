@@ -1,15 +1,13 @@
 package com.example.cloova;
 
-import android.app.Application;
-import com.yandex.mapkit.MapKitFactory;
-import com.yandex.runtime.Runtime;
+import android.app.Application; // Важно: импортировать android.app.Application
+import com.yandex.mapkit.MapKitFactory; // Импортировать MapKitFactory
 
 public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // Уберите эту строку, так как ключ уже в манифесте
-        // MapKitFactory.setApiKey("ваш_api_ключ_яндекс_карт");
-        MapKitFactory.setLocale("ru_RU"); // Установите нужную локаль
+        MapKitFactory.setApiKey("ed7e3518-2afb-4989-a0b1-0cbf9283558b");
+        MapKitFactory.initialize(this);
     }
 }

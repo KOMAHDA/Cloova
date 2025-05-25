@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.play.services.maps)
 
     // Удалите эту строку, если не используете Google Maps
     // implementation(libs.play.services.maps)
