@@ -2,6 +2,7 @@ package com.example.cloova;
 
 import com.example.cloova.model.ClothingItem;
 import com.example.cloova.model.SavedOutfit;
+import com.example.cloova.model.PlannedOutfit;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -23,7 +24,7 @@ import java.util.Map;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DB_HELPER"; // Тег для логов
     private static final String DATABASE_NAME = "CloovaDB.db";
-    private static final int DATABASE_VERSION = 6; // <<<=== ВЕРСИЯ ИЗМЕНЕНА
+    private static final int DATABASE_VERSION = 7; // <<<=== ВЕРСИЯ ИЗМЕНЕНА
 
     // Таблица пользователей
     private static final String TABLE_USERS = "users";
@@ -106,6 +107,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_SOI_OUTFIT_ID = "outfit_id_fk"; // Foreign Key к saved_outfits
     public static final String COLUMN_SOI_CLOTHING_ID = "clothing_item_id_fk"; // Foreign Key к clothing_items
     public static final String COLUMN_SOI_CATEGORY = "clothing_category";
+
+
+    // Таблица запланированных образов
+    public static final String TABLE_PLANNED_OUTFITS = "planned_outfits";
+    public static final String COLUMN_PO_ID = "planned_outfit_id"; // Primary Key
+    public static final String COLUMN_PO_USER_ID = "user_id"; // Foreign Key к users
+    public static final String COLUMN_PO_PLAN_DATE = "plan_date"; // Дата, на которую запланирован образ (YYYY-MM-DD)
+    public static final String COLUMN_PO_DATE_CREATED = "date_created"; // Дата создания записи (YYYY-MM-DD HH:MM:SS)
+    public static final String COLUMN_PO_WEATHER_DESC = "weather_description"; // Описание погоды (напр. "Солнечно")
+    public static final String COLUMN_PO_TEMPERATURE = "temperature"; // Температура, для которой запланирован образ
+    public static final String COLUMN_PO_STYLE = "style_name"; // Стиль, для которого запланирован образ
+
+    // Таблица элементов запланированного образа (связь Many-to-Many)
+    public static final String TABLE_PLANNED_OUTFIT_ITEMS = "planned_outfit_items";
+    public static final String COLUMN_POI_ID = "planned_item_id"; // Primary Key
+    public static final String COLUMN_POI_OUTFIT_ID = "planned_outfit_id_fk"; // Foreign Key к planned_outfits
+    public static final String COLUMN_POI_CLOTHING_ID = "clothing_item_id_fk"; // Foreign Key к clothing_items
+    public static final String COLUMN_POI_CATEGORY = "clothing_category"; // Категория одежды (Верх, Низ и т.д.)
 
 
     public static final String SHARED_PREFS_NAME = "CloovaUserPrefs";
@@ -232,15 +251,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_SAVED_OUTFIT_ITEMS_TABLE);
         Log.d(TAG, "onCreate: TABLE_SAVED_OUTFIT_ITEMS created.");
 
+        String CREATE_PLANNED_OUTFITS_TABLE = "CREATE TABLE " + TABLE_PLANNED_OUTFITS + "("
+                + COLUMN_PO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_PO_USER_ID + " INTEGER NOT NULL,"
+                + COLUMN_PO_PLAN_DATE + " TEXT NOT NULL," // Формат "YYYY-MM-DD"
+                + COLUMN_PO_DATE_CREATED + " TEXT NOT NULL," // Формат "YYYY-MM-DD HH:MM:SS"
+                + COLUMN_PO_WEATHER_DESC + " TEXT,"
+                + COLUMN_PO_TEMPERATURE + " REAL,"
+                + COLUMN_PO_STYLE + " TEXT,"
+                + "FOREIGN KEY(" + COLUMN_PO_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + ")"
+                + ")";
+        db.execSQL(CREATE_PLANNED_OUTFITS_TABLE);
+        Log.d(TAG, "onCreate: TABLE_PLANNED_OUTFITS created.");
+
+        String CREATE_PLANNED_OUTFIT_ITEMS_TABLE = "CREATE TABLE " + TABLE_PLANNED_OUTFIT_ITEMS + "("
+                + COLUMN_POI_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_POI_OUTFIT_ID + " INTEGER NOT NULL,"
+                + COLUMN_POI_CLOTHING_ID + " INTEGER NOT NULL,"
+                + COLUMN_POI_CATEGORY + " TEXT NOT NULL,"
+                + "FOREIGN KEY(" + COLUMN_POI_OUTFIT_ID + ") REFERENCES " + TABLE_PLANNED_OUTFITS + "(" + COLUMN_PO_ID + ") ON DELETE CASCADE," // При удалении образа, удалять и его элементы
+                + "FOREIGN KEY(" + COLUMN_POI_CLOTHING_ID + ") REFERENCES " + TABLE_CLOTHING_ITEMS + "(" + COLUMN_CI_ID + ")"
+                + ")";
+        db.execSQL(CREATE_PLANNED_OUTFIT_ITEMS_TABLE);
+        Log.d(TAG, "onCreate: TABLE_PLANNED_OUTFIT_ITEMS created.");
+
         prepopulateData(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(TAG, "onUpgrade: Upgrading database from version " + oldVersion + " to " + newVersion + ". Old data will be lost.");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLANNED_OUTFIT_ITEMS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLANNED_OUTFITS);
+
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVED_OUTFIT_ITEMS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVED_OUTFITS);
 
+        // Затем остальные, как было
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLOTHING_ITEM_CONDITIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLOTHING_ITEM_STYLES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WEATHER_CONDITIONS_CATALOG);
@@ -1238,5 +1285,144 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+    public long savePlannedOutfit(long userId, String planDate, String weatherDesc, double temperature, String styleName, Map<String, ClothingItem> outfitItemsMap) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long outfitId = -1;
+        db.beginTransaction();
+        try {
+            ContentValues outfitValues = new ContentValues();
+            outfitValues.put(COLUMN_PO_USER_ID, userId);
+            outfitValues.put(COLUMN_PO_PLAN_DATE, planDate); // Дата планирования
+            outfitValues.put(COLUMN_PO_DATE_CREATED, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date())); // Дата создания записи
+            outfitValues.put(COLUMN_PO_WEATHER_DESC, weatherDesc);
+            outfitValues.put(COLUMN_PO_TEMPERATURE, temperature);
+            outfitValues.put(COLUMN_PO_STYLE, styleName);
+
+            outfitId = db.insertOrThrow(TABLE_PLANNED_OUTFITS, null, outfitValues);
+            if (outfitId == -1) {
+                Log.e(TAG, "Failed to insert into " + TABLE_PLANNED_OUTFITS);
+                return -1;
+            }
+
+            // Сохраняем элементы образа
+            for (Map.Entry<String, ClothingItem> entry : outfitItemsMap.entrySet()) {
+                String category = entry.getKey();
+                ClothingItem item = entry.getValue();
+                if (item != null) { // Сохраняем только те элементы, которые были фактически выбраны
+                    ContentValues itemValues = new ContentValues();
+                    itemValues.put(COLUMN_POI_OUTFIT_ID, outfitId);
+                    itemValues.put(COLUMN_POI_CLOTHING_ID, item.getClothingId());
+                    itemValues.put(COLUMN_POI_CATEGORY, category);
+                    long result = db.insert(TABLE_PLANNED_OUTFIT_ITEMS, null, itemValues);
+                    if (result == -1) {
+                        Log.e(TAG, "Failed to insert item " + item.getName() + " for planned outfit " + outfitId);
+                    }
+                }
+            }
+            db.setTransactionSuccessful();
+            Log.d(TAG, "Planned outfit saved successfully with ID: " + outfitId);
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving planned outfit: " + e.getMessage(), e);
+            outfitId = -1;
+        } finally {
+            db.endTransaction();
+        }
+        return outfitId;
+    }
+
+    // Метод для получения всех запланированных образов для пользователя
+    public List<PlannedOutfit> getPlannedOutfits(long userId) {
+        List<PlannedOutfit> plannedOutfits = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor outfitCursor = null;
+
+        try {
+            outfitCursor = db.query(
+                    TABLE_PLANNED_OUTFITS,
+                    new String[]{COLUMN_PO_ID, COLUMN_PO_PLAN_DATE, COLUMN_PO_DATE_CREATED, COLUMN_PO_WEATHER_DESC, COLUMN_PO_TEMPERATURE, COLUMN_PO_STYLE},
+                    COLUMN_PO_USER_ID + " = ?",
+                    new String[]{String.valueOf(userId)},
+                    null, null, COLUMN_PO_PLAN_DATE + " ASC" // Сортировка по дате планирования, от старых к новым
+            );
+
+            if (outfitCursor.moveToFirst()) {
+                do {
+                    long outfitId = outfitCursor.getLong(outfitCursor.getColumnIndexOrThrow(COLUMN_PO_ID));
+                    String planDate = outfitCursor.getString(outfitCursor.getColumnIndexOrThrow(COLUMN_PO_PLAN_DATE));
+                    String dateCreated = outfitCursor.getString(outfitCursor.getColumnIndexOrThrow(COLUMN_PO_DATE_CREATED));
+                    String weatherDesc = outfitCursor.getString(outfitCursor.getColumnIndexOrThrow(COLUMN_PO_WEATHER_DESC));
+                    double temperature = outfitCursor.getDouble(outfitCursor.getColumnIndexOrThrow(COLUMN_PO_TEMPERATURE));
+                    String style = outfitCursor.getString(outfitCursor.getColumnIndexOrThrow(COLUMN_PO_STYLE));
+
+                    // Получаем все элементы для текущего образа
+                    Map<String, ClothingItem> outfitItemsMap = new LinkedHashMap<>();
+                    Cursor itemsCursor = null;
+                    try {
+                        String query = "SELECT ci.*, poi." + COLUMN_POI_CATEGORY +
+                                " FROM " + TABLE_PLANNED_OUTFIT_ITEMS + " poi" +
+                                " JOIN " + TABLE_CLOTHING_ITEMS + " ci ON poi." + COLUMN_POI_CLOTHING_ID + " = ci." + COLUMN_CI_ID +
+                                " WHERE poi." + COLUMN_POI_OUTFIT_ID + " = ?" +
+                                " ORDER BY CASE poi." + COLUMN_POI_CATEGORY + // Определяем порядок слоев для отображения
+                                " WHEN 'головной убор' THEN 1" +
+                                " WHEN 'верхняя одежда' THEN 2" +
+                                " WHEN 'верх' THEN 3" +
+                                " WHEN 'платья/юбки' THEN 4" +
+                                " WHEN 'низ' THEN 5" +
+                                " WHEN 'обувь' THEN 6" +
+                                " ELSE 7 END"; // Для других категорий
+
+                        itemsCursor = db.rawQuery(query, new String[]{String.valueOf(outfitId)});
+
+                        if (itemsCursor.moveToFirst()) {
+                            do {
+                                ClothingItem item = new ClothingItem();
+                                item.setClothingId(itemsCursor.getLong(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_ID)));
+                                item.setName(itemsCursor.getString(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_NAME)));
+                                item.setCategory(itemsCursor.getString(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_CATEGORY)));
+                                item.setImageResourceName(itemsCursor.getString(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_IMAGE_RES)));
+                                item.setGenderTarget(itemsCursor.getString(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_GENDER_TARGET)));
+                                item.setMinTemp(itemsCursor.getInt(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_MIN_TEMP)));
+                                item.setMaxTemp(itemsCursor.getInt(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_MAX_TEMP)));
+                                item.setWaterproof(itemsCursor.getInt(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_IS_WATERPROOF)) == 1);
+                                item.setWindproof(itemsCursor.getInt(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_IS_WINDPROOF)) == 1);
+
+                                String category = itemsCursor.getString(itemsCursor.getColumnIndexOrThrow(COLUMN_POI_CATEGORY));
+                                outfitItemsMap.put(category, item);
+
+                            } while (itemsCursor.moveToNext());
+                        }
+                    } finally {
+                        if (itemsCursor != null) itemsCursor.close();
+                    }
+
+                    PlannedOutfit plannedOutfit = new PlannedOutfit(outfitId, userId, planDate, dateCreated, weatherDesc, temperature, style, outfitItemsMap);
+                    plannedOutfits.add(plannedOutfit);
+
+                } while (outfitCursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting planned outfits for userId: " + userId, e);
+        } finally {
+            if (outfitCursor != null) outfitCursor.close();
+        }
+        return plannedOutfits;
+    }
+
+    // Метод для удаления запланированного образа
+    public boolean deletePlannedOutfit(long outfitId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = 0;
+        db.beginTransaction();
+        try {
+            rowsAffected = db.delete(TABLE_PLANNED_OUTFITS, COLUMN_PO_ID + " = ?",
+                    new String[]{String.valueOf(outfitId)});
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Error deleting planned outfit with ID: " + outfitId, e);
+        } finally {
+            db.endTransaction();
+        }
+        return rowsAffected > 0;
+    }
 
 }

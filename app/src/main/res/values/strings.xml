@@ -187,4 +187,19 @@
     <string name="delete_confirmation_message">Вы уверены, что хотите удалить этот образ? Это действие нельзя отменить.</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+
+    <string name="plan_outfit_button">Запланировать образ</string>
+    <string name="error_auth_plan_outfit">Ошибка: пользователь не авторизован для планирования образа.</string>
+    <string name="outfit_cannot_plan_empty">Невозможно запланировать пустой образ.</string>
+    <string name="planning_outfit">Планирование образа...</string>
+    <string name="outfit_planned_successfully">Образ успешно запланирован!</string>
+    <string name="error_planning_outfit">Ошибка при планировании образа.</string>
+
+    <string name="planned_looks_title">Запланированные образы</string>
+    <string name="no_planned_looks_message">У вас пока нет запланированных образов.</string>
+    <string name="delete_planned_outfit_cd">Удалить запланированный образ</string>
+    <string name="planned_outfit_delete_successful">Запланированный образ удален.</string>
+    <string name="planned_outfit_delete_failed">Ошибка при удалении запланированного образа.</string>
+    <string name="delete_planned_confirmation_title">Удалить запланированный образ?</string>
+    <string name="delete_planned_confirmation_message">Вы уверены, что хотите удалить этот запланированный образ? Это действие нельзя отменить.</string>
 </resources>

@@ -364,12 +364,25 @@
                     style="@style/Widget.MaterialComponents.FloatingActionButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginEnd="16dp"
                     app:srcCompat="@drawable/heart_shape"
                     app:tint="@color/login_dark_blue"
                     app:backgroundTint="@android:color/white"
                     app:elevation="4dp"
                     android:contentDescription="@string/save_outfit_button" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_plan_outfit_detail"
+                    style="@style/Widget.MaterialComponents.FloatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    app:srcCompat="@drawable/calendar_month_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                    app:tint="@color/login_dark_blue"
+                    app:backgroundTint="@android:color/white"
+                    app:elevation="4dp"
+                    android:contentDescription="@string/plan_outfit_button" />
+
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab_refresh_detail"
                     style="@style/Widget.MaterialComponents.FloatingActionButton"

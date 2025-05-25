@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.DatePickerDialog;
+import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,7 +71,7 @@ public class DayDetailActivity extends AppCompatActivity {
     private ImageView ivOutfitShoes;
 
     // FAB кнопки
-    private FloatingActionButton fabEditOutfit, fabAddFavorite, fabRefresh;
+    private FloatingActionButton fabAddFavorite, fabRefresh, fabPlanOutfit;
 
     // Нижняя навигация (кастомная)
     private ImageView navProfileIcon, navHomeIcon, navFavoritesIcon;
@@ -125,6 +127,7 @@ public class DayDetailActivity extends AppCompatActivity {
 
         fabAddFavorite = findViewById(R.id.fab_add_favorite_detail);
         fabRefresh = findViewById(R.id.fab_refresh_detail);
+        fabPlanOutfit = findViewById(R.id.fab_plan_outfit_detail);
 
         navProfileIcon = findViewById(R.id.nav_profile_icon);
         navHomeIcon = findViewById(R.id.nav_home_icon);
@@ -669,9 +672,6 @@ public class DayDetailActivity extends AppCompatActivity {
         if (btnBackToWeeklyDetail != null) {
             btnBackToWeeklyDetail.setOnClickListener(v -> finish()); // Просто закрываем, возвращаясь к списку
         }
-        if (fabEditOutfit != null) {
-            fabEditOutfit.setOnClickListener(v -> Toast.makeText(this, "Редактировать образ (TODO)", Toast.LENGTH_SHORT).show());
-        }
         if (fabAddFavorite != null) {
             fabAddFavorite.setOnClickListener(v -> {
                 Log.d(TAG, "Add to Favorites button clicked.");
@@ -686,6 +686,13 @@ public class DayDetailActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Город не определен для обновления", Toast.LENGTH_SHORT).show();
                 }
+            });
+        }
+
+        if (fabPlanOutfit != null) {
+            fabPlanOutfit.setOnClickListener(v -> {
+                Log.d(TAG, "Plan Outfit button clicked.");
+                showDatePickerDialog();
             });
         }
 
@@ -768,6 +775,92 @@ public class DayDetailActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(DayDetailActivity.this, R.string.error_saving_outfit, Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Failed to save outfit.");
+            }
+        }
+    }
+
+    private void showDatePickerDialog() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    // Форматируем выбранную дату в YYYY-MM-DD для базы данных
+                    String formattedDate = String.format(Locale.US, "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
+                    Log.d(TAG, "Selected plan date: " + formattedDate);
+                    planCurrentOutfit(formattedDate);
+                }, year, month, day);
+
+        // Опционально: можно ограничить выбор даты (например, только будущее)
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000); // Только сегодняшняя и будущие даты
+
+        datePickerDialog.show();
+    }
+
+    private void planCurrentOutfit(String planDate) {
+        if (currentUserId == DatabaseHelper.DEFAULT_USER_ID || currentUser == null) {
+            Toast.makeText(this, R.string.error_auth_plan_outfit, Toast.LENGTH_SHORT).show(); // Добавь эту строку в strings.xml
+            Log.e(TAG, "planCurrentOutfit: User not logged in or currentUser data missing.");
+            return;
+        }
+
+        Map<String, ClothingItem> currentOutfitMap = new LinkedHashMap<>();
+
+        // Убедись, что lastSelectedOuterwear, lastSelectedTop и т.д. являются ПОЛЯМИ КЛАССА DayDetailActivity
+        // и заполняются в displaySuggestedOutfit(). Это критически важно!
+        if (lastSelectedOuterwear != null) currentOutfitMap.put("верхняя одежда", lastSelectedOuterwear);
+        if (lastSelectedTop != null) currentOutfitMap.put(lastSelectedTop.getCategory().equalsIgnoreCase("платья/юбки") ? "платья/юбки" : "верх", lastSelectedTop);
+        if (lastSelectedBottom != null) currentOutfitMap.put("низ", lastSelectedBottom);
+        if (lastSelectedShoes != null) currentOutfitMap.put("обувь", lastSelectedShoes);
+
+        if (currentOutfitMap.isEmpty()) {
+            Toast.makeText(this, R.string.outfit_cannot_plan_empty, Toast.LENGTH_SHORT).show(); // Добавь эту строку
+            Log.w(TAG, "planCurrentOutfit: No items in the outfit to plan.");
+            return;
+        }
+
+        new PlanOutfitTask(planDate).execute(currentOutfitMap);
+    }
+
+    // AsyncTask для сохранения запланированного образа в фоновом потоке
+    @SuppressLint("StaticFieldLeak")
+    private class PlanOutfitTask extends AsyncTask<Map<String, ClothingItem>, Void, Long> {
+        private String planDate;
+
+        public PlanOutfitTask(String planDate) {
+            this.planDate = planDate;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(DayDetailActivity.this, R.string.planning_outfit, Toast.LENGTH_SHORT).show(); // "Планирование образа..."
+        }
+
+        @Override
+        protected Long doInBackground(Map<String, ClothingItem>... params) {
+            Map<String, ClothingItem> outfitItemsMap = params[0];
+            // Используем текущие значения, которые были переданы в Intent или установлены ранее
+            return dbHelper.savePlannedOutfit(
+                    currentUserId,
+                    planDate,
+                    weatherDescription,
+                    maxTemp,
+                    outfitPreferredStyle,
+                    outfitItemsMap
+            );
+        }
+
+        @Override
+        protected void onPostExecute(Long result) {
+            if (result != -1) {
+                Toast.makeText(DayDetailActivity.this, R.string.outfit_planned_successfully, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Planned outfit saved with ID: " + result);
+            } else {
+                Toast.makeText(DayDetailActivity.this, R.string.error_planning_outfit, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Failed to plan outfit.");
             }
         }
     }

@@ -33,7 +33,7 @@
             android:layout_height="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/delete_outfit_cd"
-            android:src="@drawable/telegram"
+            android:src="@drawable/close_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/red"/>
