@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -758,15 +759,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean updateUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
+        Log.d("DB_DEBUG", "Updating user ID: " + user.getUserId() +
+                ", New city: " + user.getCity());
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, user.getName());
         values.put(COLUMN_BIRTH_DATE, user.getBirthDate());
         values.put(COLUMN_LOGIN, user.getLogin());
         values.put(COLUMN_GENDER, user.getGender());
-        values.put(COLUMN_CITY, user.getCity());
         values.put(COLUMN_LANGUAGE, user.getLanguage());
         values.put(COLUMN_AVATAR, user.getAvatarResId());
+        values.put(COLUMN_CITY, user.getCity());
 
         int rowsAffected = db.update(
                 TABLE_USERS,
@@ -775,6 +778,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(user.getUserId())}
         );
 
+        Log.d("DB_DEBUG", "Rows affected: " + rowsAffected);
         return rowsAffected > 0;
     }
 

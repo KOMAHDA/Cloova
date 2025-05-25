@@ -79,6 +79,14 @@
     <string name="russian_lang">Русский</string>
     <string name="english_lang">Английский</string>
 
+    <!-- Местоположение -->
+    <string name="location">Местоположение</string>
+    <string name="your_city">Ваш город:</string>
+    <string name="city_saved">Город сохранен</string>
+    <string name="error_saving">Ошибка сохранения</string>
+    <string name="search_button_text">Поиск</string>
+
+
     <!-- Массивы для Spinner/Выбора -->
     <string-array name="cities_array">
         <item>Выберите город</item> <!-- Добавлена подсказка -->
