@@ -254,22 +254,26 @@
                 android:gravity="center_horizontal"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/login_dark_blue"
-                tools:text="Верхняя одежда: Легкая куртка\nВерх: Футболка\nНиз: Джинсы\nОбувь: Кроссовки"
+                android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/weather_info_container"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Рекомендуемый образ:\n👕 Футболка\n👖 Джинсы\n👟 Кроссовки летние"
+                tools:visibility="visible"/>
 
-            <LinearLayout
-                android:id="@+id/suggested_outfit_container_ll"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_no_outfit_message"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
-                android:paddingStart="24dp"
-                android:paddingEnd="24dp"
+                android:text="@string/outfit_no_complete_set_fallback"
+                android:textColor="@color/login_dark_blue"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/tv_outfit_suggestion_detail"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/mannequin_background_card"
@@ -281,76 +285,68 @@
                 app:cardCornerRadius="20dp"
                 app:cardElevation="1dp"
                 app:cardBackgroundColor="@android:color/white"
-                app:layout_constraintTop_toBottomOf="@id/tv_outfit_suggestion_detail"
+                app:layout_constraintTop_toBottomOf="@id/tv_no_outfit_message"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
-                <FrameLayout
-                    android:id="@+id/mannequin_outfit_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:minHeight="270dp"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp">
-                    <ImageView
-                        android:id="@+id/iv_mannequin"
-                        android:layout_width="180dp"
-                        android:layout_height="270dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/maneken_nak"
-                        android:scaleType="fitCenter"
-                        android:contentDescription="Манекеныч" />
+
+            <FrameLayout
+                android:id="@+id/mannequin_outfit_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:minHeight="270dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
 
                 <ImageView
-                    android:id="@+id/iv_outfit_top"
-                    android:layout_width="180dp"
-                    android:layout_height="270dp"
+                    android:id="@+id/iv_mannequin"
+                    android:layout_width="260dp"
+                    android:layout_height="390dp"
                     android:layout_gravity="center"
+                    android:src="@drawable/maneken_nak"
                     android:scaleType="fitCenter"
-                    android:visibility="gone"
-                    tools:src="@drawable/tshirt_cotton_default"
-                    android:contentDescription="Верхняя одежда"/>
-
-                <ImageView
-                    android:id="@+id/iv_outfit_bottom"
-                    android:layout_width="180dp"
-                    android:layout_height="270dp"
-                    android:layout_gravity="center"
-                    android:scaleType="fitCenter"
-                    android:visibility="gone"
-                    tools:src="@drawable/jeans_default"
-                    android:contentDescription="Нижняя одежда"/>
+                    android:contentDescription="Манекеныч" />
 
                 <ImageView
                     android:id="@+id/iv_outfit_shoes"
-                    android:layout_width="180dp"
-                    android:layout_height="270dp"
+                    android:layout_width="260dp"
+                    android:layout_height="390dp"
                     android:layout_gravity="center"
                     android:scaleType="fitCenter"
                     android:visibility="gone"
-                    tools:src="@drawable/sneakers_summer_default"
+                    tools:src="@drawable/sneakerswhite"
                     android:contentDescription="Обувь"/>
 
                 <ImageView
-                    android:id="@+id/iv_outfit_headwear"
-                    android:layout_width="180dp"
-                    android:layout_height="270dp"
+                    android:id="@+id/iv_outfit_bottom"
+                    android:layout_width="260dp"
+                    android:layout_height="390dp"
                     android:layout_gravity="center"
                     android:scaleType="fitCenter"
                     android:visibility="gone"
-                    tools:src="@drawable/cap_default"
-                    android:contentDescription="Головной убор"/>
+                    tools:src="@drawable/pantsfamiliarblue"
+                    android:contentDescription="Нижняя одежда"/>
+
+                <ImageView
+                    android:id="@+id/iv_outfit_top"
+                    android:layout_width="260dp"
+                    android:layout_height="390dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:src="@drawable/tshirtblue"
+                    android:contentDescription="Верхняя одежда"/>
 
                 <ImageView
                     android:id="@+id/iv_outfit_outerwear"
-                    android:layout_width="180dp"
-                    android:layout_height="270dp"
+                    android:layout_width="260dp"
+                    android:layout_height="390dp"
                     android:layout_gravity="center"
                     android:scaleType="fitCenter"
                     android:visibility="gone"
-                    tools:src="@drawable/puffer_jacket_light_default"
+                    tools:src="@drawable/jacketblue"
                     android:contentDescription="Верхняя одежда"/>
-                </FrameLayout>
+            </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
@@ -363,17 +359,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent">
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_edit_outfit_detail"
-                    style="@style/Widget.MaterialComponents.FloatingActionButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    app:srcCompat="@drawable/edit"
-                    app:tint="@color/login_dark_blue"
-                    app:backgroundTint="@android:color/white"
-                    app:elevation="4dp"
-                    android:contentDescription="@string/edit_outfit_button" />
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab_add_favorite_detail"
                     style="@style/Widget.MaterialComponents.FloatingActionButton"

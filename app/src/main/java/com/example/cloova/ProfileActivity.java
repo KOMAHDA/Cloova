@@ -744,10 +744,13 @@ public class ProfileActivity extends AppCompatActivity {
         infoCity.setText(user.getCity() != null ? user.getCity() : "Не указано");
         infoLanguage.setText(user.getLanguage() != null ? user.getLanguage() : "Русский");
 
+        Log.d("ProfileActivity", "User avatar ID from DB: " + user.getAvatarResId());
         if (user.getAvatarResId() != 0) {
             infoAvatar.setImageResource(user.getAvatarResId());
+            Log.d("ProfileActivity", "Setting avatar with ID: " + getResources().getResourceEntryName(user.getAvatarResId()));
         } else {
             infoAvatar.setImageResource(R.drawable.default_avatar1);
+            Log.d("ProfileActivity", "Setting default avatar: default_avatar1");
         }
 
         if (user.getLanguage() != null) {

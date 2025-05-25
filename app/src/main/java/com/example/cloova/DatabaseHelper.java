@@ -1,22 +1,28 @@
 package com.example.cloova;
 
 import com.example.cloova.model.ClothingItem;
+import com.example.cloova.model.SavedOutfit;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log; // Убедимся, что импорт есть
+import android.util.Log;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DB_HELPER"; // Тег для логов
     private static final String DATABASE_NAME = "CloovaDB.db";
-    private static final int DATABASE_VERSION = 4; // <<<=== ВЕРСИЯ ИЗМЕНЕНА
+    private static final int DATABASE_VERSION = 6; // <<<=== ВЕРСИЯ ИЗМЕНЕНА
 
     // Таблица пользователей
     private static final String TABLE_USERS = "users";
@@ -84,7 +90,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CIC_ID = "item_condition_relation_id"; // Изменено для уникальности
     public static final String COLUMN_CIC_CLOTHING_ID_FK = "clothing_item_id_fk";
     public static final String COLUMN_CIC_CONDITION_ID_FK = "condition_catalog_id_fk";
-    // --- КОНЕЦ НОВЫХ КОНСТАНТ ---
+
+    public static final String TABLE_SAVED_OUTFITS = "saved_outfits";
+    public static final String COLUMN_SO_ID = "outfit_id"; // Primary Key
+    public static final String COLUMN_SO_USER_ID = "user_id"; // Foreign Key к users
+    public static final String COLUMN_SO_DATE_SAVED = "date_saved"; // Дата сохранения
+    public static final String COLUMN_SO_WEATHER_DESC = "weather_description"; // Описание погоды (напр. "Солнечно")
+    public static final String COLUMN_SO_TEMPERATURE = "temperature"; // Температура, для которой сохранен образ
+    public static final String COLUMN_SO_STYLE = "style_name"; // Стиль, для которого сохранен образ
+
+    // Таблица элементов сохраненного образа (связь Many-to-Many)
+    public static final String TABLE_SAVED_OUTFIT_ITEMS = "saved_outfit_items";
+    public static final String COLUMN_SOI_ID = "saved_item_id"; // Primary Key
+    public static final String COLUMN_SOI_OUTFIT_ID = "outfit_id_fk"; // Foreign Key к saved_outfits
+    public static final String COLUMN_SOI_CLOTHING_ID = "clothing_item_id_fk"; // Foreign Key к clothing_items
+    public static final String COLUMN_SOI_CATEGORY = "clothing_category";
 
 
     public static final String SHARED_PREFS_NAME = "CloovaUserPrefs";
@@ -188,12 +208,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_CLOTHING_ITEM_CONDITIONS_TABLE);
 
+        String CREATE_SAVED_OUTFITS_TABLE = "CREATE TABLE " + TABLE_SAVED_OUTFITS + "("
+                + COLUMN_SO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_SO_USER_ID + " INTEGER NOT NULL,"
+                + COLUMN_SO_DATE_SAVED + " TEXT NOT NULL," // Формат "YYYY-MM-DD HH:MM:SS"
+                + COLUMN_SO_WEATHER_DESC + " TEXT,"
+                + COLUMN_SO_TEMPERATURE + " REAL," // Можно хранить как double
+                + COLUMN_SO_STYLE + " TEXT,"
+                + "FOREIGN KEY(" + COLUMN_SO_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + ")"
+                + ")";
+        db.execSQL(CREATE_SAVED_OUTFITS_TABLE);
+        Log.d(TAG, "onCreate: TABLE_SAVED_OUTFITS created.");
+
+        String CREATE_SAVED_OUTFIT_ITEMS_TABLE = "CREATE TABLE " + TABLE_SAVED_OUTFIT_ITEMS + "("
+                + COLUMN_SOI_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_SOI_OUTFIT_ID + " INTEGER NOT NULL,"
+                + COLUMN_SOI_CLOTHING_ID + " INTEGER NOT NULL,"
+                + COLUMN_SOI_CATEGORY + " TEXT NOT NULL," // Важно для сборки полного образа
+                + "FOREIGN KEY(" + COLUMN_SOI_OUTFIT_ID + ") REFERENCES " + TABLE_SAVED_OUTFITS + "(" + COLUMN_SO_ID + ") ON DELETE CASCADE," // При удалении образа, удалять и его элементы
+                + "FOREIGN KEY(" + COLUMN_SOI_CLOTHING_ID + ") REFERENCES " + TABLE_CLOTHING_ITEMS + "(" + COLUMN_CI_ID + ")"
+                + ")";
+        db.execSQL(CREATE_SAVED_OUTFIT_ITEMS_TABLE);
+        Log.d(TAG, "onCreate: TABLE_SAVED_OUTFIT_ITEMS created.");
+
         prepopulateData(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(TAG, "onUpgrade: Upgrading database from version " + oldVersion + " to " + newVersion + ". Old data will be lost.");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVED_OUTFIT_ITEMS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVED_OUTFITS);
+
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLOTHING_ITEM_CONDITIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLOTHING_ITEM_STYLES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WEATHER_CONDITIONS_CATALOG);
@@ -246,37 +292,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // --- Одежда ---
 
         // --- Верх ---
-        addClothingItemFullInternal(db, "Футболка хлопковая", "Верх", "tshirt_cotton_default", "Унисекс",
+        addClothingItemFullInternal(db, "Футболка хлопковая", "Верх", "tshirtblue", "Унисекс",
                 18, 30, 0, 0,
                 List.of("Повседневный", "Спортивный"), // Покрывает 2 стиля
                 List.of("Солнечно", "Переменная облачность", "Облачно", "Туман") // Широкий спектр теплой погоды
         );
-        addClothingItemFullInternal(db,"Кофта", "Верх", "sweatshirt_fleece_default", "Унисекс",
+        addClothingItemFullInternal(db,"Кофта", "Верх", "cardiganblue", "Унисекс",
                 8, 20, 0, 1, // Ветрозащитная
                 List.of("Повседневный", "Спортивный"), // Покрывает 2 стиля
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Туман") // Прохладная, ветреная
         );
-        addClothingItemFullInternal(db,"Рубашка классическая", "Верх", "shirt_classic_default", "Мужской", // Только Мужской
+        addClothingItemFullInternal(db,"Рубашка классическая", "Верх", "shirtwhite", "Мужской", // Только Мужской
                 15, 25, 0, 0,
                 List.of("Классический", "Богемный", "Повседневный"), // Покрывает 3 стиля
                 List.of("Солнечно", "Облачно", "Переменная облачность", "Туман")
         );
-        addClothingItemFullInternal(db,"Пиджак", "Верх", "shirt_classic_default", "Унисекс", // Только Мужской
+        addClothingItemFullInternal(db,"Пиджак", "Верх", "jacketclassicblack", "Унисекс", // Только Мужской
                 5, 15, 0, 0,
                 List.of("Классический", "Богемный", "Повседневный"), // Покрывает 3 стиля
                 List.of("Солнечно", "Облачно", "Переменная облачность", "Туман", "Небольшой дождь")
         );
-        addClothingItemFullInternal(db,"Блузка элегантная", "Верх", "shirt_classic_default", "Женский",
+        addClothingItemFullInternal(db,"Блузка элегантная", "Верх", "shirtwhite", "Женский",
                 15, 25, 0, 0,
                 List.of("Классический", "Богемный", "Повседневный"),
                 List.of("Солнечно", "Облачно", "Переменная облачность", "Туман")
         );
-        addClothingItemFullInternal(db,"Рубашка фланелевая", "Верх", "shirt_flannel_default", "Унисекс",
+        addClothingItemFullInternal(db,"Рубашка фланелевая", "Верх", "shirtblack", "Унисекс",
                 8, 18, 0, 0, // Уменьшил верхнюю границу температуры, чтобы не сильно пересекалась с флиской
                 List.of("Повседневный"), // Только повседневный
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Туман") // Убрал "Прохладно"
         );
-        addClothingItemFullInternal(db,"Свитер теплый", "Верх", "sweater_warm_default", "Унисекс",
+        addClothingItemFullInternal(db,"Свитер теплый", "Верх", "cardigangrey", "Унисекс",
                 -5, 10, 0, 0,
                 List.of("Повседневный", "Классический", "Богемный"), // Спортивный может быть флиска + верхняя
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Снег", "Туман")
@@ -284,125 +330,130 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         // --- Низ ---
-        addClothingItemFullInternal(db,"Шорты спортивные", "Низ", "shorts_sport_default", "Унисекс",
+        addClothingItemFullInternal(db,"Шорты спортивные", "Низ", "shortsblack", "Унисекс",
                 22, 35, 0, 0,
                 List.of("Спортивный", "Повседневный"),
                 List.of("Солнечно", "Переменная облачность")
         );
-        addClothingItemFullInternal(db,"Шорты джинсовые", "Низ", "shorts_denim_default", "Унисекс",
+        addClothingItemFullInternal(db,"Шорты джинсовые", "Низ", "shortsblue", "Унисекс",
                 20, 30, 0, 0,
                 List.of("Повседневный"),
                 List.of("Солнечно", "Переменная облачность", "Облачно")
         );
-        addClothingItemFullInternal(db,"Брюки летние", "Низ", "pants_summer_classic", "Унисекс",
+        addClothingItemFullInternal(db,"Брюки летние", "Низ", "pantsfamiliarblack", "Унисекс",
                 18, 28, 0, 0,
                 List.of("Классический", "Повседневный"),
                 List.of("Солнечно", "Переменная облачность", "Облачно", "Небольшой дождь")
         );
-        addClothingItemFullInternal(db,"Штаны спортивные", "Низ", "pants_sport_default", "Унисекс",
+        addClothingItemFullInternal(db,"Штаны спортивные", "Низ", "pantsgray", "Унисекс",
                 5, 20, 0, 1,
                 List.of("Спортивный", "Повседневный"),
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Небольшой дождь") // Убрал "Прохладно"
         );
-        addClothingItemFullInternal(db,"Брюки классические", "Низ", "pants_classic_default", "Мужской", // Только Мужской
+        addClothingItemFullInternal(db,"Брюки классические", "Низ", "pantsblack", "Мужской", // Только Мужской
                 10, 22, 0, 0,
                 List.of("Классический", "Богемный"),
                 List.of("Солнечно", "Облачно", "Переменная облачность", "Ветрено", "Небольшой дождь") // Добавил Ветрено
         );
-        addClothingItemFullInternal(db,"Джинсы", "Низ", "jeans_default", "Унисекс", // Переименовал из "Джинсы" для ясности, скорректировал температуру
+        addClothingItemFullInternal(db,"Джинсы", "Низ", "pantsfamiliarblue", "Унисекс", // Переименовал из "Джинсы" для ясности, скорректировал температуру
                 0, 20, 0, 1,
                 List.of("Повседневный", "Классический", "Богемный"), // Джинсы универсальны
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Небольшой дождь", "Дождь", "Туман")
         );
-        addClothingItemFullInternal(db,"Джинсы утепленные", "Низ", "jeans_insulated_default", "Унисекс",
+        addClothingItemFullInternal(db,"Джинсы утепленные", "Низ", "pantsfamiliarblue", "Унисекс",
                 -15, 5, 0, 1, // Скорректировал температуру
                 List.of("Повседневный"),
                 List.of("Облачно", "Снег", "Ветрено") // Убрал дождь для утепленных, если они не водоотталкивающие
         );
         // !!! НУЖЕН "Низ" для "Спортивный", "Классический", "Богемный" для < 0°C
-        addClothingItemFullInternal(db,"Штаны утепленные Спортивные", "Низ", "pants_winter_sport", "Унисекс",
+        addClothingItemFullInternal(db,"Штаны утепленные Спортивные", "Низ", "pantsgray", "Унисекс",
                 -20, 0, 1, 1,
                 List.of("Спортивный"),
                 List.of("Снег", "Ветрено")
         );
-        addClothingItemFullInternal(db,"Брюки утеплённые", "Низ", "pants_wool_classic", "Унисекс",
+        addClothingItemFullInternal(db,"Брюки утеплённые", "Низ", "pantsblack", "Унисекс",
                 -20, 0, 0, 0,
                 List.of("Классический", "Богемный"),
                 List.of("Облачно", "Снег", "Ветрено")
         );
 
-        addClothingItemFullInternal(db,"Платье летнее легкое", "Платья/Юбки", "dress_summer_default", "Женский",
+        addClothingItemFullInternal(db,"Платье летнее легкое", "Платья/Юбки", "dresswhite", "Женский",
                 20, 35, 0, 0,
                 List.of("Повседневный", "Богемный"), // Заменил "Вечерний" на "Богемный" для примера
                 List.of("Солнечно", "Переменная облачность")
         );
-        addClothingItemFullInternal(db,"Юбка джинсовая", "Платья/Юбки", "skirt_denim_default", "Женский",
+        addClothingItemFullInternal(db,"Юбка джинсовая", "Платья/Юбки", "skirtblue", "Женский",
                 18, 30, 0, 0,
                 List.of("Повседневный"),
                 List.of("Солнечно", "Переменная облачность", "Облачно")
         );
-        addClothingItemFullInternal(db,"Платье трикотажное", "Платья/Юбки", "dress_knit_default", "Женский",
-                10, 20, 0, 0,
+        addClothingItemFullInternal(db,"Юбка летняя", "Платья/Юбки", "skirtwhite", "Женский",
+                18, 30, 0, 0,
+                List.of("Повседневный"),
+                List.of("Солнечно", "Переменная облачность", "Облачно")
+        );
+        addClothingItemFullInternal(db,"Платье трикотажное", "Платья/Юбки", "dressblack", "Женский",
+                10, 23, 0, 0,
                 List.of("Повседневный", "Классический", "Богемный"), // Расширил стили
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Туман") // Убрал "Прохладно"
         );
 
 
         // --- Верхняя одежда ---
-        addClothingItemFullInternal(db,"Куртка джинсовая", "Верхняя одежда", "jacket_denim_default", "Унисекс",
+        addClothingItemFullInternal(db,"Куртка джинсовая", "Верхняя одежда", "jacketblue", "Унисекс",
                 12, 22, 0, 0, // Немного поднял min_temp
                 List.of("Повседневный", "Богемный"), // Добавил Богемный
                 List.of("Солнечно", "Переменная облачность", "Облачно", "Ветрено", "Туман", "Дождь")
         );
-        addClothingItemFullInternal(db,"Куртка кожаная", "Верхняя одежда", "jacket_leather_default", "Унисекс",
+        addClothingItemFullInternal(db,"Куртка кожаная", "Верхняя одежда", "jacketblack", "Унисекс",
                 8, 18, 0, 1,
                 List.of("Повседневный", "Классический", "Богемный"), // Добавил Богемный
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Туман", "Небольшой дождь", "Дождь") // Убрал "Прохладно"
         );
-        addClothingItemFullInternal(db,"Пуховик легкий", "Верхняя одежда", "puffer_jacket_light_default", "Унисекс",
+        addClothingItemFullInternal(db,"Пуховик легкий", "Верхняя одежда", "jacketwarmgrey", "Унисекс",
                 -10, 10, 1, 1, // Скорректировал max_temp
                 List.of("Повседневный", "Спортивный"),
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Небольшой дождь", "Дождь", "Снег") // Добавил Снег
         );
-        addClothingItemFullInternal(db,"Зимняя куртка (парка)", "Верхняя одежда", "parka_winter_default", "Унисекс",
+        addClothingItemFullInternal(db,"Зимняя куртка", "Верхняя одежда", "jacketwarmblue", "Унисекс",
                 -25, 0, 1, 1, // Скорректировал max_temp
                 List.of("Повседневный", "Спортивный"), // Парка может быть и спортивной
                 List.of("Облачно", "Снег", "Ветрено") // Убрал "Холодно", "Мороз"
         );
         // !!! НУЖНА Верхняя одежда для "Классический", "Богемный" на холод и очень холод.
-        addClothingItemFullInternal(db,"Пальто классическое", "Верхняя одежда", "coat_classic_default", "Унисекс",
+        addClothingItemFullInternal(db,"Пальто классическое", "Верхняя одежда", "jacketclassicgrey", "Унисекс",
                 -10, 8, 0, 1, // Шерстяное пальто может быть ветрозащитным
                 List.of("Классический", "Богемный"),
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Снег", "Туман")
         );
-        addClothingItemFullInternal(db,"Пальто утеплённое", "Верхняя одежда", "coat_classic_default", "Унисекс",
+        addClothingItemFullInternal(db,"Пальто утеплённое", "Верхняя одежда", "jacketclassicgrey", "Унисекс",
                 -20, -5, 0, 1, // Шерстяное пальто может быть ветрозащитным
                 List.of("Классический", "Богемный", "Повседневный"),
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Снег", "Туман")
         );
 
 
-        addClothingItemFullInternal(db,"Кроссовки летние", "Обувь", "sneakers_summer_default", "Унисекс",
+        addClothingItemFullInternal(db,"Кроссовки летние", "Обувь", "sneakerswhite", "Унисекс",
                 15, 30, 0, 0,
                 List.of("Повседневный", "Спортивный"), // Добавил Богемный
                 List.of("Солнечно", "Переменная облачность", "Облачно") // Убрал дождь для летних кроссовок
         );
-        addClothingItemFullInternal(db,"Кроссовки демисезонные", "Обувь", "sneakers_demi_default", "Унисекс",
+        addClothingItemFullInternal(db,"Кроссовки демисезонные", "Обувь", "sneakersblack", "Унисекс",
                 5, 18, 1, 0, // Сделал водонепроницаемыми
                 List.of("Повседневный", "Спортивный"),
                 List.of("Облачно", "Переменная облачность", "Небольшой дождь", "Дождь", "Ветрено", "Туман") // Убрал "Прохладно"
         );
-        addClothingItemFullInternal(db,"Ботинки зимние утепленные", "Обувь", "boots_winter_insulated_default", "Унисекс",
+        addClothingItemFullInternal(db,"Ботинки зимние утепленные", "Обувь", "bootsgray", "Унисекс",
                 -25, 5, 1, 1,
                 List.of("Повседневный", "Спортивный", "Классический", "Богемный"), // Могут быть и для активного отдыха
                 List.of("Снег", "Ветрено") // Убрал "Холодно", "Мороз"
         );
-        addClothingItemFullInternal(db,"Туфли классические", "Обувь", "shoes_classic_default", "Унисекс",
+        addClothingItemFullInternal(db,"Туфли классические", "Обувь", "shoesblack", "Унисекс",
                 10, 25, 0, 0,
                 List.of("Классический", "Богемный"),
                 List.of("Солнечно", "Облачно", "Переменная облачность", "Туман") // Не для дождя
         );
-        addClothingItemFullInternal(db,"Туфли женские", "Обувь", "shoes_classic_default", "Женский",
+        addClothingItemFullInternal(db,"Туфли женские", "Обувь", "shoesbrown", "Женский",
                 10, 25, 0, 0,
                 List.of("Классический", "Богемный"),
                 List.of("Солнечно", "Облачно", "Переменная облачность", "Туман") // Не для дождя
@@ -1040,4 +1091,148 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return conditionIds;
     }
+
+    public long saveOutfit(long userId, String weatherDesc, double temperature, String styleName, Map<String, ClothingItem> outfitItemsMap) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long outfitId = -1;
+        db.beginTransaction();
+        try {
+            ContentValues outfitValues = new ContentValues();
+            outfitValues.put(COLUMN_SO_USER_ID, userId);
+            outfitValues.put(COLUMN_SO_DATE_SAVED, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+            outfitValues.put(COLUMN_SO_WEATHER_DESC, weatherDesc);
+            outfitValues.put(COLUMN_SO_TEMPERATURE, temperature);
+            outfitValues.put(COLUMN_SO_STYLE, styleName);
+
+            outfitId = db.insertOrThrow(TABLE_SAVED_OUTFITS, null, outfitValues);
+            if (outfitId == -1) {
+                Log.e(TAG, "Failed to insert into " + TABLE_SAVED_OUTFITS);
+                return -1;
+            }
+
+            // Сохраняем элементы образа
+            for (Map.Entry<String, ClothingItem> entry : outfitItemsMap.entrySet()) {
+                String category = entry.getKey();
+                ClothingItem item = entry.getValue();
+                if (item != null) { // Сохраняем только те элементы, которые были фактически выбраны
+                    ContentValues itemValues = new ContentValues();
+                    itemValues.put(COLUMN_SOI_OUTFIT_ID, outfitId);
+                    itemValues.put(COLUMN_SOI_CLOTHING_ID, item.getClothingId());
+                    itemValues.put(COLUMN_SOI_CATEGORY, category);
+                    long result = db.insert(TABLE_SAVED_OUTFIT_ITEMS, null, itemValues);
+                    if (result == -1) {
+                        Log.e(TAG, "Failed to insert item " + item.getName() + " for outfit " + outfitId);
+                        // Возможно, нужно выбросить исключение или пометить транзакцию как неуспешную
+                    }
+                }
+            }
+            db.setTransactionSuccessful();
+            Log.d(TAG, "Outfit saved successfully with ID: " + outfitId);
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving outfit: " + e.getMessage(), e);
+            outfitId = -1; // Устанавливаем -1 в случае ошибки
+        } finally {
+            db.endTransaction();
+        }
+        return outfitId;
+    }
+
+    public List<SavedOutfit> getSavedOutfits(long userId) {
+        List<SavedOutfit> savedOutfits = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor outfitCursor = null;
+
+        try {
+            outfitCursor = db.query(
+                    TABLE_SAVED_OUTFITS,
+                    new String[]{COLUMN_SO_ID, COLUMN_SO_DATE_SAVED, COLUMN_SO_WEATHER_DESC, COLUMN_SO_TEMPERATURE, COLUMN_SO_STYLE},
+                    COLUMN_SO_USER_ID + " = ?",
+                    new String[]{String.valueOf(userId)},
+                    null, null, COLUMN_SO_DATE_SAVED + " DESC" // Сортировка по дате, от новых к старым
+            );
+
+            if (outfitCursor.moveToFirst()) {
+                do {
+                    long outfitId = outfitCursor.getLong(outfitCursor.getColumnIndexOrThrow(COLUMN_SO_ID));
+                    String dateSaved = outfitCursor.getString(outfitCursor.getColumnIndexOrThrow(COLUMN_SO_DATE_SAVED));
+                    String weatherDesc = outfitCursor.getString(outfitCursor.getColumnIndexOrThrow(COLUMN_SO_WEATHER_DESC));
+                    double temperature = outfitCursor.getDouble(outfitCursor.getColumnIndexOrThrow(COLUMN_SO_TEMPERATURE));
+                    String style = outfitCursor.getString(outfitCursor.getColumnIndexOrThrow(COLUMN_SO_STYLE));
+
+                    // Получаем все элементы для текущего образа
+                    Map<String, ClothingItem> outfitItemsMap = new LinkedHashMap<>(); // LinkedHashMap для сохранения порядка категорий
+                    Cursor itemsCursor = null;
+                    try {
+                        // Используем JOIN для получения полной информации об одежде сразу
+                        String query = "SELECT ci.*, soi." + COLUMN_SOI_CATEGORY +
+                                " FROM " + TABLE_SAVED_OUTFIT_ITEMS + " soi" +
+                                " JOIN " + TABLE_CLOTHING_ITEMS + " ci ON soi." + COLUMN_SOI_CLOTHING_ID + " = ci." + COLUMN_CI_ID +
+                                " WHERE soi." + COLUMN_SOI_OUTFIT_ID + " = ?" +
+                                " ORDER BY CASE soi." + COLUMN_SOI_CATEGORY + // Определяем порядок слоев для отображения
+                                " WHEN 'головной убор' THEN 1" +
+                                " WHEN 'верхняя одежда' THEN 2" +
+                                " WHEN 'верх' THEN 3" +
+                                " WHEN 'платья/юбки' THEN 4" + // Если платье/юбка, то после верха
+                                " WHEN 'низ' THEN 5" +
+                                " WHEN 'обувь' THEN 6" +
+                                " ELSE 7 END"; // Для других категорий
+
+                        itemsCursor = db.rawQuery(query, new String[]{String.valueOf(outfitId)});
+
+                        if (itemsCursor.moveToFirst()) {
+                            do {
+                                ClothingItem item = new ClothingItem();
+                                item.setClothingId(itemsCursor.getLong(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_ID)));
+                                item.setName(itemsCursor.getString(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_NAME)));
+                                item.setCategory(itemsCursor.getString(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_CATEGORY)));
+                                item.setImageResourceName(itemsCursor.getString(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_IMAGE_RES)));
+                                item.setGenderTarget(itemsCursor.getString(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_GENDER_TARGET)));
+                                item.setMinTemp(itemsCursor.getInt(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_MIN_TEMP)));
+                                item.setMaxTemp(itemsCursor.getInt(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_MAX_TEMP)));
+                                item.setWaterproof(itemsCursor.getInt(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_IS_WATERPROOF)) == 1);
+                                item.setWindproof(itemsCursor.getInt(itemsCursor.getColumnIndexOrThrow(COLUMN_CI_IS_WINDPROOF)) == 1);
+
+                                String category = itemsCursor.getString(itemsCursor.getColumnIndexOrThrow(COLUMN_SOI_CATEGORY));
+                                outfitItemsMap.put(category, item);
+
+                            } while (itemsCursor.moveToNext());
+                        }
+                    } finally {
+                        if (itemsCursor != null) itemsCursor.close();
+                    }
+
+                    // Создаем объект SavedOutfit и добавляем в список
+                    SavedOutfit savedOutfit = new SavedOutfit(outfitId, userId, dateSaved, weatherDesc, temperature, style, outfitItemsMap);
+                    savedOutfits.add(savedOutfit);
+
+                } while (outfitCursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting saved outfits for userId: " + userId, e);
+        } finally {
+            if (outfitCursor != null) outfitCursor.close();
+        }
+        return savedOutfits;
+    }
+
+    // Метод для удаления сохраненного образа
+    public boolean deleteSavedOutfit(long outfitId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = 0;
+        db.beginTransaction();
+        try {
+            // Благодаря ON DELETE CASCADE в TABLE_SAVED_OUTFIT_ITEMS,
+            // все связанные элементы будут удалены автоматически.
+            rowsAffected = db.delete(TABLE_SAVED_OUTFITS, COLUMN_SO_ID + " = ?",
+                    new String[]{String.valueOf(outfitId)});
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Error deleting saved outfit with ID: " + outfitId, e);
+        } finally {
+            db.endTransaction();
+        }
+        return rowsAffected > 0;
+    }
+
+
 }

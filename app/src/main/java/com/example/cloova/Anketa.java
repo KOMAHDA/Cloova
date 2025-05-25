@@ -82,9 +82,9 @@ public class Anketa extends AppCompatActivity {
         goBackButton.setOnClickListener(v -> finish());
 
         // Нижняя навигационная панель
-        ImageView profileBtn = findViewById(R.id.profile_shape);
-        ImageView homeBtn = findViewById(R.id.main_house_shape);
-        ImageView favoritesBtn = findViewById(R.id.heart_shape);
+        Button profileBtn = findViewById(R.id.profile_shape);
+        Button homeBtn = findViewById(R.id.main_house_shape);
+        Button favoritesBtn = findViewById(R.id.heart_shape);
 
         profileBtn.setOnClickListener(v -> {
             // Переход в профиль

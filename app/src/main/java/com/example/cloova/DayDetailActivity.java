@@ -3,6 +3,7 @@ package com.example.cloova; // Убедитесь, что пакет прави�
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -59,9 +61,12 @@ public class DayDetailActivity extends AppCompatActivity {
     private TextView tvOutfitSuggestionDetail;
     private ImageView ivMannequin; // Заглушка для манекена
     private String outfitPreferredStyle;
+    private TextView tvNoOutfitMessage;
 
-    // UI для отображения предложенной одежды (простой вариант - TextView)
-    private LinearLayout suggestedOutfitContainer; // Добавьте этот LinearLayout в XML под манекеном
+    private ImageView ivOutfitOuterwear;
+    private ImageView ivOutfitTop;
+    private ImageView ivOutfitBottom;
+    private ImageView ivOutfitShoes;
 
     // FAB кнопки
     private FloatingActionButton fabEditOutfit, fabAddFavorite, fabRefresh;
@@ -79,6 +84,11 @@ public class DayDetailActivity extends AppCompatActivity {
     private double windKph;
     private int humidity;
     private int weatherCode;
+
+    private ClothingItem lastSelectedOuterwear;
+    private ClothingItem lastSelectedTop;
+    private ClothingItem lastSelectedBottom;
+    private ClothingItem lastSelectedShoes;
 
 
     @Override
@@ -104,11 +114,15 @@ public class DayDetailActivity extends AppCompatActivity {
         tvHumidityValueDetail = findViewById(R.id.tv_humidity_value_detail); // Предполагаем, что эти ID есть
         btnBackToWeeklyDetail = findViewById(R.id.btn_back_to_weekly_detail);
         tvOutfitSuggestionDetail = findViewById(R.id.tv_outfit_suggestion_detail);
+        tvNoOutfitMessage = findViewById(R.id.tv_no_outfit_message);
+
         ivMannequin = findViewById(R.id.iv_mannequin);
 
-        suggestedOutfitContainer = findViewById(R.id.suggested_outfit_container_ll); // Убедитесь, что такой ID есть
+        ivOutfitOuterwear = findViewById(R.id.iv_outfit_outerwear);
+        ivOutfitTop = findViewById(R.id.iv_outfit_top);
+        ivOutfitBottom = findViewById(R.id.iv_outfit_bottom);
+        ivOutfitShoes = findViewById(R.id.iv_outfit_shoes);
 
-        fabEditOutfit = findViewById(R.id.fab_edit_outfit_detail);
         fabAddFavorite = findViewById(R.id.fab_add_favorite_detail);
         fabRefresh = findViewById(R.id.fab_refresh_detail);
 
@@ -374,16 +388,13 @@ public class DayDetailActivity extends AppCompatActivity {
             User user = dbHelper.getUserInfo(userId);
 
             if (user != null && user.getGender() != null && !user.getGender().isEmpty()) {
-                // Стиль и погодные условия нам все еще нужны для предпочтений
                 String styleForOutfit = DayDetailActivity.this.outfitPreferredStyle;
-
-                List<String> conditionNamesForDB = mapApiWeatherToDbConditions(weatherDescription, weatherCode); // Используем обновленный маппер
+                List<String> conditionNamesForDB = mapApiWeatherToDbConditions(weatherDescription, weatherCode);
 
                 Log.d(TAG, "Calling getSuggestedOutfit (wider search) with:");
                 Log.d(TAG, "  Temperature (for range): " + ((int) Math.round(DayDetailActivity.this.maxTemp)));
                 Log.d(TAG, "  User Gender: " + user.getGender());
 
-                // Вызываем getSuggestedOutfit только с температурой и полом
                 List<ClothingItem> allPossibleItems = dbHelper.getSuggestedOutfit(
                         (int) Math.round(DayDetailActivity.this.maxTemp),
                         user.getGender()
@@ -402,15 +413,19 @@ public class DayDetailActivity extends AppCompatActivity {
                 Log.d(TAG, "User data loaded: " + currentUser.getName());
                 if (result.allPossibleItems != null) {
                     Log.d(TAG, "All possible outfit items loaded: " + result.allPossibleItems.size());
-                    // Передаем все необходимые данные в displaySuggestedOutfit
                     displaySuggestedOutfit(result.allPossibleItems, maxTemp, result.preferredStyle, result.weatherConditions);
                 } else {
-                    Log.w(TAG, "All possible items list is null.");
-                    tvOutfitSuggestionDetail.setText("Не удалось получить список одежды.");
+                    Log.w(TAG, "All possible items list is null. Showing no outfit message.");
+                    tvOutfitSuggestionDetail.setVisibility(View.GONE); // Скрыть текстовый список, если нет вещей
+                    tvNoOutfitMessage.setVisibility(View.VISIBLE); // Показать сообщение об отсутствии образа
+                    ivMannequin.setVisibility(View.GONE); // Скрыть манекен
                 }
             } else {
-                Log.e(TAG, "Failed to load user data.");
-                tvOutfitSuggestionDetail.setText("Ошибка загрузки данных пользователя.");
+                Log.e(TAG, "Failed to load user data. Showing error message.");
+                tvOutfitSuggestionDetail.setVisibility(View.GONE); // Скрыть текстовый список
+                tvNoOutfitMessage.setText(getString(R.string.error_loading_user_data)); // Сообщение об ошибке загрузки пользователя
+                tvNoOutfitMessage.setVisibility(View.VISIBLE); // Показать сообщение об ошибке
+                ivMannequin.setVisibility(View.GONE); // Скрыть манекен
             }
         }
     }
@@ -432,98 +447,130 @@ public class DayDetailActivity extends AppCompatActivity {
     private void displaySuggestedOutfit(List<ClothingItem> allPossibleItems, double currentTemperature,
                                         String preferredStyle, List<String> currentDbWeatherConditions) {
         Log.d(TAG, "displaySuggestedOutfit: Processing " + allPossibleItems.size() + " possible items. PrefStyle: " + preferredStyle + ", Conditions: " + currentDbWeatherConditions);
-        if (suggestedOutfitContainer != null) {
-            suggestedOutfitContainer.removeAllViews();
-        }
+
+        // --- Сбрасываем видимость всех элементов перед новым подбором ---
+        ivOutfitOuterwear.setVisibility(View.GONE);
+        ivOutfitTop.setVisibility(View.GONE);
+        ivOutfitBottom.setVisibility(View.GONE);
+        ivOutfitShoes.setVisibility(View.GONE);
+        tvOutfitSuggestionDetail.setVisibility(View.GONE); // Скрываем текстовый список
+        tvNoOutfitMessage.setVisibility(View.GONE); // Скрываем сообщение об отсутствии образа
+        ivMannequin.setVisibility(View.VISIBLE); // Показываем манекен по умолчанию
+
+        boolean isRainyOrSnowy = containsRainOrSnow(currentDbWeatherConditions);
+        boolean isWindy = currentDbWeatherConditions.contains("Ветрено");
 
         if (allPossibleItems.isEmpty()) {
-            tvOutfitSuggestionDetail.setText(getString(R.string.outfit_no_suitable_clothes));
-            ivMannequin.setVisibility(View.GONE);
+            tvOutfitSuggestionDetail.setVisibility(View.GONE); // Скрываем текстовый список
+            tvNoOutfitMessage.setVisibility(View.VISIBLE); // Показываем сообщение об отсутствии образа
+            ivMannequin.setVisibility(View.GONE); // Скрываем манекен
+            Log.d(TAG, "No possible items found. Showing no outfit message.");
             return;
         }
-        ivMannequin.setVisibility(View.VISIBLE);
 
         Map<String, List<ClothingItem>> itemsByCategory = new HashMap<>();
         for (ClothingItem item : allPossibleItems) {
-            itemsByCategory.computeIfAbsent(item.getCategory().toLowerCase(), k -> new ArrayList<>()).add(item);
+            itemsByCategory.computeIfAbsent(item.getCategory().toLowerCase(Locale.ROOT), k -> new ArrayList<>()).add(item);
         }
 
-        // --- Логика выбора с приоритетами и "откатами" ---
+        // --- Логика подбора (без изменений) ---
         ClothingItem selectedTop = findBestMatch(itemsByCategory.get("верх"), preferredStyle, currentDbWeatherConditions, currentTemperature);
         ClothingItem selectedBottom = findBestMatch(itemsByCategory.get("низ"), preferredStyle, currentDbWeatherConditions, currentTemperature);
         ClothingItem selectedShoes = findBestMatch(itemsByCategory.get("обувь"), preferredStyle, currentDbWeatherConditions, currentTemperature);
 
         ClothingItem selectedOuterwear = null;
-        boolean needsOuterwear = currentTemperature < 15 || containsRainOrSnow(currentDbWeatherConditions);
+        boolean needsOuterwear = currentTemperature < 15 || isRainyOrSnowy || isWindy;
         if (needsOuterwear) {
             selectedOuterwear = findBestMatch(itemsByCategory.get("верхняя одежда"), preferredStyle, currentDbWeatherConditions, currentTemperature);
         }
 
-        ClothingItem selectedHeadwear = null;
-        boolean needsHeadwearForSun = currentTemperature > 20 && currentDbWeatherConditions.contains("Солнечно");
-        boolean needsHeadwearForCold = currentTemperature < 5 || containsRainOrSnow(currentDbWeatherConditions) || currentDbWeatherConditions.contains("Ветрено");
-        if (needsHeadwearForSun || needsHeadwearForCold) {
-            selectedHeadwear = findBestMatch(itemsByCategory.get("головной убор"), preferredStyle, currentDbWeatherConditions, currentTemperature);
-        }
+        this.lastSelectedOuterwear = selectedOuterwear;
+        this.lastSelectedTop = selectedTop;
+        this.lastSelectedBottom = selectedBottom;
+        this.lastSelectedShoes = selectedShoes;
 
         // Специальная логика для платьев/юбок
         if (selectedTop == null && currentUser != null && "Женский".equalsIgnoreCase(currentUser.getGender()) && itemsByCategory.containsKey("платья/юбки")) {
             ClothingItem dressOrSkirt = findBestMatch(itemsByCategory.get("платья/юбки"), preferredStyle, currentDbWeatherConditions, currentTemperature);
             if (dressOrSkirt != null) {
-                selectedTop = dressOrSkirt; // Считаем платье/юбку за "верх" в данном контексте
-                selectedBottom = null;      // Низ не нужен с платьем/длинной юбкой
+                selectedTop = dressOrSkirt;
+                selectedBottom = null;
+                Log.d(TAG, "Selected dress/skirt: " + dressOrSkirt.getName());
             }
         }
 
-        // --- Если для обязательных категорий ничего не найдено, пробуем найти хоть что-то ---
-        if (selectedTop == null && itemsByCategory.get("верх") != null) {
-            Log.w(TAG, "No ideal 'Top' found, picking any suitable by temp.");
-            selectedTop = chooseBestItemForCategory(itemsByCategory.get("верх"), currentTemperature); // Откат к выбору по температуре
+        // --- Устанавливаем изображения в ImageView ---
+        int itemsVisuallyDisplayed = 0; // Считаем, сколько реально элементов отображено на манекене
+
+        if (selectedOuterwear != null) {
+            setOutfitImage(ivOutfitOuterwear, selectedOuterwear.getImageResourceName());
+            itemsVisuallyDisplayed++;
         }
-        if (selectedBottom == null && itemsByCategory.get("низ") != null && selectedTop != null && !selectedTop.getCategory().equalsIgnoreCase("платья/юбки")) {
-            Log.w(TAG, "No ideal 'Bottom' found, picking any suitable by temp.");
-            selectedBottom = chooseBestItemForCategory(itemsByCategory.get("низ"), currentTemperature);
+        if (selectedTop != null) {
+            setOutfitImage(ivOutfitTop, selectedTop.getImageResourceName());
+            itemsVisuallyDisplayed++;
         }
-        if (selectedShoes == null && itemsByCategory.get("обувь") != null) {
-            Log.w(TAG, "No ideal 'Shoes' found, picking any suitable by temp.");
-            selectedShoes = chooseBestItemForCategory(itemsByCategory.get("обувь"), currentTemperature);
+        if (selectedBottom != null) {
+            setOutfitImage(ivOutfitBottom, selectedBottom.getImageResourceName());
+            itemsVisuallyDisplayed++;
+        }
+        if (selectedShoes != null) {
+            setOutfitImage(ivOutfitShoes, selectedShoes.getImageResourceName());
+            itemsVisuallyDisplayed++;
         }
 
-
-        // --- Формируем текстовое описание образа ---
-        // ... (ваш код формирования StringBuilder, он остается таким же) ...
-        StringBuilder outfitTextBuilder = new StringBuilder("Рекомендуемый образ:\n");
-        int itemCount = 0;
+        // --- Формируем и отображаем ТЕКСТОВОЕ описание образа ---
+        StringBuilder outfitTextBuilder = new StringBuilder(getString(R.string.recommended_outfit_title) + "\n");
+        int itemsInTextList = 0; // Считаем, сколько элементов в текстовом списке
 
         if (selectedOuterwear != null) {
             outfitTextBuilder.append("🧥 ").append(selectedOuterwear.getName()).append("\n");
-            itemCount++;
+            itemsInTextList++;
         }
         if (selectedTop != null) { // Может быть платьем
             outfitTextBuilder.append(selectedTop.getCategory().equalsIgnoreCase("платья/юбки") ? "👗 " : "👕 ")
                     .append(selectedTop.getName()).append("\n");
-            itemCount++;
+            itemsInTextList++;
         }
         if (selectedBottom != null) {
             outfitTextBuilder.append("👖 ").append(selectedBottom.getName()).append("\n");
-            itemCount++;
+            itemsInTextList++;
         }
         if (selectedShoes != null) {
             outfitTextBuilder.append("👟 ").append(selectedShoes.getName()).append("\n");
-            itemCount++;
-        }
-        if (selectedHeadwear != null) {
-            outfitTextBuilder.append("🧢 ").append(selectedHeadwear.getName()).append("\n");
-            itemCount++;
+            itemsInTextList++;
         }
 
-        if (itemCount >= 3) { // Показываем, если есть хотя бы 3 основных элемента (верх, низ, обувь или платье, обувь)
-            if (outfitTextBuilder.length() > 0 && outfitTextBuilder.charAt(outfitTextBuilder.length() - 1) == '\n') {
-                outfitTextBuilder.setLength(outfitTextBuilder.length() - 1);
-            }
+
+
+        // --- Логика отображения/скрытия на основе количества подобранных элементов ---
+        if (itemsVisuallyDisplayed > 0) { // Если хоть что-то подобралось визуально
             tvOutfitSuggestionDetail.setText(outfitTextBuilder.toString());
+            tvOutfitSuggestionDetail.setVisibility(View.VISIBLE); // Показываем текстовый список
+            tvNoOutfitMessage.setVisibility(View.GONE); // Скрываем сообщение об отсутствии
+            ivMannequin.setVisibility(View.VISIBLE); // Показываем манекен (уже должен быть виден)
+            Log.d(TAG, "Successfully displayed " + itemsVisuallyDisplayed + " outfit items visually and " + itemsInTextList + " textually.");
+        } else { // Если не удалось подобрать ничего
+            tvOutfitSuggestionDetail.setVisibility(View.GONE); // Скрываем текстовый список
+            tvNoOutfitMessage.setVisibility(View.VISIBLE); // Показываем сообщение об отсутствии образа
+            ivMannequin.setVisibility(View.GONE); // Скрываем манекен
+            Log.d(TAG, "No suitable outfit found. Displaying fallback message.");
+        }
+    }
+
+    private void setOutfitImage(ImageView imageView, String imageResourceName) {
+        if (imageView == null || imageResourceName == null || imageResourceName.isEmpty()) {
+            Log.w(TAG, "setOutfitImage: ImageView is null or imageResourceName is empty.");
+            return;
+        }
+        int resId = getResources().getIdentifier(imageResourceName, "drawable", getPackageName());
+        if (resId != 0) {
+            imageView.setImageResource(resId);
+            imageView.setVisibility(View.VISIBLE);
+            Log.d(TAG, "setOutfitImage: Set '" + imageResourceName + "' to " + imageView.getId());
         } else {
-            tvOutfitSuggestionDetail.setText(getString(R.string.outfit_no_complete_set_fallback)); // Новая строка
+            Log.e(TAG, "setOutfitImage: Resource not found for name: " + imageResourceName + ". Setting visibility to GONE.");
+            imageView.setVisibility(View.GONE);
         }
     }
 
@@ -616,34 +663,6 @@ public class DayDetailActivity extends AppCompatActivity {
         return itemsInCategory.get(random.nextInt(itemsInCategory.size()));
     }
 
-    // Метод chooseBestItemForCategory теперь просто выбирает случайный,
-// основная логика в findBestMatch
-    @Nullable
-    private ClothingItem chooseBestItemForCategory(@Nullable List<ClothingItem> items, double currentTemperature) {
-        if (items == null || items.isEmpty()) {
-            return null;
-        }
-        return items.get(new Random().nextInt(items.size()));
-    }
-
-    @Nullable
-    private ClothingItem chooseRandomItem(@Nullable List<ClothingItem> items) {
-        if (items == null || items.isEmpty()) {
-            return null;
-        }
-        return items.get(new Random().nextInt(items.size()));
-    }
-
-    private void addOutfitItemToView(String itemName) {
-        if (suggestedOutfitContainer != null) {
-            TextView textView = new TextView(this);
-            textView.setText(itemName);
-            textView.setTextSize(16); // sp
-            textView.setPadding(0, 4, 0, 4); // dp
-            suggestedOutfitContainer.addView(textView);
-        }
-    }
-
 
     private void setupClickListeners() {
         Log.d(TAG, "setupClickListeners: Setting up");
@@ -654,7 +673,10 @@ public class DayDetailActivity extends AppCompatActivity {
             fabEditOutfit.setOnClickListener(v -> Toast.makeText(this, "Редактировать образ (TODO)", Toast.LENGTH_SHORT).show());
         }
         if (fabAddFavorite != null) {
-            fabAddFavorite.setOnClickListener(v -> Toast.makeText(this, "Добавить в избранное (TODO)", Toast.LENGTH_SHORT).show());
+            fabAddFavorite.setOnClickListener(v -> {
+                Log.d(TAG, "Add to Favorites button clicked.");
+                saveCurrentOutfit(); // Вызываем новый метод для сохранения
+            });
         }
         if (fabRefresh != null) {
             fabRefresh.setOnClickListener(v -> {
@@ -693,5 +715,60 @@ public class DayDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveCurrentOutfit() {
+        if (currentUserId == DatabaseHelper.DEFAULT_USER_ID || currentUser == null) {
+            Toast.makeText(this, R.string.error_auth_save_outfit, Toast.LENGTH_SHORT).show(); // Добавьте эту строку в strings.xml
+            Log.e(TAG, "saveCurrentOutfit: User not logged in or currentUser data missing.");
+            return;
+        }
+
+        Map<String, ClothingItem> currentOutfitMap = new LinkedHashMap<>();
+        if (lastSelectedOuterwear != null) currentOutfitMap.put("верхняя одежда", lastSelectedOuterwear);
+        if (lastSelectedTop != null) currentOutfitMap.put(lastSelectedTop.getCategory().equalsIgnoreCase("платья/юбки") ? "платья/юбки" : "верх", lastSelectedTop);
+        if (lastSelectedBottom != null) currentOutfitMap.put("низ", lastSelectedBottom);
+        if (lastSelectedShoes != null) currentOutfitMap.put("обувь", lastSelectedShoes);
+
+        if (currentOutfitMap.isEmpty()) {
+            Toast.makeText(this, R.string.outfit_cannot_save_empty, Toast.LENGTH_SHORT).show(); // Добавьте эту строку
+            Log.w(TAG, "saveCurrentOutfit: No items in the outfit to save.");
+            return;
+        }
+
+        new SaveOutfitTask().execute(currentOutfitMap);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class SaveOutfitTask extends AsyncTask<Map<String, ClothingItem>, Void, Long> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(DayDetailActivity.this, R.string.saving_outfit, Toast.LENGTH_SHORT).show(); // "Сохранение образа..."
+        }
+
+        @Override
+        protected Long doInBackground(Map<String, ClothingItem>... params) {
+            Map<String, ClothingItem> outfitItemsMap = params[0];
+            // Используем текущие значения, которые были переданы в Intent или установлены ранее
+            return dbHelper.saveOutfit(
+                    currentUserId,
+                    weatherDescription, // Используем weatherDescription
+                    maxTemp,            // Используем maxTemp
+                    outfitPreferredStyle, // Используем outfitPreferredStyle
+                    outfitItemsMap
+            );
+        }
+
+        @Override
+        protected void onPostExecute(Long result) {
+            if (result != -1) {
+                Toast.makeText(DayDetailActivity.this, R.string.outfit_saved_successfully, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Outfit saved with ID: " + result);
+            } else {
+                Toast.makeText(DayDetailActivity.this, R.string.error_saving_outfit, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Failed to save outfit.");
+            }
+        }
     }
 }
