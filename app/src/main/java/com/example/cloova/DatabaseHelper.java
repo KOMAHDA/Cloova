@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
@@ -363,7 +365,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return accessories;
     }
 
-    // В методе getUserInfo() DatabaseHelper исправьте:
     public User getUserInfo(long userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
@@ -377,6 +378,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             if (cursor.moveToFirst()) {
                 user = new User(); // Убедитесь, что класс User существует
+                user.setUserId(userId); // Важно установить ID!
                 user.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)));
                 user.setGender(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GENDER)));
                 user.setBirthDate(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_BIRTH_DATE)));
@@ -410,15 +412,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean updateUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
+        Log.d("DB_DEBUG", "Updating user ID: " + user.getUserId() +
+                ", New city: " + user.getCity());
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, user.getName());
         values.put(COLUMN_BIRTH_DATE, user.getBirthDate());
         values.put(COLUMN_LOGIN, user.getLogin());
         values.put(COLUMN_GENDER, user.getGender());
-        values.put(COLUMN_CITY, user.getCity());
         values.put(COLUMN_LANGUAGE, user.getLanguage());
         values.put(COLUMN_AVATAR, user.getAvatarResId());
+        values.put(COLUMN_CITY, user.getCity());
 
         int rowsAffected = db.update(
                 TABLE_USERS,
@@ -427,6 +431,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(user.getUserId())}
         );
 
+        Log.d("DB_DEBUG", "Rows affected: " + rowsAffected);
         return rowsAffected > 0;
     }
 

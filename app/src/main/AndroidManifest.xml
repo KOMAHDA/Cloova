@@ -3,7 +3,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -85,6 +88,18 @@
         </activity>
 
         <activity
+            android:name=".CityActivity"
+            android:exported="true"
+            android:configChanges="locale|layoutDirection"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".LanguagesActivity"
             android:parentActivityName=".ProfileActivity"
             android:configChanges="locale|layoutDirection"
@@ -134,6 +149,17 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <!-- Google maps
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCZEkUg_YUofKv3E6hgM2-ZOMdDx8AFNkQ" />-->
+
+        <meta-data
+            android:name="com.yandex.mapkit.apikey"
+            android:value="ed7e3518-2afb-4989-a0b1-0cbf9283558b" />
+
     </application>
 
 </manifest>

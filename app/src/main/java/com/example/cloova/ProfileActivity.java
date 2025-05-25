@@ -503,6 +503,7 @@ public class ProfileActivity extends AppCompatActivity {
     private LinearLayout myAnketaLayout;
     private LinearLayout likedLooksLayout;
     private LinearLayout plannedLooksLayout;
+    private LinearLayout changeCity;
     private LinearLayout changeLanguage;
     private Spinner stylesSpinner;
 
@@ -518,17 +519,16 @@ public class ProfileActivity extends AppCompatActivity {
         try {
             setContentView(R.layout.activity_profile);
 
-            // Получаем ID пользователя
             userId = getIntent().getLongExtra("USER_ID", -1);
             if (userId == -1) {
+                // Дополнительная проверка из SharedPreferences
                 SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
                 userId = prefs.getLong("user_id", -1);
-            }
-
-            if (userId == -1) {
-                Toast.makeText(this, "Ошибка авторизации", Toast.LENGTH_SHORT).show();
-                finish();
-                return;
+                if (userId == -1) {
+                    Toast.makeText(this, "Ошибка авторизации", Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
             }
 
             dbHelper = new DatabaseHelper(this);
@@ -553,6 +553,15 @@ public class ProfileActivity extends AppCompatActivity {
                 "tg://resolve?domain=cloova_app",  // Intent для приложения Telegram
                 "https://t.me/cloova_app"          // Fallback ссылка
         ));
+
+        changeCity = findViewById(R.id.block1);
+        changeCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangeCity(v);
+            }
+        });
+
 
         changeLanguage = findViewById(R.id.block2);
         changeLanguage.setOnClickListener(new View.OnClickListener() {
@@ -638,6 +647,22 @@ public class ProfileActivity extends AppCompatActivity {
             } catch (Exception ex) {
                 Toast.makeText(this, "Не удалось открыть ссылку", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+
+    private void ChangeCity(View v) {
+        Intent intent = new Intent(this, CityActivity.class);
+        intent.putExtra("USER_ID", userId);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            // Обновляем данные профиля при возврате
+            displayUserProfile();
         }
     }
 
