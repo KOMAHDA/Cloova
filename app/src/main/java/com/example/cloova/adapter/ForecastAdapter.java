@@ -26,13 +26,15 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     private List<ForecastDay> forecastDays; // Список объектов ForecastDay
     private Context context;
     private String currentCityName;
+    private String userPreferredStyle;
     private static final String TAG = "ForecastAdapter";
 
     // Конструктор
-    public ForecastAdapter(Context context, List<ForecastDay> forecastDays, String cityName) {
+    public ForecastAdapter(Context context, List<ForecastDay> forecastDays, String cityName, String userStyle) {
         this.context = context;
         this.forecastDays = forecastDays;
         this.currentCityName = cityName;
+        this.userPreferredStyle = userStyle;
     }
 
     @NonNull
@@ -45,7 +47,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     @Override
     public void onBindViewHolder(@NonNull ForecastViewHolder holder, int position) {
         ForecastDay forecastDay = forecastDays.get(position);
-        holder.bind(forecastDay, context, currentCityName);
+        holder.bind(forecastDay, context, currentCityName, this.userPreferredStyle);
     }
 
     @Override
@@ -54,8 +56,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     }
 
     // Метод для обновления данных
-    public void updateData(List<ForecastDay> newForecasts, String cityName) {
+    public void updateData(List<ForecastDay> newForecasts, String cityName, String userStyle) {
         this.currentCityName = cityName;
+        this.userPreferredStyle = userStyle;
         this.forecastDays.clear();
         if (newForecasts != null) {
             this.forecastDays.addAll(newForecasts);
@@ -80,7 +83,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             btnOutfit = itemView.findViewById(R.id.btn_outfit);
         }
 
-        void bind(final ForecastDay forecast, final Context context, final String cityName) {
+        void bind(final ForecastDay forecast, final Context context, final String cityName, final String preferredStyleForOutfit) {
             tvDate.setText(formatDisplayDate(forecast.date));
             tvDayOfWeek.setText(formatDisplayDayOfWeek(forecast.date));
 
@@ -125,7 +128,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                         }
                     }
                     intent.putExtra(DayDetailActivity.EXTRA_CITY_NAME, cityName); // Передаем имя города
-
+                    intent.putExtra(DayDetailActivity.EXTRA_USER_STYLE_FOR_OUTFIT, preferredStyleForOutfit);
                     context.startActivity(intent);
                 }
             });

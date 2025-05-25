@@ -284,16 +284,73 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_outfit_suggestion_detail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
-            <ImageView
-                android:id="@+id/iv_mannequin"
-                android:layout_width="180dp"
-                android:layout_height="270dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:src="@drawable/maneken_nak"
-                android:scaleType="fitCenter"
-                android:contentDescription="Манекеныч" />
+                <FrameLayout
+                    android:id="@+id/mannequin_outfit_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:minHeight="270dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp">
+                    <ImageView
+                        android:id="@+id/iv_mannequin"
+                        android:layout_width="180dp"
+                        android:layout_height="270dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/maneken_nak"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="Манекеныч" />
+
+                <ImageView
+                    android:id="@+id/iv_outfit_top"
+                    android:layout_width="180dp"
+                    android:layout_height="270dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:src="@drawable/tshirt_cotton_default"
+                    android:contentDescription="Верхняя одежда"/>
+
+                <ImageView
+                    android:id="@+id/iv_outfit_bottom"
+                    android:layout_width="180dp"
+                    android:layout_height="270dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:src="@drawable/jeans_default"
+                    android:contentDescription="Нижняя одежда"/>
+
+                <ImageView
+                    android:id="@+id/iv_outfit_shoes"
+                    android:layout_width="180dp"
+                    android:layout_height="270dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:src="@drawable/sneakers_summer_default"
+                    android:contentDescription="Обувь"/>
+
+                <ImageView
+                    android:id="@+id/iv_outfit_headwear"
+                    android:layout_width="180dp"
+                    android:layout_height="270dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:src="@drawable/cap_default"
+                    android:contentDescription="Головной убор"/>
+
+                <ImageView
+                    android:id="@+id/iv_outfit_outerwear"
+                    android:layout_width="180dp"
+                    android:layout_height="270dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:src="@drawable/puffer_jacket_light_default"
+                    android:contentDescription="Верхняя одежда"/>
+                </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout

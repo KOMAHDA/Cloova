@@ -159,4 +159,5 @@
     <string name="situazia">Для каких ситуаций тебе чаще всего нужно собирать образы?</string>
     <string name="komfort">Что для тебя важнее в образе: комфорт или внешний вид?</string>
     <string name="vibor">Выбрать</string>
+    <string name="outfit_no_complete_set_fallback">Не удалось собрать полный комплект. Попробуйте изменить критерии или обновить каталог одежды.</string>
 </resources>
