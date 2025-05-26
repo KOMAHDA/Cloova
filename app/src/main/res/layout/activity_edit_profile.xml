@@ -102,7 +102,7 @@
 
     <LinearLayout
         android:id="@+id/profile_info_card"
-        android:layout_width="345dp"
+        android:layout_width="335dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/rounded_edit_text"

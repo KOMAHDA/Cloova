@@ -141,9 +141,9 @@
 
     <string name="weather_forecast_title">Прогноз на ближайшие дни</string>
     <string name="outfit_button_desc">Подобрать образ</string>
-    <string name="filter_day">День</string>
-    <string name="filter_night">Ночь</string>
-    <string name="filter_outfit">Образ</string>
+    <string name="day_label">День</string>
+    <string name="night_label">Ночь</string>
+    <string name="look_label">Образ</string>
     <string name="monthly_forecast_button">Прогноз на месяц</string>
 
     <string name="day_detail_activity_title">Прогноз на %1$s</string> <!-- %1$s будет заменен на дату -->
