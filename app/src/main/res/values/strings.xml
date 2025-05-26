@@ -124,7 +124,6 @@
     <string name="menu_settings">Настройки</string> <!-- Один раз -->
     <string name="menu_logout">Выход</string> <!-- Один раз -->
 
-    <!-- Сообщения Toast / Ошибки / TODO -->
     <string name="error_auth">Ошибка авторизации</string>
     <string name="error_loading_profile_data">Не удалось загрузить данные профиля</string>
     <string name="error_user_data_not_found">Данные пользователя не найдены</string>
