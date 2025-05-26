@@ -205,4 +205,6 @@
     <string name="planned_outfit_delete_failed">Ошибка при удалении запланированного образа.</string>
     <string name="delete_planned_confirmation_title">Удалить запланированный образ?</string>
     <string name="delete_planned_confirmation_message">Вы уверены, что хотите удалить этот запланированный образ? Это действие нельзя отменить.</string>
+
+    <string name="menu_favorites">Избранное</string>
 </resources>

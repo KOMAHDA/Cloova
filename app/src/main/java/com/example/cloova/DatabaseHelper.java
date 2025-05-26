@@ -24,7 +24,7 @@ import java.util.Map;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DB_HELPER"; // Тег для логов
     private static final String DATABASE_NAME = "CloovaDB.db";
-    private static final int DATABASE_VERSION = 8; // <<<=== ВЕРСИЯ ИЗМЕНЕНА
+    private static final int DATABASE_VERSION = 9; // <<<=== ВЕРСИЯ ИЗМЕНЕНА
 
     // Таблица пользователей
     private static final String TABLE_USERS = "users";
@@ -354,11 +354,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 List.of("Классический", "Богемный", "Повседневный"), // Покрывает 3 стиля
                 List.of("Солнечно", "Облачно", "Переменная облачность", "Туман")
         );
-        addClothingItemFullInternal(db,"Пиджак", "Верх", "jacketclassicblack", "Унисекс", // Только Мужской
-                5, 15, 0, 0,
-                List.of("Классический", "Богемный", "Повседневный"), // Покрывает 3 стиля
-                List.of("Солнечно", "Облачно", "Переменная облачность", "Туман", "Небольшой дождь")
-        );
         addClothingItemFullInternal(db,"Блузка элегантная", "Верх", "shirtwhite", "Женский",
                 15, 25, 0, 0,
                 List.of("Классический", "Богемный", "Повседневный"),
@@ -404,7 +399,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
         addClothingItemFullInternal(db,"Джинсы", "Низ", "pantsfamiliarblue", "Унисекс", // Переименовал из "Джинсы" для ясности, скорректировал температуру
                 0, 20, 0, 1,
-                List.of("Повседневный", "Классический", "Богемный"), // Джинсы универсальны
+                List.of("Повседневный", "Богемный"), // Джинсы универсальны
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Небольшой дождь", "Дождь", "Туман")
         );
         addClothingItemFullInternal(db,"Джинсы утепленные", "Низ", "pantsfamiliarblue", "Унисекс",
@@ -447,13 +442,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         // --- Верхняя одежда ---
+        addClothingItemFullInternal(db,"Пиджак", "Верхняя одежда", "jacketclassicblack", "Унисекс", // Только Мужской
+                5, 15, 0, 0,
+                List.of("Классический", "Богемный", "Повседневный"), // Покрывает 3 стиля
+                List.of("Солнечно", "Облачно", "Переменная облачность", "Туман", "Небольшой дождь")
+        );
         addClothingItemFullInternal(db,"Куртка джинсовая", "Верхняя одежда", "jacketblue", "Унисекс",
-                12, 22, 0, 0, // Немного поднял min_temp
+                12, 15, 0, 0, // Немного поднял min_temp
                 List.of("Повседневный", "Богемный"), // Добавил Богемный
                 List.of("Солнечно", "Переменная облачность", "Облачно", "Ветрено", "Туман", "Дождь")
         );
         addClothingItemFullInternal(db,"Куртка кожаная", "Верхняя одежда", "jacketblack", "Унисекс",
-                8, 18, 0, 1,
+                8, 15, 0, 1,
                 List.of("Повседневный", "Классический", "Богемный"), // Добавил Богемный
                 List.of("Облачно", "Переменная облачность", "Ветрено", "Туман", "Небольшой дождь", "Дождь") // Убрал "Прохладно"
         );

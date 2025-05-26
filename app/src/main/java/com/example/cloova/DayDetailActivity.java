@@ -93,6 +93,8 @@ public class DayDetailActivity extends AppCompatActivity {
     private ClothingItem lastSelectedBottom;
     private ClothingItem lastSelectedShoes;
 
+    private Random outfitRandomGenerator = new Random();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -482,6 +484,7 @@ public class DayDetailActivity extends AppCompatActivity {
 
         for (int i = 0; i < numAttempts; i++) {
             Log.d(TAG, "Generating outfit candidate #" + (i + 1));
+            Random attemptSpecificRandom = new Random();
             ClothingItem currentCandidateTop = null;
             ClothingItem currentCandidateBottom = null;
             ClothingItem currentCandidateShoes = null;
@@ -501,9 +504,6 @@ public class DayDetailActivity extends AppCompatActivity {
 
             // Выбор лучшего основного образа для этой попытки
             boolean chooseDressOrSkirtForThisAttempt = false;
-            // Увеличиваем рандомность выбора между платьем и обычным комплектом.
-            // Если есть и то, и другое, выбираем случайно.
-            // Если только одно из них, выбираем его.
             if (candDressOrSkirt != null && (candTopReg == null || candBottomReg == null)) {
                 chooseDressOrSkirtForThisAttempt = true;
             } else if (candDressOrSkirt == null && candTopReg != null && candBottomReg != null) {
@@ -511,8 +511,6 @@ public class DayDetailActivity extends AppCompatActivity {
             } else if (candDressOrSkirt != null && candTopReg != null && candBottomReg != null) {
                 chooseDressOrSkirtForThisAttempt = new Random().nextBoolean(); // Случайный выбор
             } else {
-                // Если ни один из основных комплектов не найден, то оба останутся null
-                // Это будет обработано дальше.
                 Log.d(TAG, "No complete primary outfit found for candidate #" + (i + 1));
             }
 
@@ -537,7 +535,6 @@ public class DayDetailActivity extends AppCompatActivity {
             if (currentCandidateTop != null) candidateOutfit.put(currentCandidateTop.getCategory().equalsIgnoreCase("платья/юбки") ? "платья/юбки" : "верх", currentCandidateTop);
             if (currentCandidateBottom != null) candidateOutfit.put("низ", currentCandidateBottom);
             if (currentCandidateShoes != null) candidateOutfit.put("обувь", currentCandidateShoes);
-            // if (currentCandidateHeadwear != null) candidateOutfit.put("головной убор", currentCandidateHeadwear);
 
             // Добавляем кандидата, только если он не пустой (хотя бы 2-3 элемента)
             if (candidateOutfit.size() >= 2) { // Минимальное количество элементов для "образа"
@@ -672,7 +669,7 @@ public class DayDetailActivity extends AppCompatActivity {
         }
 
         boolean isRainyOrSnowy = containsRainOrSnow(currentDbWeatherConditions);
-        boolean isWindy = currentDbWeatherConditions.contains("Ветрено"); // <-- Здесь была опечатка "Вetreno" в вашем коде, исправил на "Ветрено"
+        boolean isWindy = currentDbWeatherConditions.contains("Ветрено");
         Log.d(TAG, "findBestMatch: Is Rainy/Snowy? " + isRainyOrSnowy + ", Is Windy? " + isWindy);
 
 
@@ -866,16 +863,14 @@ public class DayDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, ProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); // Привести существующий экземпляр наверх
                 startActivity(intent);
-                // finish(); // Возможно, не нужно закрывать, чтобы пользователь мог вернуться
             });
         }
-        if (navHomeIcon != null) {
-            // TODO: Определить, куда ведет "Дом" (WeatherForecastActivity или другой главный экран)
-            Toast.makeText(this, "Переход на главный экран (TODO)", Toast.LENGTH_SHORT).show();
-        }
         if (navFavoritesIcon != null) {
-            // TODO: Переход на экран избранного
-            Toast.makeText(this, "Переход в избранное (TODO)", Toast.LENGTH_SHORT).show();
+            navFavoritesIcon.setOnClickListener(v -> {
+                Intent intent = new Intent(this, Sohranenki.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            });
         }
     }
 
