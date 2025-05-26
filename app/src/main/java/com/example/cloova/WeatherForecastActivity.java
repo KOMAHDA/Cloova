@@ -11,7 +11,7 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+/*import androidx.appcompat.widget.Toolbar;*/
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +31,6 @@ import retrofit2.Response;
 public class WeatherForecastActivity extends AppCompatActivity {
 
     private static final String TAG = "WeatherForecastActivity";
-    // !!! ЗАМЕНИТЕ НА ВАШ КЛЮЧ !!!
     private static final String API_KEY = "579ae8495e7443b3aa9185358252404";
     private static final int FORECAST_DAYS = 7; // Запрашиваем 7 дней
     private static final String AQI = "no";
@@ -62,8 +61,8 @@ public class WeatherForecastActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_forecast);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_weather);
-        setSupportActionBar(toolbar);
+/*        Toolbar toolbar = findViewById(R.id.toolbar_weather);
+        setSupportActionBar(toolbar);*/
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -84,7 +83,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
             }
         }
 
-        // progressBar = findViewById(R.id.progress_bar_weather); // Найдите ProgressBar
+        // progressBar = findViewById(R.id.progress_bar_weather);
         recyclerView = findViewById(R.id.rv_daily_forecast);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // !!! Создаем адаптер с новым списком !!!
