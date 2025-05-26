@@ -60,6 +60,64 @@
     <string name="situazia">Для каких ситуаций тебе чаще всего нужно собирать образы?</string>
     <string name="komfort">Что для тебя важнее в образе: комфорт или внешний вид?</string>
     <string name="vibor">Выбрать</string>
+    <string name="done">Готово</string>
+    <string name="cancel">Отмена</string>
+    <string name="selected">Выбрано: </string>
+    <string name="anketa_submitted">Анкета отправлена!</string>
+
+
+    <string-array name="colors_array">
+        <item>Красный</item>
+        <item>Белый</item>
+        <item>Зелёный</item>
+        <item>Чёрный</item>
+    </string-array>
+
+    <string-array name="no_love_colors">
+        <item>Жёлтый</item>
+        <item>Розовый</item>
+        <item>Фиолетовый</item>
+    </string-array>
+
+    <string-array name="clothing_principles">
+        <item>Официально</item>
+        <item>Свободно</item>
+        <item>Ярко</item>
+    </string-array>
+
+    <string-array name="accessories_array">
+        <item>Шляпа</item>
+        <item>Очки</item>
+        <item>Перчатки</item>
+    </string-array>
+
+    <string-array name="wardrobe_clothes">
+        <item>Футболка</item>
+        <item>Шорты</item>
+        <item>Майка</item>
+        <item>Джинсы</item>
+        <item>Пальто</item>
+    </string-array>
+
+    <string-array name="no_combination_clothes">
+        <item>Футболка и пиджак</item>
+        <item>Шорты и колготки</item>
+        <item>Майка и кофта</item>
+        <item>Джинсы и туфли</item>
+        <item>Пальто и шапка</item>
+    </string-array>
+
+    <string-array name="situations">
+        <item>Университет</item>
+        <item>Вечеринка</item>
+        <item>Прогулка</item>
+        <item>Ресторан</item>
+    </string-array>
+
+    <string-array name="priority_options">
+        <item>Комфорт</item>
+        <item>Внешний вид</item>
+    </string-array>
 
     <!-- Массивы для Spinner/Выбора -->
     <string-array name="cities_array">

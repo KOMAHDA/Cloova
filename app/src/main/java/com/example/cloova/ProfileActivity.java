@@ -78,7 +78,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         Log.d(TAG, "onCreate: ActionBarDrawerToggle synced");
 
         // --- Инициализация остальных UI ---
-        profileImage = findViewById(R.id.profile_image);
+        profileImage = findViewById(R.id.iv_avatar);
         profileUsername = findViewById(R.id.profile_username);
         infoName = findViewById(R.id.info_name);
         infoDob = findViewById(R.id.info_dob);
