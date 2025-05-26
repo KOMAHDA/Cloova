@@ -9,26 +9,27 @@
     android:background="@color/fon_reg"
     tools:context=".Anketa">
 
-
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="412dp"
+        android:layout_width="0dp"
         android:layout_height="282dp"
+        android:src="@drawable/temn"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/temn"
-        tools:layout_editor_absoluteY="0dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@null"/>
 
     <ImageView
         android:id="@+id/imageView9"
-        android:layout_width="414dp"
+        android:layout_width="0dp"
         android:layout_height="345dp"
-        app:srcCompat="@drawable/svetl"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:ignore="MissingConstraints" />
+        android:src="@drawable/svetl"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@null"/>
 
     <ImageView
         android:id="@+id/gobackbutton"
@@ -45,7 +46,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="0dp"
+        android:layout_height="268dp"
+        android:src="@drawable/temni_2_3_snizu"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@null"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -58,13 +68,13 @@
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="80dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="80dp" />
 
     <ScrollView
         android:id="@+id/Scroll"
-        android:layout_width="334dp"
-        android:layout_height="554dp"
+        android:layout_width="335dp"
+        android:layout_height="wrap_content"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/manrope_bold"
                 android:text="@string/profile_colors_label"
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
             <Button
@@ -93,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:backgroundTint="@color/blue"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="@string/vibor"/>
 
 
@@ -104,6 +116,7 @@
                 android:fontFamily="@font/manrope_bold"
                 android:labelFor="@id/nameEditText"
                 android:text="@string/nolove"
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
             <Button
@@ -111,6 +124,7 @@
                 android:layout_width="match_parent"
                 android:backgroundTint="@color/blue"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="@string/vibor"/>
 
             <TextView
@@ -121,6 +135,7 @@
                 android:fontFamily="@font/manrope_bold"
                 android:labelFor="@id/nameEditText"
                 android:text="@string/profile_clothes_label"
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
             <Button
@@ -128,6 +143,7 @@
                 android:layout_width="match_parent"
                 android:backgroundTint="@color/blue"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="@string/vibor"/>
 
             <TextView
@@ -137,6 +153,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/manrope_bold"
                 android:text="@string/profile_accessories_question"
+                android:textColor="@color/black"
                 android:textSize="15sp"
                 />
 
@@ -145,6 +162,7 @@
                 android:backgroundTint="@color/blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="@string/vibor"/>
 
             <TextView
@@ -154,6 +172,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/manrope_bold"
                 android:text="@string/profile_clothes_hint"
+                android:textColor="@color/black"
                 android:textSize="15sp"
                 />
 
@@ -162,6 +181,7 @@
                 android:backgroundTint="@color/blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="@string/vibor"/>
 
 
@@ -173,6 +193,7 @@
                 android:fontFamily="@font/manrope_bold"
                 android:labelFor="@id/nameEditText"
                 android:text="@string/sochetanie"
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
             <Button
@@ -180,6 +201,7 @@
                 android:layout_width="match_parent"
                 android:backgroundTint="@color/blue"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="@string/vibor"/>
 
             <TextView
@@ -190,6 +212,7 @@
                 android:fontFamily="@font/manrope_bold"
                 android:labelFor="@id/nameEditText"
                 android:text="@string/situazia"
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
             <Button
@@ -197,6 +220,7 @@
                 android:layout_width="match_parent"
                 android:backgroundTint="@color/blue"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="@string/vibor"/>
 
             <TextView
@@ -207,6 +231,7 @@
                 android:fontFamily="@font/manrope_bold"
                 android:labelFor="@id/nameEditText"
                 android:text="@string/komfort"
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
             <Button
@@ -214,12 +239,8 @@
                 android:layout_width="match_parent"
                 android:backgroundTint="@color/blue"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="@string/vibor"/>
-
-
-
-
-
 
         </LinearLayout>
     </ScrollView>

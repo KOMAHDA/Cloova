@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class EditProfileActivity extends AppCompatActivity {
             infoDob = findViewById(R.id.info_dob);
             infoUsernameInCard = findViewById(R.id.info_username_in_card);
             infoUsername = findViewById(R.id.profile_username);
+            ImageView infoAvatar = findViewById(R.id.iv_avatar);
 
             // Загрузка данных пользователя
             loadUserData();

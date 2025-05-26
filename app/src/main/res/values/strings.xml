@@ -32,6 +32,11 @@
     <string name="anketa">Более подробную анкету пройдите в вашем личном кабинете</string>
     <string name="name_label_colon">Имя:</string> <!-- Используется как метка -->
     <string name="gender_label_colon">Пол:</string> <!-- Используется как метка -->
+    <string name="choose_colors">Выбрать цвета</string>
+    <string name="choose_styles">Выбрать стили</string>
+    <string name="choose_clothes">Выбрать одежду</string>
+    <string name="choose_accessories">Выбрать аксессуары</string>
+
     <!-- login_label_colon уже есть -->
     <string name="birth_date_label_colon">Дата рождения:</string> <!-- Используется как метка -->
     <string name="button_next">Продолжить</string>
@@ -43,9 +48,7 @@
     <string name="city_label_colon">Город:</string> <!-- Используется как метка -->
     <string name="profile_city_hint">Введите ваш город</string> <!-- Подсказка на экране ввода данных -->
     <string name="profile_style_label">Желаемые стили:</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_style_hint">Например: кэжуал, деловой, спортивный</string> <!-- Подсказка на экране ввода данных -->
     <string name="profile_colors_label">Предпочитаемые цвета:</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_colors_hint">Синий, белый, черный...</string> <!-- Заменено с массива -->
     <string name="profile_accessories_question">Какие аксессуары есть у вас?</string> <!-- Переименовано из profile_style_aks -->
     <string name="profile_clothes_label">Главный принцип в одежде:</string> <!-- Метка на экране ввода данных -->
     <string name="profile_clothes_hint">Какая одежда есть в вашем гардеробе?</string> <!-- Подсказка на экране ввода данных -->

@@ -7,21 +7,17 @@
     android:background="@color/fon_reg"
     tools:context=".Registration_step3">
 
-
     <ImageView
-        android:id="@+id/gobackbutton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
+        android:id="@+id/imageView6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:contentDescription="@null"
-        android:clickable="true"
-        android:focusable="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/chevron_left"
+        android:src="@drawable/svetli_3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@null"/>
 
     <ImageView
         android:id="@+id/imageView7"
@@ -47,22 +43,20 @@
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@null"/>
 
-    <Button
+    <ImageView
         android:id="@+id/gobackbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:padding="8dp"
-        android:backgroundTint="@android:color/white"
-        android:text="@string/strelka"
-        android:textColor="@color/blue"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:adjustViewBounds="true"
+        android:clickable="true"
+        android:contentDescription="@null"
+        android:focusable="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/chevron_left"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="24sp"
-        android:contentDescription="@string/strelka"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/logoTextView"
@@ -80,8 +74,8 @@
     <TextView
         android:id="@+id/textView2"
         android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:fontFamily="@font/manrope_bold"
         android:text="@string/registration_style_intro"
         android:textAlignment="center"
@@ -93,7 +87,7 @@
 
     <LinearLayout
         android:id="@+id/line1"
-        android:layout_width="345dp"
+        android:layout_width="335dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/rounded_edit_text"
@@ -110,6 +104,7 @@
             android:fontFamily="@font/manrope_bold"
             android:labelFor="@id/loginEditText"
             android:text="@string/login_label_colon"
+            android:textColor="@color/black"
             android:textSize="19sp" />
 
         <EditText
@@ -134,6 +129,7 @@
             android:fontFamily="@font/manrope_bold"
             android:labelFor="@id/passwordEditText"
             android:text="@string/password_label_colon"
+            android:textColor="@color/black"
             android:textSize="19sp" />
 
         <EditText
@@ -159,6 +155,7 @@
             android:fontFamily="@font/manrope_bold"
             android:labelFor="@id/confPasswordEditText"
             android:text="@string/confirm_password_label_colon"
+            android:textColor="@color/black"
             android:textSize="19sp" />
 
         <EditText
@@ -180,10 +177,9 @@
 
     <LinearLayout
         android:id="@+id/Linear"
-        android:layout_width="334dp"
+        android:layout_width="335dp"
         android:layout_height="100dp"
-        android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_edit_text"
         app:layout_constraintEnd_toEndOf="parent"

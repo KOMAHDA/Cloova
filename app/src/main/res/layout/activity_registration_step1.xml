@@ -75,11 +75,11 @@ tools:context=".Registration_step1">
     <TextView
         android:id="@+id/textView2"
         android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="0dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/manrope_bold"
-        android:text="@string/register_subtitle"
+        android:text="@string/registration_style_intro"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +88,7 @@ tools:context=".Registration_step1">
 
     <LinearLayout
         android:id="@+id/line1"
-        android:layout_width="345dp"
+        android:layout_width="335dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/rounded_edit_text"
@@ -164,6 +164,7 @@ tools:context=".Registration_step1">
                     android:fontFamily="@font/manrope_bold"
                     android:labelFor="@id/nameEditText"
                     android:text="@string/name_label_colon"
+                    android:textColor="@color/black"
                     android:textSize="19sp" />
 
                 <EditText
@@ -187,6 +188,7 @@ tools:context=".Registration_step1">
                     android:fontFamily="@font/manrope_bold"
                     android:labelFor="@id/sexSpinner"
                     android:text="@string/gender_label_colon"
+                    android:textColor="@color/black"
                     android:textSize="19sp" />
 
                 <Spinner
@@ -213,6 +215,7 @@ tools:context=".Registration_step1">
             android:fontFamily="@font/manrope_bold"
             android:labelFor="@id/nameEditText"
             android:text="@string/birth_date_label_colon"
+            android:textColor="@color/black"
             android:textSize="19sp" />
 
         <EditText
@@ -228,6 +231,7 @@ tools:context=".Registration_step1">
             android:backgroundTint="@color/login_input_gray"
             android:maxLength="10"
             android:hint="ДД.ММ.ГГГГ"
+            android:textColorHint="@color/temperature_text_night"
             android:minHeight="48dp"
             android:textSize="17sp"
             android:imeOptions="actionNext"/>
@@ -241,6 +245,7 @@ tools:context=".Registration_step1">
             android:fontFamily="@font/manrope_bold"
             android:labelFor="@id/nameEditText"
             android:text="@string/city_label_colon"
+            android:textColor="@color/black"
             android:textSize="19sp" />
 
         <Spinner
@@ -259,10 +264,9 @@ tools:context=".Registration_step1">
 
     <LinearLayout
         android:id="@+id/Linear"
-        android:layout_width="334dp"
+        android:layout_width="335dp"
         android:layout_height="100dp"
-        android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_edit_text"
         app:layout_constraintEnd_toEndOf="parent"

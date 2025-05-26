@@ -56,26 +56,24 @@
         android:id="@+id/logoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="130dp"
         android:fontFamily="@font/marcellus"
         android:text="@string/logo_text"
         android:textColor="@color/login_dark_blue"
         android:textSize="80sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/subtitleTextView"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="40dp"
-        android:fontFamily="@font/manrope_medium"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/manrope_bold"
         android:gravity="center"
         android:text="@string/login_subtitle"
-        android:textColor="@android:color/black"
+        android:textColor="@color/black"
         android:textSize="19sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,103 +81,83 @@
 
     <LinearLayout
         android:id="@+id/loginBox"
-        android:layout_width="0dp"
+        android:layout_width="335dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/rounded_white_bg"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_edit_text"
         android:orientation="vertical"
-        android:paddingStart="24dp"
-        android:paddingTop="32dp"
-        android:paddingEnd="24dp"
-        android:paddingBottom="32dp"
+        android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subtitleTextView">
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical">
 
         <TextView
             android:id="@+id/usernameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/manrope_bold"
+            android:labelFor="@id/loginEditText"
             android:text="@string/login_label_colon"
-            android:labelFor="@id/usernameEditText"
+            android:textColor="@color/black"
             android:textSize="19sp" />
 
         <EditText
             android:id="@+id/usernameEditText"
-            android:layout_width="280dp"
             android:layout_height="35dp"
-            android:minHeight="48dp"
+            android:layout_width="match_parent"
             android:paddingLeft="16dp"
             android:paddingStart="16dp"
             android:paddingRight="16dp"
             android:paddingEnd="16dp"
-            android:layout_gravity="center"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
-            android:inputType="text"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
             android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/passwordLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/manrope_bold"
+            android:labelFor="@id/passwordEditText"
+            android:text="@string/password_label_colon"
+            android:textColor="@color/black"
+            android:textSize="19sp" />
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rounded_gray_edittext_bg"
+            android:backgroundTint="@color/login_input_gray"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:textSize="17sp" />
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
-        android:layout_marginBottom="16dp"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/passwordLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/password_label_colon"
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="240dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/blue"
         android:fontFamily="@font/manrope_bold"
-        android:labelFor="@id/passwordEditText"
-        android:textSize="19sp" />
+        android:text="@string/login_button_text"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginBox" />
 
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="280dp"
-        android:layout_height="35dp"
-        android:minHeight="48dp"
-        android:paddingLeft="16dp"
-        android:paddingStart="16dp"
-        android:paddingRight="16dp"
-        android:paddingEnd="16dp"
-        android:layout_gravity="center"
-        android:background="@drawable/rounded_gray_edittext_bg"
-        android:backgroundTint="@color/login_input_gray"
-        android:inputType="textPassword"
-        android:textSize="17sp"/>
-</LinearLayout>
-
-    </LinearLayout>
-
-<Button
-    android:id="@+id/loginButton"
-    android:layout_width="0dp"
-    android:layout_height="64dp"
-    android:layout_marginStart="40dp"
-    android:layout_marginTop="32dp"
-    android:layout_marginEnd="40dp"
-    android:backgroundTint="@color/blue"
-    android:fontFamily="@font/manrope_bold"
-    android:text="@string/login_button_text"
-    android:textAllCaps="false"
-    android:textColor="@android:color/white"
-    android:textSize="18sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/loginBox" />
 
     <ImageView
         android:id="@+id/gobackbutton"

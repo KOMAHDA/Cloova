@@ -32,6 +32,10 @@
     <string name="anketa">For a more detailed questionnaire, please visit your personal account</string>
     <string name="name_label_colon">Name:</string> <!-- Используется как метка -->
     <string name="gender_label_colon">Sex:</string> <!-- Используется как метка -->
+    <string name="choose_colors">Choose colors</string>
+    <string name="choose_styles">Choose styles</string>
+    <string name="choose_clothes">Choose clothes</string>
+    <string name="choose_accessories">Choose accessories</string>
     <!-- login_label_colon уже есть -->
     <string name="birth_date_label_colon">Birth date:</string> <!-- Используется как метка -->
     <string name="button_next">Next</string>
@@ -43,9 +47,7 @@
     <string name="city_label_colon">City:</string> <!-- Используется как метка -->
     <string name="profile_city_hint">Enter your city</string> <!-- Подсказка на экране ввода данных -->
     <string name="profile_style_label">Desired styles:</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_style_hint">Например: кэжуал, деловой, спортивный</string> <!-- Подсказка на экране ввода данных -->
     <string name="profile_colors_label">Preferred colors:</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_colors_hint">Синий, белый, черный...</string> <!-- Заменено с массива -->
     <string name="profile_accessories_question">What accessories do you have?</string> <!-- Переименовано из profile_style_aks -->
     <string name="profile_clothes_label">The main principle in clothing:</string> <!-- Метка на экране ввода данных -->
     <string name="profile_clothes_hint">What clothes do you have in your wardrobe?</string> <!-- Подсказка на экране ввода данных -->

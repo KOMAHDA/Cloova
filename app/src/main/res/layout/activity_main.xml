@@ -12,7 +12,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="220dp"
         android:fontFamily="@font/marcellus"
         android:text="@string/logo_text"
         android:textColor="@color/blue"
@@ -29,6 +29,7 @@
         android:fontFamily="@font/manrope_bold"
         android:text="@string/main_subtitle"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,28 +83,47 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/svetli" />
 
-    <ImageView
-        android:id="@+id/telega"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginBottom="60dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/telegram" />
-
-    <ImageView
-        android:id="@+id/vk"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="130dp"
-        android:layout_marginBottom="60dp"
-        android:clickable="true"
-        android:focusable="true"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/vk_1_logo_svgrepo_com" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/vk"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/vk_1_logo_svgrepo_com"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/telega"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/telegram"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
