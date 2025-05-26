@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.content.Intent;
@@ -47,10 +47,10 @@ public class WeatherForecastActivity extends AppCompatActivity {
     private List<ForecastDay> displayList = new ArrayList<>();
     private ApiService apiService;
     private ProgressBar progressBar;
-    private Button btnMonthlyForecast;
 
     private String currentCity = FALLBACK_CITY;
     private String currentUserStyle = "Повседневный";
+    private ImageView navProfileIcon, navHomeIcon, navFavoritesIcon;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -85,7 +85,6 @@ public class WeatherForecastActivity extends AppCompatActivity {
         }
 
         // progressBar = findViewById(R.id.progress_bar_weather); // Найдите ProgressBar
-        btnMonthlyForecast = findViewById(R.id.btn_monthly_forecast);
         recyclerView = findViewById(R.id.rv_daily_forecast);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // !!! Создаем адаптер с новым списком !!!
@@ -96,9 +95,8 @@ public class WeatherForecastActivity extends AppCompatActivity {
 
         fetchWeatherData(currentCity);
 
-        btnMonthlyForecast.setOnClickListener(v -> {
-            Toast.makeText(this, "Загрузка прогноза на месяц (TODO)", Toast.LENGTH_SHORT).show();
-        });
+        setupBottomNavigation();
+
     }
 
     @Override
@@ -144,11 +142,32 @@ public class WeatherForecastActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<WeatherApiResponse> call, @NonNull Throwable t) {
-                // if (progressBar != null) progressBar.setVisibility(View.GONE);
                 Log.e(TAG, "onFailure: Network request failed", t);
                 Toast.makeText(WeatherForecastActivity.this, "Ошибка сети: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 adapter.updateData(new ArrayList<>(), city, WeatherForecastActivity.this.currentUserStyle);
             }
+        });
+    }
+
+    private void setupBottomNavigation() {
+        navProfileIcon = findViewById(R.id.nav_profile_icon_weather);
+        navHomeIcon = findViewById(R.id.nav_home_icon_weather);
+        navFavoritesIcon = findViewById(R.id.nav_favorites_icon_weather);
+
+        navProfileIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); // Привести существующий экземпляр наверх
+            startActivity(intent);
+        });
+
+        navHomeIcon.setOnClickListener(v -> {
+            fetchWeatherData(currentCity);
+            Toast.makeText(this, "Прогноз обновлен", Toast.LENGTH_SHORT).show();
+        });
+
+        navFavoritesIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(this, Sohranenki.class);
+            startActivity(intent);
         });
     }
 }
