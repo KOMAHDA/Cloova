@@ -25,7 +25,7 @@ import com.example.cloova.model.SavedOutfit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter.OnItemDeleteListener { // Имплементируем интерфейс
+public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter.OnItemDeleteListener {
 
     private static final String TAG = "SohranenkiActivity";
 
@@ -37,7 +37,6 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
     private ProgressBar progressBar;
     private TextView emptyMessage;
 
-    // UI для нижней навигации
     private ImageView navProfileIcon, navHomeIcon, navFavoritesIcon;
     private TextView backButton;
 
@@ -57,13 +56,13 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
         initViews();
         setupNavigationListeners();
 
-        retrieveUserIdAndLoadOutfits();
+        retrieveUserIdAndLoadOutfits(); // Эта функция также будет использоваться для получения ID пользователя
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Перезагружаем данные каждый раз, когда активность становится видимой (например, после возвращения из DayDetailActivity)
+        // Перезагружаем данные каждый раз, когда активность становится видимой
         retrieveUserIdAndLoadOutfits();
     }
 
@@ -73,10 +72,9 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
         emptyMessage = findViewById(R.id.sohranenki_empty_message);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SavedOutfitsAdapter(this, new ArrayList<>(), this); // Передаем this как deleteListener
+        adapter = new SavedOutfitsAdapter(this, new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
 
-        // Инициализация кнопок навигации
         backButton = findViewById(R.id.sohranenki_back_button);
         navProfileIcon = findViewById(R.id.nav_profile_icon_sohranenki);
         navHomeIcon = findViewById(R.id.nav_home_icon_sohranenki);
@@ -84,23 +82,33 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
     }
 
     private void setupNavigationListeners() {
-        backButton.setOnClickListener(v -> finish()); // Просто закрываем
+        backButton.setOnClickListener(v -> finish());
 
         navProfileIcon.setOnClickListener(v -> {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         });
+
         navHomeIcon.setOnClickListener(v -> {
-            Intent intent = new Intent(this, WeatherForecastActivity.class);
-            // Если нужно передать город или стиль, добавьте extra здесь
-            // intent.putExtra(WeatherForecastActivity.EXTRA_CITY_NAME, "...");
-            // intent.putExtra(WeatherForecastActivity.EXTRA_USER_STYLE, "...");
-            startActivity(intent);
+            // !!! НОВАЯ ЛОГИКА ДЛЯ ПЕРЕДАЧИ ДАННЫХ В WEATHERFORECASTACTIVITY !!!
+            // Сначала получаем ID пользователя
+            SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, MODE_PRIVATE);
+            long userId = prefs.getLong(DatabaseHelper.PREF_KEY_LOGGED_IN_USER_ID, DatabaseHelper.DEFAULT_USER_ID);
+
+            if (userId != DatabaseHelper.DEFAULT_USER_ID) {
+                // Запускаем AsyncTask для получения данных пользователя
+                new GetUserAndNavigateTask().execute(userId);
+            } else {
+                Toast.makeText(this, R.string.error_auth, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "navHomeIcon clicked: User not logged in.");
+            }
         });
+
         navFavoritesIcon.setOnClickListener(v -> {
-            // Мы уже здесь, ничего не делаем, но можно обновить список
+            // Мы уже на экране избранного, можно просто обновить данные
             retrieveUserIdAndLoadOutfits();
+            Toast.makeText(this, R.string.saved_looks_title_updated, Toast.LENGTH_SHORT).show(); // Добавьте в strings.xml
         });
     }
 
@@ -121,7 +129,6 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
 
     @Override
     public void onDeleteClick(SavedOutfit outfitToDelete) {
-        // Показываем диалог подтверждения перед удалением
         new AlertDialog.Builder(this)
                 .setTitle(R.string.delete_confirmation_title)
                 .setMessage(R.string.delete_confirmation_message)
@@ -155,7 +162,7 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
                 emptyMessage.setVisibility(View.GONE);
                 Log.d(TAG, "Loaded " + result.size() + " saved outfits.");
             } else {
-                adapter.updateData(new ArrayList<>()); // Очищаем список
+                adapter.updateData(new ArrayList<>());
                 emptyMessage.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
                 Log.d(TAG, "No saved outfits found.");
@@ -178,11 +185,57 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
             if (isDeleted) {
                 Toast.makeText(Sohranenki.this, R.string.outfit_delete_successful, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Outfit with ID " + outfitIdToDelete + " deleted successfully.");
-                retrieveUserIdAndLoadOutfits(); // Перезагружаем список после удаления
+                retrieveUserIdAndLoadOutfits();
             } else {
                 Toast.makeText(Sohranenki.this, R.string.outfit_delete_failed, Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Failed to delete outfit with ID: " + outfitIdToDelete);
             }
+        }
+    }
+
+    // --- НОВЫЙ ASYNCTASK ДЛЯ ПОЛУЧЕНИЯ ДАННЫХ ПОЛЬЗОВАТЕЛЯ И НАВИГАЦИИ ---
+    @SuppressLint("StaticFieldLeak")
+    private class GetUserAndNavigateTask extends AsyncTask<Long, Void, UserDataForNavigation> {
+        @Override
+        protected UserDataForNavigation doInBackground(Long... userIds) {
+            long userId = userIds[0];
+            User user = dbHelper.getUserInfo(userId);
+            String city = null;
+            String style = null;
+
+            if (user != null) {
+                city = user.getCity();
+                List<String> userStyles = dbHelper.getUserStyles(userId);
+                if (userStyles != null && !userStyles.isEmpty()) {
+                    style = userStyles.get(0); // Берем первый стиль пользователя
+                }
+            }
+            return new UserDataForNavigation(city, style);
+        }
+
+        @Override
+        protected void onPostExecute(@Nullable UserDataForNavigation result) {
+            if (result != null && result.city != null && !result.city.isEmpty()) {
+                Intent intent = new Intent(Sohranenki.this, WeatherForecastActivity.class);
+                intent.putExtra(WeatherForecastActivity.EXTRA_CITY_NAME, result.city);
+                intent.putExtra(WeatherForecastActivity.EXTRA_USER_STYLE, result.style != null ? result.style : "Повседневный"); // Дефолтный стиль
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); // Привести существующий экземпляр наверх
+                startActivity(intent);
+            } else {
+                Toast.makeText(Sohranenki.this, R.string.error_city_not_found, Toast.LENGTH_SHORT).show(); // Добавьте в strings.xml
+                Log.w(TAG, "GetUserAndNavigateTask: City or user data not found for navigation.");
+            }
+        }
+    }
+
+    // Вспомогательный класс для передачи данных
+    private static class UserDataForNavigation {
+        String city;
+        String style;
+
+        UserDataForNavigation(String city, String style) {
+            this.city = city;
+            this.style = style;
         }
     }
 }

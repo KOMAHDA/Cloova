@@ -207,5 +207,6 @@
 
     <string name="menu_favorites">Избранное</string>
 
-
+    <string name="saved_looks_title_updated">Список сохраненных образов обновлен</string>
+    <string name="error_city_not_found">Город не найден для пользователя или не указан.</string>
 </resources>
