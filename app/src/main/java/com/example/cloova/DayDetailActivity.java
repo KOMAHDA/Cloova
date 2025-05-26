@@ -831,7 +831,7 @@ public class DayDetailActivity extends AppCompatActivity {
     private void setupClickListeners() {
         Log.d(TAG, "setupClickListeners: Setting up");
         if (btnBackToWeeklyDetail != null) {
-            btnBackToWeeklyDetail.setOnClickListener(v -> finish()); // Просто закрываем, возвращаясь к списку
+            btnBackToWeeklyDetail.setOnClickListener(v -> finish());
         }
         if (fabAddFavorite != null) {
             fabAddFavorite.setOnClickListener(v -> {

@@ -10,24 +10,24 @@
 
 
 
-<!--<com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBarLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
-    app:elevation="0dp">
+    <!--<com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
 
-<com.google.android.material.appbar.MaterialToolbar
-    android:id="@+id/toolbar_weather"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    app:navigationIcon="@drawable/menu"
-    app:navigationIconTint="@color/login_dark_blue"
-    app:title="@string/weather_forecast_title"
-    app:titleCentered="true"
-    app:titleTextColor="@color/login_dark_blue" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_weather"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/menu"
+        app:navigationIconTint="@color/login_dark_blue"
+        app:title="@string/weather_forecast_title"
+        app:titleCentered="true"
+        app:titleTextColor="@color/login_dark_blue" />
 
-    </com.google.android.material.appbar.AppBarLayout>-->
+        </com.google.android.material.appbar.AppBarLayout>-->
 
 
     <ImageView
@@ -130,36 +130,36 @@
 
     </LinearLayout>
 
-<!--
-<ProgressBar
-    android:id="@+id/progress_bar_weather"
-    style="?android:attr/progressBarStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="64dp"
-    android:visibility="gone"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    />
--->
+    <!--
+    <ProgressBar
+        android:id="@+id/progress_bar_weather"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+    -->
 
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_daily_forecast"
-    android:layout_width="335dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="145dp"
-    android:clipToPadding="false"
-    android:orientation="vertical"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:paddingBottom="8dp"
-    tools:listitem="@layout/item_daily_forecast"
-    tools:itemCount="7"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_daily_forecast"
+        android:layout_width="335dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="145dp"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingBottom="8dp"
+        tools:listitem="@layout/item_daily_forecast"
+        tools:itemCount="7"/>
 
     <LinearLayout
         android:id="@+id/bottom_navigation_custom_weather"

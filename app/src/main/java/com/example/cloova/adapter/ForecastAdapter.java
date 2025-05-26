@@ -96,15 +96,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             }
 
             if (forecast.day != null && forecast.day.condition != null) {
-                String iconUrl = forecast.day.condition.iconUrlPath;
-                if (iconUrl != null && !iconUrl.isEmpty()) {
-                    // Glide.with(context).load("https:" + iconUrl).into(ivWeatherIcon);
-                    ivWeatherIcon.setImageResource(R.drawable.cloud); // Заглушка
-                } else {
-                    ivWeatherIcon.setImageResource(R.drawable.cloud);
-                }
+                ivWeatherIcon.setImageResource(getWeatherIconResourceByCode(forecast.day.condition.code));
+                Log.d(TAG, "Binding weather icon for code: " + forecast.day.condition.code + ", resource: " + context.getResources().getResourceEntryName(getWeatherIconResourceByCode(forecast.day.condition.code)));
             } else {
                 ivWeatherIcon.setImageResource(R.drawable.cloud);
+                Log.w(TAG, "No weather condition data for forecast day. Using default cloud icon.");
             }
 
             // !!! УСТАНАВЛИВАЕМ OnClickListener ДЛЯ КНОПКИ "ВЕШАЛКИ" !!!

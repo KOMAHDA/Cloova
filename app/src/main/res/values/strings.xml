@@ -149,7 +149,7 @@
     <string name="day_detail_activity_title">Прогноз на %1$s</string> <!-- %1$s будет заменен на дату -->
     <string name="wind_label">Ветер</string>
     <string name="humidity_label">Влажность</string>
-    <string name="weekly_forecast_link">Прогноз на неделю</string>
+    <string name="weekly_forecast_link">Прогноз на ближайшие дни</string>
     <string name="add_to_favorites">Добавить в избранное</string>
     <string name="edit_outfit_button">Редактировать образ</string>
     <string name="save_outfit_button">Сохранить образ</string>
@@ -206,4 +206,6 @@
     <string name="delete_planned_confirmation_message">Вы уверены, что хотите удалить этот запланированный образ? Это действие нельзя отменить.</string>
 
     <string name="menu_favorites">Избранное</string>
+
+
 </resources>

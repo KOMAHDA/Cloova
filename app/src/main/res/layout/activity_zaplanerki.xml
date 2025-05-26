@@ -1,122 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/fon_reg"
     tools:context=".Zaplanerki">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:src="@drawable/light_shape_profile"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@null" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:src="@drawable/dark_shape_profile"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@null"/>
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="0dp"
+        android:layout_height="268dp"
+        android:src="@drawable/temni_2_3_snizu"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@null"/>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="134dp"
+        android:src="@drawable/temni_2_2_snizu"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@null"/>
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/top_bar_zaplanerki"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="8dp"
-        android:paddingBottom="8dp">
-
-        <TextView
-            android:id="@+id/zaplanerki_back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/back_button_text"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <Space android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/planned_looks_title"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/login_dark_blue"/>
-
-        <Space android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
-
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/zaplanerki_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_marginTop="32dp"/>
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="48dp">
 
     <TextView
-        android:id="@+id/zaplanerki_empty_message"
+        android:id="@+id/zaplanerki_back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="32dp"
-        android:text="@string/no_planned_looks_message"
-        android:textSize="16sp"
+        android:text="@string/back_button_text"
         android:textColor="@color/black"
-        android:visibility="gone"/>
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_planned_outfits"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:clipToPadding="false"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_planned_outfit"/>
+    <Space android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/planned_looks_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/login_dark_blue"/>
 
-    <LinearLayout
-        android:id="@+id/bottom_navigation_custom_zaplanerki"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:background="@color/navigation_panel_color">
-        <ImageView
-            android:id="@+id/nav_profile_icon_zaplanerki"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/menu_profile"
-            android:clickable="true"
-            android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile_shape" />
-        <ImageView
-            android:id="@+id/nav_home_icon_zaplanerki"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginEnd="80dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/menu_home"
-            android:clickable="true"
-            android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/main_house_shape" />
-        <ImageView
-            android:id="@+id/nav_favorites_icon_zaplanerki"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="Меню"
-            android:clickable="true"
-            android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/heart_shape" />
-    </LinearLayout>
+    <Space android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
 
 </LinearLayout>
+
+<ProgressBar
+    android:id="@+id/zaplanerki_progress_bar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="gone"
+    android:layout_marginTop="32dp"
+    app:layout_constraintTop_toBottomOf="@id/top_bar_zaplanerki"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/bottom_navigation_custom_zaplanerki"/>
+
+<TextView
+    android:id="@+id/zaplanerki_empty_message"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="32dp"
+    android:text="@string/no_planned_looks_message"
+    android:textSize="16sp"
+    android:textColor="@color/black"
+    android:visibility="gone"
+    app:layout_constraintTop_toBottomOf="@id/top_bar_zaplanerki"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/bottom_navigation_custom_zaplanerki"/>
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/rv_planned_outfits"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:padding="8dp"
+    android:clipToPadding="false"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    app:layout_constraintTop_toBottomOf="@id/top_bar_zaplanerki"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/bottom_navigation_custom_zaplanerki"
+    tools:listitem="@layout/item_planned_outfit"/>
+
+<LinearLayout
+    android:id="@+id/bottom_navigation_custom_zaplanerki"
+    android:layout_width="0dp"
+    android:layout_height="80dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:background="@color/navigation_panel_color"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
+
+<ImageView
+    android:id="@+id/nav_profile_icon_zaplanerki"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:paddingStart="5dp"
+    android:paddingEnd="5dp"
+    android:adjustViewBounds="true"
+    android:contentDescription="@string/menu_profile"
+    android:clickable="true"
+    android:focusable="true"
+    android:scaleType="centerCrop"
+    android:src="@drawable/profile_shape" />
+<ImageView
+    android:id="@+id/nav_home_icon_zaplanerki"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_marginStart="80dp"
+    android:layout_marginEnd="80dp"
+    android:adjustViewBounds="true"
+    android:contentDescription="@string/menu_home"
+    android:clickable="true"
+    android:focusable="true"
+    android:scaleType="centerCrop"
+    android:src="@drawable/main_house_shape" />
+<ImageView
+    android:id="@+id/nav_favorites_icon_zaplanerki"
+    android:layout_width="45dp"
+    android:layout_height="40dp"
+    android:adjustViewBounds="true"
+    android:contentDescription="@string/menu_favorites"
+    android:clickable="true"
+    android:focusable="true"
+    android:scaleType="centerCrop"
+    android:src="@drawable/heart_shape" />
+
+</LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
