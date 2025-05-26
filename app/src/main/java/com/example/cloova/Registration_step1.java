@@ -4,8 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -18,6 +23,7 @@ import android.view.LayoutInflater;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.InputType;
+import android.widget.AutoCompleteTextView;
 
 import android.view.ViewGroup;
 import android.app.Dialog;
@@ -26,21 +32,27 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.graphics.drawable.GradientDrawable;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import android.text.method.DigitsKeyListener;
+
+import com.yandex.mapkit.geometry.Point;
 
 public class Registration_step1 extends AppCompatActivity {
 
     private EditText nameEditText, dateEditText;
-    private Spinner citySpinner;
+    private AutoCompleteTextView cityInput;
     private Spinner sexSpinner;
     private ImageView goBackButton;
     private Button goNextButton;
     private Button selectAvatarButton;
     private ImageView avatarImageView;
-    private int selectedAvatarResId = R.drawable.default_avatar1; // ID выбранного аватара
-    private List<String> selectedStyles = new ArrayList<>(); // Список выбранных стилей
+    private int selectedAvatarResId = R.drawable.default_avatar1;
+    private List<String> selectedStyles = new ArrayList<>();
+    private List<String> popularCities = Arrays.asList("Москва", "Санкт-Петербург", "Самара", "Казань", "Новосибирск");
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -57,7 +69,7 @@ public class Registration_step1 extends AppCompatActivity {
         dateEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         dateEditText.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
         dateEditText.addTextChangedListener(new DateTextWatcher());
-        citySpinner = findViewById(R.id.citySpinner);
+        cityInput = findViewById(R.id.city_input);
         sexSpinner = findViewById(R.id.sexSpinner);
         goBackButton = findViewById(R.id.gobackbutton);
         goNextButton = findViewById(R.id.gonextbutton);
@@ -65,7 +77,7 @@ public class Registration_step1 extends AppCompatActivity {
         avatarImageView = findViewById(R.id.avatarImageView);
 
         setupSexSpinner();
-        setupCitySpinner();
+        setupCityInput(); // Заменил setupCitySpinner()
 
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +90,8 @@ public class Registration_step1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isDataValid()) {
-                    Next(v);
+                    // Проверяем город перед переходом
+                    new CityValidationTask().execute(cityInput.getText().toString().trim());
                 }
             }
         });
@@ -89,7 +102,71 @@ public class Registration_step1 extends AppCompatActivity {
                 showAvatarSelectionDialog();
             }
         });
+    }
 
+    private void setupCityInput() {
+        // Настройка автозаполнения для города
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, popularCities);
+        cityInput.setAdapter(adapter);
+        cityInput.setThreshold(1);
+        cityInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        cityInput.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+    }
+
+    private com.yandex.mapkit.geometry.Point getCoordinatesFromAndroidGeocoder(String cityName) {
+        if (!Geocoder.isPresent()) {
+            return null;
+        }
+        Geocoder geocoder = new Geocoder(this, new Locale("ru", "RU"));
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(cityName, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                return new Point(address.getLatitude(), address.getLongitude());
+            }
+        } catch (IOException e) {
+            Log.e("Geocoder", "Error getting coordinates", e);
+        }
+        return null;
+    }
+
+    private String getValidCityName(String inputCityName) {
+        if (!Geocoder.isPresent()) {
+            return null;
+        }
+        Geocoder geocoder = new Geocoder(this, new Locale("ru", "RU"));
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(inputCityName, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                // Возвращаем официальное название города из геокодера
+                return address.getLocality();
+            }
+        } catch (IOException e) {
+            Log.e("Geocoder", "Error getting city name", e);
+        }
+        return null;
+    }
+
+    private class CityValidationTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String inputCity = params[0];
+            return getValidCityName(inputCity);
+        }
+
+        @Override
+        protected void onPostExecute(String validCityName) {
+            if (validCityName != null) {
+                // Город найден, обновляем поле ввода и переходим дальше
+                cityInput.setText(validCityName);
+                Next();
+            } else {
+                Toast.makeText(Registration_step1.this,
+                        "Город не найден. Пожалуйста, уточните название", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void Back(View v) {
@@ -97,12 +174,12 @@ public class Registration_step1 extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void Next(View v) {
+    private void Next() {
         Intent intent = new Intent(this, Registration_step2.class);
         intent.putExtra("name", nameEditText.getText().toString());
         intent.putExtra("gender", sexSpinner.getSelectedItem().toString());
         intent.putExtra("birthDate", dateEditText.getText().toString());
-        intent.putExtra("city", citySpinner.getSelectedItem().toString());
+        intent.putExtra("city", cityInput.getText().toString()); // Теперь берем из AutoCompleteTextView
         intent.putExtra("avatar", selectedAvatarResId);
         startActivity(intent);
     }
@@ -115,17 +192,6 @@ public class Registration_step1 extends AppCompatActivity {
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sexSpinner.setAdapter(adapter);
-    }
-
-    // Выбор города. Нужно будет брать его из привязанного источника с погодой наверное
-    private void setupCitySpinner() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.cities_array,  // Массив городов в res/values/arrays.xml
-                android.R.layout.simple_spinner_item
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        citySpinner.setAdapter(adapter);
     }
 
     private void showAvatarSelectionDialog() {
@@ -143,46 +209,34 @@ public class Registration_step1 extends AppCompatActivity {
         LinearLayout avatarsContainer = dialogView.findViewById(R.id.avatarsContainer);
         AlertDialog dialog = builder.create();
 
-        // Настройка прозрачного фона для закругленных углов
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
-        // Создаем сетку 3x2
-        for (int i = 0; i < 2; i++) { // 2 строки
+        for (int i = 0; i < 2; i++) {
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setGravity(Gravity.CENTER);
 
-            for (int j = 0; j < 3; j++) { // 3 столбца
+            for (int j = 0; j < 3; j++) {
                 int index = i * 3 + j;
                 if (index >= avatarResources.length) break;
 
                 ImageView avatarImage = new ImageView(this);
-
-                // Основные параметры
                 int size = dpToPx(80);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
                 params.setMargins(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
                 avatarImage.setLayoutParams(params);
 
-                // Круглая маска
                 GradientDrawable mask = new GradientDrawable();
                 mask.setShape(GradientDrawable.OVAL);
                 mask.setSize(size, size);
-
-                // Внешняя обводка
                 mask.setStroke(dpToPx(2), Color.LTGRAY);
-
-                // Применяем маску
                 avatarImage.setBackground(mask);
                 avatarImage.setClipToOutline(true);
-
-                // Загрузка изображения
                 avatarImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 avatarImage.setImageResource(avatarResources[index]);
 
-                // Обработчик выбора
                 final int selectedIndex = index;
                 avatarImage.setOnClickListener(v -> {
                     selectedAvatarResId = avatarResources[selectedIndex];
@@ -200,7 +254,6 @@ public class Registration_step1 extends AppCompatActivity {
     }
 
     private void updateMainAvatar(int avatarResId) {
-        // Создаем круглую маску для основного аватара
         GradientDrawable mask = new GradientDrawable();
         mask.setShape(GradientDrawable.OVAL);
         mask.setStroke(dpToPx(2), Color.LTGRAY);
@@ -210,27 +263,14 @@ public class Registration_step1 extends AppCompatActivity {
         avatarImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         avatarImageView.setImageResource(avatarResId);
     }
-    private void setDialogTagToChildren(ViewGroup container, Dialog dialog) {
-        for (int i = 0; i < container.getChildCount(); i++) {
-            View child = container.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                setDialogTagToChildren((ViewGroup) child, dialog);
-            } else {
-                child.setTag(dialog);
-            }
-        }
-    }
 
-    // Преобразование dp в пиксели
     private int dpToPx(int dp) {
         float density = getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
     }
 
-    // для ввода даты
     private class DateTextWatcher implements TextWatcher {
         private boolean isFormatting;
-
         private boolean isDeleting;
         private String current = "";
         private int lastValidLength = 0;
@@ -252,21 +292,16 @@ public class Registration_step1 extends AppCompatActivity {
             String cleaned = original.replaceAll("[^\\d]", "");
             StringBuilder formatted = new StringBuilder();
 
-            // Форматируем с точками
             for (int i = 0; i < cleaned.length(); i++) {
                 if (i == 2 || i == 4) formatted.append(".");
                 formatted.append(cleaned.charAt(i));
             }
 
-            // Устанавливаем новый текст
             if (!original.equals(formatted.toString())) {
                 s.replace(0, s.length(), formatted);
             }
 
-            // Всегда перемещаем курсор в конец
             dateEditText.setSelection(formatted.length());
-
-            // Валидация
             validateDate(formatted.toString());
 
             isFormatting = false;
@@ -312,8 +347,8 @@ public class Registration_step1 extends AppCompatActivity {
             Toast.makeText(this, "Введите имя", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (citySpinner.getSelectedItemPosition() == 0) {  // Проверка выбора города
-            Toast.makeText(this, "Выберите город", Toast.LENGTH_SHORT).show();
+        if (cityInput.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Введите город", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (dateEditText.getText().toString().trim().length() < 10) {
@@ -326,4 +361,3 @@ public class Registration_step1 extends AppCompatActivity {
         return true;
     }
 }
-
