@@ -185,6 +185,7 @@ tools:context=".Registration_step1">
                     android:id="@+id/nameLabel2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/manrope_bold"
                     android:labelFor="@id/sexSpinner"
                     android:text="@string/gender_label_colon"
@@ -248,17 +249,40 @@ tools:context=".Registration_step1">
             android:textColor="@color/black"
             android:textSize="19sp" />
 
-        <Spinner
-            android:id="@+id/citySpinner"
+        <LinearLayout
+            android:id="@+id/block1"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:background="@drawable/rounded_gray_edittext_bg"
-            android:backgroundTint="@color/login_input_gray"
-            android:entries="@array/cities_array"
-            android:minHeight="48dp"
-            android:textSize="17sp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/your_city"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <AutoCompleteTextView
+                android:id="@+id/city_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:fontFamily="@font/manrope_bold"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/choose_lang"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+<!--            <Button
+                android:id="@+id/search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_button_text"
+                android:fontFamily="@font/manrope_bold"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/city_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>-->
+
+        </LinearLayout>
 
     </LinearLayout>
 
