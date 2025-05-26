@@ -28,6 +28,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -476,87 +477,137 @@ public class DayDetailActivity extends AppCompatActivity {
             itemsByCategory.computeIfAbsent(item.getCategory().toLowerCase(Locale.ROOT), k -> new ArrayList<>()).add(item);
         }
 
-        // --- Логика подбора (без изменений) ---
-        ClothingItem selectedTop = findBestMatch(itemsByCategory.get("верх"), preferredStyle, currentDbWeatherConditions, currentTemperature);
-        ClothingItem selectedBottom = findBestMatch(itemsByCategory.get("низ"), preferredStyle, currentDbWeatherConditions, currentTemperature);
-        ClothingItem selectedShoes = findBestMatch(itemsByCategory.get("обувь"), preferredStyle, currentDbWeatherConditions, currentTemperature);
+        List<Map<String, ClothingItem>> outfitCandidates = new ArrayList<>();
+        int numAttempts = 5; // Попробуем сгенерировать 5 разных вариантов
 
-        ClothingItem selectedOuterwear = null;
-        boolean needsOuterwear = currentTemperature < 15 || isRainyOrSnowy || isWindy;
-        if (needsOuterwear) {
-            selectedOuterwear = findBestMatch(itemsByCategory.get("верхняя одежда"), preferredStyle, currentDbWeatherConditions, currentTemperature);
-        }
+        for (int i = 0; i < numAttempts; i++) {
+            Log.d(TAG, "Generating outfit candidate #" + (i + 1));
+            ClothingItem currentCandidateTop = null;
+            ClothingItem currentCandidateBottom = null;
+            ClothingItem currentCandidateShoes = null;
+            ClothingItem currentCandidateOuterwear = null;
 
-        this.lastSelectedOuterwear = selectedOuterwear;
-        this.lastSelectedTop = selectedTop;
-        this.lastSelectedBottom = selectedBottom;
-        this.lastSelectedShoes = selectedShoes;
+            boolean isFemaleUser = currentUser != null && "Женский".equalsIgnoreCase(currentUser.getGender());
 
-        // Специальная логика для платьев/юбок
-        if (selectedTop == null && currentUser != null && "Женский".equalsIgnoreCase(currentUser.getGender()) && itemsByCategory.containsKey("платья/юбки")) {
-            ClothingItem dressOrSkirt = findBestMatch(itemsByCategory.get("платья/юбки"), preferredStyle, currentDbWeatherConditions, currentTemperature);
-            if (dressOrSkirt != null) {
-                selectedTop = dressOrSkirt;
-                selectedBottom = null;
-                Log.d(TAG, "Selected dress/skirt: " + dressOrSkirt.getName());
+            // ВАР-Т 1: Обычный комплект (Верх + Низ)
+            ClothingItem candTopReg = findBestMatch(itemsByCategory.get("верх"), preferredStyle, currentDbWeatherConditions, currentTemperature);
+            ClothingItem candBottomReg = (candTopReg != null) ? findBestMatch(itemsByCategory.get("низ"), preferredStyle, currentDbWeatherConditions, currentTemperature) : null;
+
+            // ВАР-Т 2: Платье/Юбка (только для женщин)
+            ClothingItem candDressOrSkirt = null;
+            if (isFemaleUser && itemsByCategory.containsKey("платья/юбки")) {
+                candDressOrSkirt = findBestMatch(itemsByCategory.get("платья/юбки"), preferredStyle, currentDbWeatherConditions, currentTemperature);
+            }
+
+            // Выбор лучшего основного образа для этой попытки
+            boolean chooseDressOrSkirtForThisAttempt = false;
+            // Увеличиваем рандомность выбора между платьем и обычным комплектом.
+            // Если есть и то, и другое, выбираем случайно.
+            // Если только одно из них, выбираем его.
+            if (candDressOrSkirt != null && (candTopReg == null || candBottomReg == null)) {
+                chooseDressOrSkirtForThisAttempt = true;
+            } else if (candDressOrSkirt == null && candTopReg != null && candBottomReg != null) {
+                chooseDressOrSkirtForThisAttempt = false;
+            } else if (candDressOrSkirt != null && candTopReg != null && candBottomReg != null) {
+                chooseDressOrSkirtForThisAttempt = new Random().nextBoolean(); // Случайный выбор
+            } else {
+                // Если ни один из основных комплектов не найден, то оба останутся null
+                // Это будет обработано дальше.
+                Log.d(TAG, "No complete primary outfit found for candidate #" + (i + 1));
+            }
+
+            if (chooseDressOrSkirtForThisAttempt) {
+                currentCandidateTop = candDressOrSkirt;
+                currentCandidateBottom = null;
+            } else {
+                currentCandidateTop = candTopReg;
+                currentCandidateBottom = candBottomReg;
+            }
+
+            // Обувь, верхняя одежда, головной убор - подбираются отдельно для каждого кандидата
+            currentCandidateShoes = findBestMatch(itemsByCategory.get("обувь"), preferredStyle, currentDbWeatherConditions, currentTemperature);
+            boolean needsOuterwear = currentTemperature < 15 || containsRainOrSnow(currentDbWeatherConditions) || isWindy;
+            if (needsOuterwear) {
+                currentCandidateOuterwear = findBestMatch(itemsByCategory.get("верхняя одежда"), preferredStyle, currentDbWeatherConditions, currentTemperature);
+            }
+
+            // Собираем кандидата в Map
+            Map<String, ClothingItem> candidateOutfit = new LinkedHashMap<>();
+            if (currentCandidateOuterwear != null) candidateOutfit.put("верхняя одежда", currentCandidateOuterwear);
+            if (currentCandidateTop != null) candidateOutfit.put(currentCandidateTop.getCategory().equalsIgnoreCase("платья/юбки") ? "платья/юбки" : "верх", currentCandidateTop);
+            if (currentCandidateBottom != null) candidateOutfit.put("низ", currentCandidateBottom);
+            if (currentCandidateShoes != null) candidateOutfit.put("обувь", currentCandidateShoes);
+            // if (currentCandidateHeadwear != null) candidateOutfit.put("головной убор", currentCandidateHeadwear);
+
+            // Добавляем кандидата, только если он не пустой (хотя бы 2-3 элемента)
+            if (candidateOutfit.size() >= 2) { // Минимальное количество элементов для "образа"
+                outfitCandidates.add(candidateOutfit);
+                Log.d(TAG, "Added outfit candidate #" + outfitCandidates.size() + ". Items: " + candidateOutfit.keySet());
+            } else {
+                Log.d(TAG, "Outfit candidate #" + (i + 1) + " is too sparse. Skipping.");
             }
         }
 
-        // --- Устанавливаем изображения в ImageView ---
-        int itemsVisuallyDisplayed = 0; // Считаем, сколько реально элементов отображено на манекене
+        // --- ВЫБОР И ФИНАЛЬНОЕ ОТОБРАЖЕНИЕ ОДНОГО ИЗ КАНДИДАТОВ ---
+        Map<String, ClothingItem> finalOutfit = null;
+        if (!outfitCandidates.isEmpty()) {
+            // Выбираем случайный образ из списка сгенерированных кандидатов
+            finalOutfit = outfitCandidates.get(new Random().nextInt(outfitCandidates.size()));
+            Log.d(TAG, "Final outfit chosen randomly from " + outfitCandidates.size() + " candidates.");
 
-        if (selectedOuterwear != null) {
-            setOutfitImage(ivOutfitOuterwear, selectedOuterwear.getImageResourceName());
-            itemsVisuallyDisplayed++;
+            // Извлекаем элементы для отображения из выбранного финального образа
+            this.lastSelectedOuterwear = finalOutfit.get("верхняя одежда");
+            this.lastSelectedTop = finalOutfit.get("верх"); // или "платья/юбки"
+            if (this.lastSelectedTop == null && finalOutfit.containsKey("платья/юбки")) { // Если это платье/юбка
+                this.lastSelectedTop = finalOutfit.get("платья/юбки");
+            }
+            this.lastSelectedBottom = finalOutfit.get("низ");
+            this.lastSelectedShoes = finalOutfit.get("обувь");
+            // this.lastSelectedHeadwear = finalOutfit.get("головной убор"); // Если есть головной убор
+
+        } else {
+            // Если ни один из кандидатов не был достаточно полным
+            Log.w(TAG, "No suitable outfit candidates generated. Displaying no outfit message.");
+            tvOutfitSuggestionDetail.setVisibility(View.GONE);
+            tvNoOutfitMessage.setVisibility(View.VISIBLE);
+            ivMannequin.setVisibility(View.GONE);
+            return; // Выходим, так как ничего не подобрали
         }
-        if (selectedTop != null) {
-            setOutfitImage(ivOutfitTop, selectedTop.getImageResourceName());
-            itemsVisuallyDisplayed++;
-        }
-        if (selectedBottom != null) {
-            setOutfitImage(ivOutfitBottom, selectedBottom.getImageResourceName());
-            itemsVisuallyDisplayed++;
-        }
-        if (selectedShoes != null) {
-            setOutfitImage(ivOutfitShoes, selectedShoes.getImageResourceName());
-            itemsVisuallyDisplayed++;
-        }
+
+        // --- Устанавливаем изображения в ImageView (используя finalOutfit) ---
+        int itemsVisuallyDisplayed = 0;
+        if (lastSelectedOuterwear != null) { setOutfitImage(ivOutfitOuterwear, lastSelectedOuterwear.getImageResourceName()); itemsVisuallyDisplayed++; }
+        if (lastSelectedTop != null) { setOutfitImage(ivOutfitTop, lastSelectedTop.getImageResourceName()); itemsVisuallyDisplayed++; }
+        if (lastSelectedBottom != null) { setOutfitImage(ivOutfitBottom, lastSelectedBottom.getImageResourceName()); itemsVisuallyDisplayed++; }
+        if (lastSelectedShoes != null) { setOutfitImage(ivOutfitShoes, lastSelectedShoes.getImageResourceName()); itemsVisuallyDisplayed++; }
+        // if (lastSelectedHeadwear != null) { setOutfitImage(ivOutfitHeadwear, lastSelectedHeadwear.getImageResourceName()); itemsVisuallyDisplayed++; } // Если есть головной убор
+
 
         // --- Формируем и отображаем ТЕКСТОВОЕ описание образа ---
         StringBuilder outfitTextBuilder = new StringBuilder(getString(R.string.recommended_outfit_title) + "\n");
-        int itemsInTextList = 0; // Считаем, сколько элементов в текстовом списке
+        int itemsInTextList = 0;
 
-        if (selectedOuterwear != null) {
-            outfitTextBuilder.append("🧥 ").append(selectedOuterwear.getName()).append("\n");
+        if (lastSelectedOuterwear != null) { outfitTextBuilder.append("🧥 ").append(lastSelectedOuterwear.getName()).append("\n"); itemsInTextList++; }
+        if (lastSelectedTop != null) {
+            outfitTextBuilder.append(lastSelectedTop.getCategory().equalsIgnoreCase("платья/юбки") ? "👗 " : "👕 ")
+                    .append(lastSelectedTop.getName()).append("\n");
             itemsInTextList++;
         }
-        if (selectedTop != null) { // Может быть платьем
-            outfitTextBuilder.append(selectedTop.getCategory().equalsIgnoreCase("платья/юбки") ? "👗 " : "👕 ")
-                    .append(selectedTop.getName()).append("\n");
-            itemsInTextList++;
-        }
-        if (selectedBottom != null) {
-            outfitTextBuilder.append("👖 ").append(selectedBottom.getName()).append("\n");
-            itemsInTextList++;
-        }
-        if (selectedShoes != null) {
-            outfitTextBuilder.append("👟 ").append(selectedShoes.getName()).append("\n");
-            itemsInTextList++;
-        }
+        if (lastSelectedBottom != null) { outfitTextBuilder.append("👖 ").append(lastSelectedBottom.getName()).append("\n"); itemsInTextList++; }
+        if (lastSelectedShoes != null) { outfitTextBuilder.append("👟 ").append(lastSelectedShoes.getName()).append("\n"); itemsInTextList++; }
+        // if (lastSelectedHeadwear != null) { outfitTextBuilder.append("🧢 ").append(lastSelectedHeadwear.getName()).append("\n"); itemsInTextList++; } // Если есть головной убор
 
-
-
-        // --- Логика отображения/скрытия на основе количества подобранных элементов ---
-        if (itemsVisuallyDisplayed > 0) { // Если хоть что-то подобралось визуально
+        // --- Логика отображения/скрытия на основе количества подобранных элементов (остается той же) ---
+        if (itemsVisuallyDisplayed > 0) {
             tvOutfitSuggestionDetail.setText(outfitTextBuilder.toString());
-            tvOutfitSuggestionDetail.setVisibility(View.VISIBLE); // Показываем текстовый список
-            tvNoOutfitMessage.setVisibility(View.GONE); // Скрываем сообщение об отсутствии
-            ivMannequin.setVisibility(View.VISIBLE); // Показываем манекен (уже должен быть виден)
+            tvOutfitSuggestionDetail.setVisibility(View.VISIBLE);
+            tvNoOutfitMessage.setVisibility(View.GONE);
+            ivMannequin.setVisibility(View.VISIBLE);
             Log.d(TAG, "Successfully displayed " + itemsVisuallyDisplayed + " outfit items visually and " + itemsInTextList + " textually.");
-        } else { // Если не удалось подобрать ничего
-            tvOutfitSuggestionDetail.setVisibility(View.GONE); // Скрываем текстовый список
-            tvNoOutfitMessage.setVisibility(View.VISIBLE); // Показываем сообщение об отсутствии образа
-            ivMannequin.setVisibility(View.GONE); // Скрываем манекен
+        } else {
+            tvOutfitSuggestionDetail.setVisibility(View.GONE);
+            tvNoOutfitMessage.setVisibility(View.VISIBLE);
+            ivMannequin.setVisibility(View.GONE);
             Log.d(TAG, "No suitable outfit found. Displaying fallback message.");
         }
     }
@@ -591,80 +642,193 @@ public class DayDetailActivity extends AppCompatActivity {
     // Новый метод для выбора лучшего совпадения с учетом стиля и погоды,
 // с откатом к выбору только по температуре, если идеального нет.
     @Nullable
-    private ClothingItem findBestMatch(@Nullable List<ClothingItem> itemsInCategory, // Все вещи этой категории, подходящие по t и полу
+    private ClothingItem findBestMatch(@Nullable List<ClothingItem> itemsInCategory,
                                        String preferredStyle,
                                        List<String> currentDbWeatherConditions,
                                        double currentTemperature) {
+
         Log.d(TAG, "findBestMatch: Called for category (implicit from itemsInCategory).");
         Log.d(TAG, "findBestMatch: Preferred Style: '" + preferredStyle + "'");
         Log.d(TAG, "findBestMatch: Weather Conditions: " + currentDbWeatherConditions.toString());
         Log.d(TAG, "findBestMatch: Current Temperature: " + currentTemperature + "°C");
 
+
         if (itemsInCategory == null || itemsInCategory.isEmpty()) {
+            Log.d(TAG, "findBestMatch: No items in this category. Returning null.");
             return null;
         }
 
-        List<ClothingItem> perfectMatch = new ArrayList<>();
-        List<ClothingItem> styleMatch = new ArrayList<>();
-        List<ClothingItem> weatherMatch = new ArrayList<>();
+        List<ScoredClothingItem> scoredItems = new ArrayList<>();
 
-        long preferredStyleId = dbHelper.getStyleIdByName(preferredStyle); // Вызываем public метод
+        long preferredStyleId = dbHelper.getStyleIdByName(preferredStyle);
+        Log.d(TAG, "findBestMatch: Resolved preferredStyleId for '" + preferredStyle + "': " + preferredStyleId);
+
+        boolean isSpecificStyleChosen = !preferredStyle.equalsIgnoreCase("Повседневный") || preferredStyleId != -1;
+
         List<Long> conditionIds = new ArrayList<>();
         for (String condName : currentDbWeatherConditions) {
-            long id = dbHelper.getWeatherConditionIdByName(condName); // Вызываем public метод
+            long id = dbHelper.getWeatherConditionIdByName(condName);
             if (id != -1) conditionIds.add(id);
         }
 
+        boolean isRainyOrSnowy = containsRainOrSnow(currentDbWeatherConditions);
+        boolean isWindy = currentDbWeatherConditions.contains("Ветрено"); // <-- Здесь была опечатка "Вetreno" в вашем коде, исправил на "Ветрено"
+        Log.d(TAG, "findBestMatch: Is Rainy/Snowy? " + isRainyOrSnowy + ", Is Windy? " + isWindy);
+
+
         for (ClothingItem item : itemsInCategory) {
+            double score = 0; // Базовый скор
+
+            // 1. Оценка по соответствию стилю (строже)
             boolean itemMatchesStyle = false;
-            if (preferredStyleId != -1) {
+            if (preferredStyleId != -1) { // Если пользователь выбрал конкретный стиль
                 List<Long> itemStyleIds = dbHelper.getStylesForClothingItem(item.getClothingId());
-                if (itemStyleIds.contains(preferredStyleId)) {
-                    itemMatchesStyle = true;
+                itemMatchesStyle = itemStyleIds.contains(preferredStyleId);
+                if (itemMatchesStyle) {
+                    score += 1000; // ОЧЕНЬ высокий бонус за соответствие выбранному стилю
+                    Log.d(TAG, "  Item '" + item.getName() + "': Style match! Score +1000");
+                } else {
+                    // Если стиль выбран, но предмет не соответствует - очень большой штраф (почти исключение)
+                    score -= 10000; // ГИГАНТСКИЙ ШТРАФ за несоответствие ВЫБРАННОМУ стилю
+                    Log.d(TAG, "  Item '" + item.getName() + "': DOES NOT match preferred style. Score -10000");
                 }
-            } else {
-                itemMatchesStyle = true; // Если стиль не указан, считаем, что любой подходит по стилю
+            } else { // Если стиль не указан (preferredStyleId == -1) или дефолтный "Повседневный"
+                itemMatchesStyle = true; // Считаем, что любой стиль подходит, но без бонуса
+                // Здесь не даем бонус, т.к. нет специфичного стиля, но и не штрафуем
+                Log.d(TAG, "  Item '" + item.getName() + "': No specific preferred style, assuming match.");
             }
 
+
+            // 2. Оценка по соответствию погодным условиям (общие)
             boolean itemMatchesWeather = false;
             if (!conditionIds.isEmpty()) {
                 List<Long> itemConditionIds = dbHelper.getConditionsForClothingItem(item.getClothingId());
                 for (long condId : conditionIds) {
                     if (itemConditionIds.contains(condId)) {
                         itemMatchesWeather = true;
+                        score += 80; // Хороший бонус
+                        Log.d(TAG, "  Item '" + item.getName() + "': General weather match! Score +80");
                         break;
                     }
                 }
+                if (!itemMatchesWeather) { // Если нет соответствия НИ ОДНОМУ погодному условию
+                    score -= 50; // Небольшой штраф
+                    Log.d(TAG, "  Item '" + item.getName() + "': Does NOT match any weather conditions. Score -50");
+                }
             } else {
-                itemMatchesWeather = true; // Если условия не указаны, считаем, что любые подходят по погоде
+                itemMatchesWeather = true; // Если условия не указаны, любые подходят
+                score += 40; // Небольшой бонус
+                Log.d(TAG, "  Item '" + item.getName() + "': No specific weather conditions set, assuming general weather match. Score +40");
             }
 
-            if (itemMatchesStyle && itemMatchesWeather) {
-                perfectMatch.add(item);
-            } else if (itemMatchesStyle) {
-                styleMatch.add(item);
-            } else if (itemMatchesWeather) {
-                weatherMatch.add(item);
+            // 3. Оценка по специальным требованиям (водонепроницаемость, ветрозащита)
+            boolean itemMeetsWaterproofRequirement = true;
+            if (isRainyOrSnowy && !item.isWaterproof()) {
+                itemMeetsWaterproofRequirement = false;
+                score -= 500; // Большой ШТРАФ (меньше чем за стиль)
+                Log.d(TAG, "  Item '" + item.getName() + "': Fails waterproof requirement. Score -500");
+            } else if (isRainyOrSnowy && item.isWaterproof()) {
+                score += 50; // Бонус за водонепроницаемость, если она нужна
+                Log.d(TAG, "  Item '" + item.getName() + "': Meets waterproof requirement. Score +50");
+            }
+
+            boolean itemMeetsWindproofRequirement = true;
+            if (isWindy && !item.isWindproof()) {
+                itemMeetsWindproofRequirement = false;
+                score -= 400; // Большой ШТРАФ (меньше чем за стиль)
+                Log.d(TAG, "  Item '" + item.getName() + "': Fails windproof requirement. Score -400");
+            } else if (isWindy && item.isWindproof()) {
+                score += 40; // Бонус за ветрозащиту, если она нужна
+                Log.d(TAG, "  Item '" + item.getName() + "': Meets windproof requirement. Score +40");
+            }
+
+            // 4. Оценка по температурному соответствию (чем ближе к идеальному центру, тем лучше)
+            double itemMidTemp = (item.getMinTemp() + item.getMaxTemp()) / 2.0;
+            double tempDifference = Math.abs(itemMidTemp - currentTemperature);
+            score -= tempDifference * 5; // Штраф за разницу
+            Log.d(TAG, "  Item '" + item.getName() + "': Temp difference " + tempDifference + ". Score -" + (tempDifference * 5));
+
+            // Если текущая температура находится за пределами диапазона вещи, даем очень большой штраф
+            if (currentTemperature < item.getMinTemp() || currentTemperature > item.getMaxTemp()) {
+                score -= 200; // Очень большой штраф за выход за пределы диапазона
+                Log.d(TAG, "  Item '" + item.getName() + "': Current temp outside item's range. Score -200");
+            }
+
+            // Добавляем элемент со скором только если он не получил "смертельный" штраф за стиль
+            if (score > -5000) { // Исключаем вещи, которые категорически не подходят по стилю
+                scoredItems.add(new ScoredClothingItem(item, score));
+                Log.d(TAG, "  Final score for '" + item.getName() + "': " + score + " (Added to candidates).");
+            } else {
+                Log.d(TAG, "  Final score for '" + item.getName() + "': " + score + " (Too low, excluded from candidates).");
             }
         }
 
-        Random random = new Random();
-        if (!perfectMatch.isEmpty()) {
-            Log.d(TAG, "findBestMatch: Found " + perfectMatch.size() + " perfect matches.");
-            return perfectMatch.get(random.nextInt(perfectMatch.size()));
+        if (scoredItems.isEmpty()) {
+            Log.d(TAG, "findBestMatch: No suitable item found in any category after scoring. Returning null.");
+            return null;
         }
-        if (!styleMatch.isEmpty()) {
-            Log.d(TAG, "findBestMatch: Found " + styleMatch.size() + " style-only matches.");
-            return styleMatch.get(random.nextInt(styleMatch.size()));
+
+        // --- НОВАЯ ЛОГИКА ВЫБОРА: Рандом из "хороших" элементов ---
+
+        // 1. Сортируем все элементы по убыванию скора
+        Collections.sort(scoredItems, (s1, s2) -> Double.compare(s2.score, s1.score));
+
+        Log.d(TAG, "findBestMatch: All scored items for this category (sorted):");
+        for (ScoredClothingItem sci : scoredItems) {
+            Log.d(TAG, "  - '" + sci.item.getName() + "': Score " + sci.score);
         }
-        if (!weatherMatch.isEmpty()) {
-            Log.d(TAG, "findBestMatch: Found " + weatherMatch.size() + " weather-only matches.");
-            return weatherMatch.get(random.nextInt(weatherMatch.size()));
+
+        double maxScore = scoredItems.get(0).score;
+
+        double scoreThreshold = maxScore * 0.7; // Если maxScore может быть отрицательным, нужна более сложная логика
+        if (maxScore < 0) scoreThreshold = maxScore * 1.3; // Если лучший скор отрицательный, расширяем вниз.
+
+
+        List<ClothingItem> eligibleItems = new ArrayList<>();
+        for (ScoredClothingItem sci : scoredItems) {
+            if (sci.score >= scoreThreshold) {
+                eligibleItems.add(sci.item);
+            } else {
+                break;
+            }
         }
-        // Если ничего не подошло по стилю/погоде, но вещь подходит по температуре и полу (пришла в itemsInCategory)
-        Log.d(TAG, "findBestMatch: No specific matches, returning random from category (" + itemsInCategory.size() + " items).");
-        return itemsInCategory.get(random.nextInt(itemsInCategory.size()));
+
+        if (!eligibleItems.isEmpty()) { // Убедимся, что список не пуст ПЕРЕД тем, как брать из него элементы
+            ClothingItem chosenItem = eligibleItems.get(new Random().nextInt(eligibleItems.size())); // <-- ЭТА СТРОКА
+            Log.d(TAG, "findBestMatch: Randomly selected from " + eligibleItems.size() + " eligible items. Chosen: '" + chosenItem.getName() + "' (Score: " + scoredItems.get(scoredItems.indexOf(new ScoredClothingItem(chosenItem, 0))).score + ")");
+            return chosenItem;
+        } else {
+            // Если eligibleItems пуст (даже лучший предмет не преодолел порог)
+            Log.d(TAG, "findBestMatch: No truly suitable item found after applying score threshold (" + scoreThreshold + "). Returning null.");
+            return null;
+        }
     }
+
+
+    private static class ScoredClothingItem {
+        ClothingItem item;
+        double score;
+
+        ScoredClothingItem(ClothingItem item, double score) {
+            this.item = item;
+            this.score = score;
+        }
+
+        // Переопределяем equals() и hashCode() для корректного сравнения по 'item'
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            ScoredClothingItem that = (ScoredClothingItem) obj;
+            return item.equals(that.item); // Сравниваем по самому ClothingItem
+        }
+
+        @Override
+        public int hashCode() {
+            return item.hashCode();
+        }
+    }
+
 
 
     private void setupClickListeners() {

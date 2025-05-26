@@ -24,7 +24,7 @@ import java.util.Map;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DB_HELPER"; // Тег для логов
     private static final String DATABASE_NAME = "CloovaDB.db";
-    private static final int DATABASE_VERSION = 7; // <<<=== ВЕРСИЯ ИЗМЕНЕНА
+    private static final int DATABASE_VERSION = 8; // <<<=== ВЕРСИЯ ИЗМЕНЕНА
 
     // Таблица пользователей
     private static final String TABLE_USERS = "users";
@@ -337,7 +337,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addWeatherConditionCatalog(db, "Туман");
         Log.d(TAG, "prepopulateData: Finished prepopulating catalogs.");
 
-        // --- Одежда ---
 
         // --- Верх ---
         addClothingItemFullInternal(db, "Футболка хлопковая", "Верх", "tshirtblue", "Унисекс",
@@ -413,7 +412,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 List.of("Повседневный"),
                 List.of("Облачно", "Снег", "Ветрено") // Убрал дождь для утепленных, если они не водоотталкивающие
         );
-        // !!! НУЖЕН "Низ" для "Спортивный", "Классический", "Богемный" для < 0°C
         addClothingItemFullInternal(db,"Штаны утепленные Спортивные", "Низ", "pantsgray", "Унисекс",
                 -20, 0, 1, 1,
                 List.of("Спортивный"),
@@ -424,21 +422,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 List.of("Классический", "Богемный"),
                 List.of("Облачно", "Снег", "Ветрено")
         );
+        addClothingItemFullInternal(db,"Юбка джинсовая", "Низ", "skirtblue", "Женский",
+                18, 30, 0, 0,
+                List.of("Повседневный"),
+                List.of("Солнечно", "Переменная облачность", "Облачно")
+        );
+        addClothingItemFullInternal(db,"Юбка летняя", "Низ", "skirtwhite", "Женский",
+                18, 30, 0, 0,
+                List.of("Повседневный"),
+                List.of("Солнечно", "Переменная облачность", "Облачно")
+        );
+
 
         addClothingItemFullInternal(db,"Платье летнее легкое", "Платья/Юбки", "dresswhite", "Женский",
                 20, 35, 0, 0,
                 List.of("Повседневный", "Богемный"), // Заменил "Вечерний" на "Богемный" для примера
                 List.of("Солнечно", "Переменная облачность")
-        );
-        addClothingItemFullInternal(db,"Юбка джинсовая", "Платья/Юбки", "skirtblue", "Женский",
-                18, 30, 0, 0,
-                List.of("Повседневный"),
-                List.of("Солнечно", "Переменная облачность", "Облачно")
-        );
-        addClothingItemFullInternal(db,"Юбка летняя", "Платья/Юбки", "skirtwhite", "Женский",
-                18, 30, 0, 0,
-                List.of("Повседневный"),
-                List.of("Солнечно", "Переменная облачность", "Облачно")
         );
         addClothingItemFullInternal(db,"Платье трикотажное", "Платья/Юбки", "dressblack", "Женский",
                 10, 23, 0, 0,
