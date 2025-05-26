@@ -45,7 +45,6 @@ public class CityActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);
 
@@ -98,15 +97,7 @@ public class CityActivity extends AppCompatActivity {
         saveCityButton.setOnClickListener(v -> {
             String selectedCity = cityInput.getText().toString().trim();
             if (!selectedCity.isEmpty()) {
-                if (user != null) {
-                    user.setCity(selectedCity);
-                    if (dbHelper.updateUser(user)) {
-                        setResult(RESULT_OK);
-                        finish();
-                    } else {
-                        Toast.makeText(this, "Ошибка сохранения", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                new SaveCityTask().execute(selectedCity);
             } else {
                 Toast.makeText(this, "Введите город", Toast.LENGTH_SHORT).show();
             }
@@ -131,6 +122,24 @@ public class CityActivity extends AppCompatActivity {
             }
         } catch (IOException e) {
             Log.e("Geocoder", "Error getting coordinates", e);
+        }
+        return null;
+    }
+
+    private String getValidCityName(String inputCityName) {
+        if (!Geocoder.isPresent()) {
+            return null;
+        }
+        Geocoder geocoder = new Geocoder(this, new Locale("ru", "RU"));
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(inputCityName, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                // Возвращаем официальное название города из геокодера
+                return address.getLocality();
+            }
+        } catch (IOException e) {
+            Log.e("Geocoder", "Error getting city name", e);
         }
         return null;
     }
@@ -161,6 +170,36 @@ public class CityActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(CityActivity.this,
                         "Город не найден", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class SaveCityTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String inputCity = params[0];
+            // Получаем валидное название города
+            return getValidCityName(inputCity);
+        }
+
+        @Override
+        protected void onPostExecute(String validCityName) {
+            if (validCityName != null) {
+                User user = dbHelper.getUserInfo(userId);
+                if (user != null) {
+                    user.setCity(validCityName);
+                    if (dbHelper.updateUser(user)) {
+                        // Обновляем текст в поле ввода на валидное название
+                        cityInput.setText(validCityName);
+                        setResult(RESULT_OK);
+                        finish();
+                    } else {
+                        Toast.makeText(CityActivity.this, "Ошибка сохранения", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else {
+                Toast.makeText(CityActivity.this,
+                        "Город не найден. Пожалуйста, уточните название", Toast.LENGTH_SHORT).show();
             }
         }
     }
