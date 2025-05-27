@@ -41,7 +41,7 @@ public class Zaplanerki extends AppCompatActivity implements PlannedOutfitsAdapt
 
     // UI для нижней навигации
     private ImageView navProfileIcon, navHomeIcon, navFavoritesIcon;
-    private TextView backButton;
+    private ImageView gobackbutton;
 
 
     @Override
@@ -78,14 +78,14 @@ public class Zaplanerki extends AppCompatActivity implements PlannedOutfitsAdapt
         recyclerView.setAdapter(adapter);
 
         // Инициализация кнопок навигации
-        backButton = findViewById(R.id.zaplanerki_back_button); // ID из item_planned_outfit
+        gobackbutton = findViewById(R.id.gobackbutton); // ID из item_planned_outfit
         navProfileIcon = findViewById(R.id.nav_profile_icon_zaplanerki); // ID из item_planned_outfit
         navHomeIcon = findViewById(R.id.nav_home_icon_zaplanerki); // ID из item_planned_outfit
         navFavoritesIcon = findViewById(R.id.nav_favorites_icon_zaplanerki); // ID из item_planned_outfit
     }
 
     private void setupNavigationListeners() {
-        backButton.setOnClickListener(v -> finish()); // Просто закрываем
+        gobackbutton.setOnClickListener(v -> finish()); // Просто закрываем
 
         navProfileIcon.setOnClickListener(v -> {
             Intent intent = new Intent(this, ProfileActivity.class);

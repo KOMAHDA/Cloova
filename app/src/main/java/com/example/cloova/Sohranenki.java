@@ -39,7 +39,7 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
 
     // UI для нижней навигации
     private ImageView navProfileIcon, navHomeIcon, navFavoritesIcon;
-    private TextView backButton;
+    private ImageView gobackbutton;
 
 
     @Override
@@ -77,14 +77,14 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
         recyclerView.setAdapter(adapter);
 
         // Инициализация кнопок навигации
-        backButton = findViewById(R.id.sohranenki_back_button);
+        gobackbutton = findViewById(R.id.gobackbutton);
         navProfileIcon = findViewById(R.id.nav_profile_icon_sohranenki);
         navHomeIcon = findViewById(R.id.nav_home_icon_sohranenki);
         navFavoritesIcon = findViewById(R.id.nav_favorites_icon_sohranenki);
     }
 
     private void setupNavigationListeners() {
-        backButton.setOnClickListener(v -> finish()); // Просто закрываем
+        gobackbutton.setOnClickListener(v -> finish()); // Просто закрываем
 
         navProfileIcon.setOnClickListener(v -> {
             Intent intent = new Intent(this, ProfileActivity.class);
