@@ -22,8 +22,6 @@ public class Anketa extends AppCompatActivity {
         // Инициализация кнопок выбора
         setupSelectionButtons();
 
-
-
         // Навигация
         setupNavigation();
     }
@@ -53,8 +51,6 @@ public class Anketa extends AppCompatActivity {
             dialogTitle = getString(R.string.situazia);
         }
 
-
-        // Создаем Intent для перехода к активности выбора
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("dialog_title", dialogTitle);
         intent.putExtra("button_id", button.getId());
@@ -62,26 +58,22 @@ public class Anketa extends AppCompatActivity {
     }
 
     //private void saveProfile() {
-    // Здесь реализуйте сохранение данных анкеты
-    // Можно использовать SharedPreferences, Room Database или отправить на сервер
+    // сохранение данных анкеты
+    // SharedPreferences, Room Database или отправить на сервер
     //Toast.makeText(this, R.string.saved_successfully, Toast.LENGTH_SHORT).show();
-
-    // Пример сохранения в SharedPreferences:
         /*
         SharedPreferences prefs = getSharedPreferences("ProfilePrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("preferred_colors", ((Button)findViewById(R.id.btnSelectColors)).getText().toString());
-        // Добавьте остальные поля
+        // остальные поля
         editor.apply();
         */
     //}
 
     private void setupNavigation() {
-        // Кнопка "Назад"
         ImageView goBackButton = findViewById(R.id.gobackbutton);
         goBackButton.setOnClickListener(v -> finish());
 
-        // Нижняя навигационная панель
         Button profileBtn = findViewById(R.id.profile_shape);
         Button homeBtn = findViewById(R.id.main_house_shape);
         Button favoritesBtn = findViewById(R.id.heart_shape);

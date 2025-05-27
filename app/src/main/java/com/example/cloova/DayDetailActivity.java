@@ -40,16 +40,16 @@ public class DayDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "DayDetailActivity";
 
-    // Ключи для Intent Extras (создайте их как public static final в WeatherForecastActivity или Constants)
+    // Ключи для Intent Extras (как public static final в WeatherForecastActivity или Constants)
     public static final String EXTRA_DATE_STR = "EXTRA_DATE_STR"; // "YYYY-MM-DD"
     public static final String EXTRA_MAX_TEMP = "EXTRA_MAX_TEMP";
     public static final String EXTRA_MIN_TEMP = "EXTRA_MIN_TEMP";
     public static final String EXTRA_WIND_KPH = "EXTRA_WIND_KPH";
     public static final String EXTRA_HUMIDITY = "EXTRA_HUMIDITY";
-    public static final String EXTRA_WEATHER_ICON_URL = "EXTRA_WEATHER_ICON_URL"; // Или _CODE, если передаете код
+    public static final String EXTRA_WEATHER_ICON_URL = "EXTRA_WEATHER_ICON_URL";
     public static final String EXTRA_WEATHER_DESCRIPTION = "EXTRA_WEATHER_DESCRIPTION";
     public static final String EXTRA_WEATHER_CODE = "EXTRA_WEATHER_CODE";
-    public static final String EXTRA_CITY_NAME = "EXTRA_CITY_NAME"; // Для отображения города
+    public static final String EXTRA_CITY_NAME = "EXTRA_CITY_NAME";
     public static final String EXTRA_USER_STYLE_FOR_OUTFIT = "EXTRA_USER_STYLE_FOR_OUTFIT";
 
     private DatabaseHelper dbHelper;
@@ -115,8 +115,8 @@ public class DayDetailActivity extends AppCompatActivity {
         btnLocationDetail = findViewById(R.id.btn_location_detail);
         tvDetailTemp = findViewById(R.id.tv_detail_temp);
         ivDetailWeatherIcon = findViewById(R.id.iv_detail_weather_icon);
-        tvWindValueDetail = findViewById(R.id.tv_wind_value_detail); // Предполагаем, что эти ID есть
-        tvHumidityValueDetail = findViewById(R.id.tv_humidity_value_detail); // Предполагаем, что эти ID есть
+        tvWindValueDetail = findViewById(R.id.tv_wind_value_detail);
+        tvHumidityValueDetail = findViewById(R.id.tv_humidity_value_detail);
         btnBackToWeeklyDetail = findViewById(R.id.btn_back_to_weekly_detail);
         tvOutfitSuggestionDetail = findViewById(R.id.tv_outfit_suggestion_detail);
         tvNoOutfitMessage = findViewById(R.id.tv_no_outfit_message);
@@ -171,51 +171,47 @@ public class DayDetailActivity extends AppCompatActivity {
         }
     }
 
-    // В DayDetailActivity.java
-
     private int getWeatherIconResourceByApiCode(int apiCode) {
         Log.d(TAG, "getWeatherIconResourceByApiCode: Mapping API code " + apiCode);
-        // Основывайтесь на https://www.weatherapi.com/docs/weather_conditions.json
-        // Замените R.drawable.xxx на ID ВАШИХ иконок
         switch (apiCode) {
             case 1000: // Sunny / Clear
-                // Здесь можно добавить логику для дня/ночи, если у вас есть is_day флаг для дня
+                // добавить логику для дня/ночи, если у вас есть is_day флаг для дня
                 // и разные иконки для ясного дня и ясной ночи.
                 // Пока просто возвращаем одну "солнечную" иконку.
-                return R.drawable.wb_sunny; // Ваша иконка для "Ясно/Солнечно"
+                return R.drawable.wb_sunny; // иконка для "Ясно/Солнечно"
             case 1003: // Partly cloudy
-                return R.drawable.partly_cloudy; // Ваша иконка для "Переменная облачность"
+                return R.drawable.partly_cloudy; // иконка для "Переменная облачность"
             case 1006: // Cloudy
             case 1009: // Overcast
-                return R.drawable.cloud; // Ваша иконка для "Облачно"
+                return R.drawable.cloud; // иконка для "Облачно"
             case 1030: // Mist
             case 1135: // Fog
             case 1147: // Freezing fog
-                return R.drawable.foggy; // Ваша иконка для "Туман/Дымка"
+                return R.drawable.foggy; // иконка для "Туман/Дымка"
             case 1063: // Patchy rain possible
             case 1150: // Patchy light drizzle
             case 1153: // Light drizzle
             case 1180: // Patchy light rain
             case 1183: // Light rain
-                return R.drawable.rainy; // Ваша иконка для "Небольшой дождь"
+                return R.drawable.rainy; // иконка для "Небольшой дождь"
             case 1066: // Patchy snow possible
             case 1210: // Patchy light snow
             case 1213: // Light snow
-                return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // Ваша иконка для "Небольшой снег"
+                return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // иконка для "Небольшой снег"
             case 1069: // Patchy sleet possible
             case 1204: // Light sleet
             case 1207: // Moderate or heavy sleet
             case 1249: // Light sleet showers
             case 1252: // Moderate or heavy sleet showers
-                return R.drawable.weather_mix; // Ваша иконка для "Дождь со снегом"
+                return R.drawable.weather_mix; // иконка для "Дождь со снегом"
             case 1072: // Patchy freezing drizzle possible
             case 1168: // Freezing drizzle
             case 1171: // Heavy freezing drizzle
-                return R.drawable.icerain; // Ваша иконка для "Ледяной дождь"
+                return R.drawable.icerain; // иконка для "Ледяной дождь"
             case 1087: // Thundery outbreaks possible
             case 1273: // Patchy light rain with thunder
             case 1276: // Moderate or heavy rain with thunder
-                return R.drawable.thunderstorm; // Ваша иконка для "Гроза"
+                return R.drawable.thunderstorm; // иконка для "Гроза"
             case 1114: // Blowing snow
             case 1117: // Blizzard
             case 1216: // Patchy moderate snow
@@ -224,7 +220,7 @@ public class DayDetailActivity extends AppCompatActivity {
             case 1225: // Heavy snow
             case 1255: // Light snow showers
             case 1258: // Moderate or heavy snow showers
-                return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // Ваша иконка для "Снег"
+                return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // иконка для "Снег"
             case 1186: // Moderate rain at times
             case 1189: // Moderate rain
             case 1192: // Heavy rain at times
@@ -232,14 +228,14 @@ public class DayDetailActivity extends AppCompatActivity {
             case 1240: // Light rain shower
             case 1243: // Moderate or heavy rain shower
             case 1246: // Torrential rain shower
-                return R.drawable.rainy; // Ваша иконка для "Дождь"
+                return R.drawable.rainy; // иконка для "Дождь"
             case 1279: // Patchy light snow with thunder
             case 1282: // Moderate or heavy snow with thunder
-                return R.drawable.weather_mix; // Ваша иконка "Снег с грозой"
+                return R.drawable.weather_mix; // иконка "Снег с грозой"
 
             default:
                 Log.w(TAG, "Unknown weather code: " + apiCode + ", using default icon.");
-                return R.drawable.cloud; // Ваша иконка по умолчанию
+                return R.drawable.cloud; // иконка по умолчанию
         }
     }
 
@@ -258,7 +254,7 @@ public class DayDetailActivity extends AppCompatActivity {
             Log.e(TAG, "ivDetailWeatherIcon is null!");
         }
 
-        // --- ОТОБРАЖАЕМ ВЕТЕР И ВЛАЖНОСТЬ ---
+        // ОТОБРАЖАЕМ ВЕТЕР И ВЛАЖНОСТЬ
         tvWindValueDetail.setText(String.format(Locale.getDefault(), "до %.0f м/с", windKph / 3.6)); // Переводим км/ч в м/с и округляем
         tvHumidityValueDetail.setText(String.format(Locale.getDefault(), "%d%%", humidity));
     }
@@ -280,15 +276,13 @@ public class DayDetailActivity extends AppCompatActivity {
         List<String> dbConditions = new ArrayList<>();
         Log.d(TAG, "mapApiWeatherToDbConditions: Mapping API desc='" + apiDescription + "', code=" + apiCode);
 
-        // Приоритет отдаем коду, так как он более однозначен
-        // Коды и описания из: https://www.weatherapi.com/docs/weather_conditions.json
+        // https://www.weatherapi.com/docs/weather_conditions.json
         switch (apiCode) {
             case 1000: // Sunny / Clear
                 dbConditions.add("Солнечно");
                 break;
             case 1003: // Partly cloudy
                 dbConditions.add("Переменная облачность");
-                // Можно также добавить "Облачно", если это уместно для вашей логики одежды
                 // dbConditions.add("Облачно");
                 break;
             case 1006: // Cloudy
@@ -327,13 +321,13 @@ public class DayDetailActivity extends AppCompatActivity {
             case 1168: // Freezing drizzle
             case 1171: // Heavy freezing drizzle (Ледяной дождь)
                 dbConditions.add("Дождь"); // Ледяной дождь - это форма дождя
-                // Можно добавить специфическое условие "Ледяной дождь", если оно есть в вашем каталоге
+                // Можно добавить специфическое условие "Ледяной дождь"
                 break;
             case 1087: // Thundery outbreaks possible (Возможны грозы)
             case 1273: // Patchy light rain with thunder
             case 1276: // Moderate or heavy rain with thunder
                 dbConditions.add("Дождь"); // Гроза обычно с дождем
-                // dbConditions.add("Гроза"); // Если есть такое условие в каталоге
+                // dbConditions.add("Гроза");
                 break;
             case 1114: // Blowing snow
             case 1117: // Blizzard (Метель)
@@ -454,7 +448,7 @@ public class DayDetailActivity extends AppCompatActivity {
                                         String preferredStyle, List<String> currentDbWeatherConditions) {
         Log.d(TAG, "displaySuggestedOutfit: Processing " + allPossibleItems.size() + " possible items. PrefStyle: " + preferredStyle + ", Conditions: " + currentDbWeatherConditions);
 
-        // --- Сбрасываем видимость всех элементов перед новым подбором ---
+        // Сбрасываем видимость всех элементов перед новым подбором
         ivOutfitOuterwear.setVisibility(View.GONE);
         ivOutfitTop.setVisibility(View.GONE);
         ivOutfitBottom.setVisibility(View.GONE);
@@ -492,11 +486,11 @@ public class DayDetailActivity extends AppCompatActivity {
 
             boolean isFemaleUser = currentUser != null && "Женский".equalsIgnoreCase(currentUser.getGender());
 
-            // ВАР-Т 1: Обычный комплект (Верх + Низ)
+            // В1: Обычный комплект (Верх + Низ)
             ClothingItem candTopReg = findBestMatch(itemsByCategory.get("верх"), preferredStyle, currentDbWeatherConditions, currentTemperature);
             ClothingItem candBottomReg = (candTopReg != null) ? findBestMatch(itemsByCategory.get("низ"), preferredStyle, currentDbWeatherConditions, currentTemperature) : null;
 
-            // ВАР-Т 2: Платье/Юбка (только для женщин)
+            // В2: Платье/Юбка (только для женщин)
             ClothingItem candDressOrSkirt = null;
             if (isFemaleUser && itemsByCategory.containsKey("платья/юбки")) {
                 candDressOrSkirt = findBestMatch(itemsByCategory.get("платья/юбки"), preferredStyle, currentDbWeatherConditions, currentTemperature);
@@ -545,7 +539,7 @@ public class DayDetailActivity extends AppCompatActivity {
             }
         }
 
-        // --- ВЫБОР И ФИНАЛЬНОЕ ОТОБРАЖЕНИЕ ОДНОГО ИЗ КАНДИДАТОВ ---
+        // ВЫБОР И ФИНАЛЬНОЕ ОТОБРАЖЕНИЕ ОДНОГО ИЗ КАНДИДАТОВ
         Map<String, ClothingItem> finalOutfit = null;
         if (!outfitCandidates.isEmpty()) {
             // Выбираем случайный образ из списка сгенерированных кандидатов
@@ -571,7 +565,7 @@ public class DayDetailActivity extends AppCompatActivity {
             return; // Выходим, так как ничего не подобрали
         }
 
-        // --- Устанавливаем изображения в ImageView (используя finalOutfit) ---
+        // Устанавливаем изображения в ImageView (используя finalOutfit)
         int itemsVisuallyDisplayed = 0;
         if (lastSelectedOuterwear != null) { setOutfitImage(ivOutfitOuterwear, lastSelectedOuterwear.getImageResourceName()); itemsVisuallyDisplayed++; }
         if (lastSelectedTop != null) { setOutfitImage(ivOutfitTop, lastSelectedTop.getImageResourceName()); itemsVisuallyDisplayed++; }
@@ -580,7 +574,7 @@ public class DayDetailActivity extends AppCompatActivity {
         // if (lastSelectedHeadwear != null) { setOutfitImage(ivOutfitHeadwear, lastSelectedHeadwear.getImageResourceName()); itemsVisuallyDisplayed++; } // Если есть головной убор
 
 
-        // --- Формируем и отображаем ТЕКСТОВОЕ описание образа ---
+        // Формируем и отображаем ТЕКСТОВОЕ описание образа
         StringBuilder outfitTextBuilder = new StringBuilder(getString(R.string.recommended_outfit_title) + "\n");
         int itemsInTextList = 0;
 
@@ -594,7 +588,7 @@ public class DayDetailActivity extends AppCompatActivity {
         if (lastSelectedShoes != null) { outfitTextBuilder.append("👟 ").append(lastSelectedShoes.getName()).append("\n"); itemsInTextList++; }
         // if (lastSelectedHeadwear != null) { outfitTextBuilder.append("🧢 ").append(lastSelectedHeadwear.getName()).append("\n"); itemsInTextList++; } // Если есть головной убор
 
-        // --- Логика отображения/скрытия на основе количества подобранных элементов (остается той же) ---
+        // Логика отображения/скрытия на основе количества подобранных элементов (остается той же)
         if (itemsVisuallyDisplayed > 0) {
             tvOutfitSuggestionDetail.setText(outfitTextBuilder.toString());
             tvOutfitSuggestionDetail.setVisibility(View.VISIBLE);
@@ -637,7 +631,7 @@ public class DayDetailActivity extends AppCompatActivity {
     }
 
     // Новый метод для выбора лучшего совпадения с учетом стиля и погоды,
-// с откатом к выбору только по температуре, если идеального нет.
+    // с откатом к выбору только по температуре, если идеального нет.
     @Nullable
     private ClothingItem findBestMatch(@Nullable List<ClothingItem> itemsInCategory,
                                        String preferredStyle,

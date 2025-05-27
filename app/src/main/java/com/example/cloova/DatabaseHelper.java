@@ -24,7 +24,7 @@ import java.util.Map;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DB_HELPER"; // Тег для логов
     private static final String DATABASE_NAME = "CloovaDB.db";
-    private static final int DATABASE_VERSION = 9; // <<<=== ВЕРСИЯ ИЗМЕНЕНА
+    private static final int DATABASE_VERSION = 9; // ВЕРСИЯ
 
     // Таблица пользователей
     private static final String TABLE_USERS = "users";
@@ -46,26 +46,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Таблица выбранных стилей пользователя
     private static final String TABLE_USER_STYLES = "user_styles";
-    private static final String COLUMN_STYLE_ID_USER = "user_style_id"; // Переименовал для ясности, PK
+    private static final String COLUMN_STYLE_ID_USER = "user_style_id";
     // COLUMN_USER_ID используется как FK
-    private static final String COLUMN_STYLE_NAME_USER = "style_name"; // Переименовал для ясности
+    private static final String COLUMN_STYLE_NAME_USER = "style_name";
 
     // Таблица гардероба пользователя
     private static final String TABLE_WARDROBE = "wardrobe";
-    private static final String COLUMN_CLOTHING_ID_USER_TABLE = "clothing_id"; // Переименовал PK
+    private static final String COLUMN_CLOTHING_ID_USER_TABLE = "clothing_id";
     // COLUMN_USER_ID используется как FK
-    private static final String COLUMN_CLOTHING_NAME_USER_TABLE = "clothing_name"; // Переименовал
+    private static final String COLUMN_CLOTHING_NAME_USER_TABLE = "clothing_name";
 
     // Таблица аксессуаров пользователя
     private static final String TABLE_ACCESSORIES = "accessories";
-    private static final String COLUMN_ACCESSORY_ID_USER_TABLE = "accessory_id"; // Переименовал PK
+    private static final String COLUMN_ACCESSORY_ID_USER_TABLE = "accessory_id";
     // COLUMN_USER_ID используется как FK
-    private static final String COLUMN_ACCESSORY_NAME_USER_TABLE = "accessory_name"; // Переименовал
+    private static final String COLUMN_ACCESSORY_NAME_USER_TABLE = "accessory_name";
 
 
     // --- НОВЫЕ КОНСТАНТЫ ДЛЯ ТАБЛИЦ ОДЕЖДЫ ---
     public static final String TABLE_CLOTHING_ITEMS = "clothing_items";
-    public static final String COLUMN_CI_ID = "clothing_item_id"; // Изменено для уникальности
+    public static final String COLUMN_CI_ID = "clothing_item_id";
     public static final String COLUMN_CI_NAME = "name";
     public static final String COLUMN_CI_CATEGORY = "category";
     public static final String COLUMN_CI_IMAGE_RES = "image_resource_name";
@@ -76,20 +76,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CI_IS_WINDPROOF = "is_windproof";
 
     public static final String TABLE_STYLES_CATALOG = "styles_catalog";
-    public static final String COLUMN_SC_ID = "style_catalog_id"; // Изменено для уникальности
+    public static final String COLUMN_SC_ID = "style_catalog_id";
     public static final String COLUMN_SC_NAME = "name";
 
     public static final String TABLE_WEATHER_CONDITIONS_CATALOG = "weather_conditions_catalog";
-    public static final String COLUMN_WCC_ID = "condition_catalog_id"; // Изменено для уникальности
+    public static final String COLUMN_WCC_ID = "condition_catalog_id";
     public static final String COLUMN_WCC_NAME = "name";
 
     public static final String TABLE_CLOTHING_ITEM_STYLES = "clothing_item_styles";
-    public static final String COLUMN_CIS_ID = "item_style_relation_id"; // Изменено для уникальности
+    public static final String COLUMN_CIS_ID = "item_style_relation_id";
     public static final String COLUMN_CIS_CLOTHING_ID_FK = "clothing_item_id_fk";
     public static final String COLUMN_CIS_STYLE_ID_FK = "style_catalog_id_fk";
 
     public static final String TABLE_CLOTHING_ITEM_CONDITIONS = "clothing_item_conditions";
-    public static final String COLUMN_CIC_ID = "item_condition_relation_id"; // Изменено для уникальности
+    public static final String COLUMN_CIC_ID = "item_condition_relation_id";
     public static final String COLUMN_CIC_CLOTHING_ID_FK = "clothing_item_id_fk";
     public static final String COLUMN_CIC_CONDITION_ID_FK = "condition_catalog_id_fk";
 
@@ -184,7 +184,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_ACCESSORIES_TABLE);
 
-        // --- СОЗДАНИЕ НОВЫХ ТАБЛИЦ ДЛЯ ОДЕЖДЫ ---
+        // СОЗДАНИЕ НОВЫХ ТАБЛИЦ ДЛЯ ОДЕЖДЫ
         String CREATE_CLOTHING_ITEMS_TABLE = "CREATE TABLE " + TABLE_CLOTHING_ITEMS + "("
                 + COLUMN_CI_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_CI_NAME + " TEXT NOT NULL,"
@@ -287,7 +287,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVED_OUTFIT_ITEMS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVED_OUTFITS);
 
-        // Затем остальные, как было
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLOTHING_ITEM_CONDITIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLOTHING_ITEM_STYLES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WEATHER_CONDITIONS_CATALOG);
@@ -319,9 +318,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addWeatherConditionCatalog(db, "Туман");
         Log.d(TAG, "prepopulateData: Finished prepopulating catalogs.");
 
-        // В DatabaseHelper.java, внутри prepopulateData(SQLiteDatabase db)
 
-        // Каталоги стилей и погодных условий (оставляем ваши)
+        // Каталоги стилей и погодных условий
         addStyleCatalog(db, "Повседневный");
         addStyleCatalog(db, "Спортивный");
         addStyleCatalog(db, "Классический");
@@ -338,7 +336,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "prepopulateData: Finished prepopulating catalogs.");
 
 
-        // --- Верх ---
+        // Верх
         addClothingItemFullInternal(db, "Футболка хлопковая", "Верх", "tshirtblue", "Унисекс",
                 18, 30, 0, 0,
                 List.of("Повседневный", "Спортивный"), // Покрывает 2 стиля
@@ -371,7 +369,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
 
 
-        // --- Низ ---
+        // Низ
         addClothingItemFullInternal(db,"Шорты спортивные", "Низ", "shortsblack", "Унисекс",
                 22, 35, 0, 0,
                 List.of("Спортивный", "Повседневный"),
@@ -441,7 +439,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
 
 
-        // --- Верхняя одежда ---
+        // Верхняя одежда
         addClothingItemFullInternal(db,"Пиджак", "Верхняя одежда", "jacketclassicblack", "Унисекс", // Только Мужской
                 5, 15, 0, 0,
                 List.of("Классический", "Богемный", "Повседневный"), // Покрывает 3 стиля
@@ -467,7 +465,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 List.of("Повседневный", "Спортивный"), // Парка может быть и спортивной
                 List.of("Облачно", "Снег", "Ветрено") // Убрал "Холодно", "Мороз"
         );
-        // !!! НУЖНА Верхняя одежда для "Классический", "Богемный" на холод и очень холод.
+        // НУЖНА Верхняя одежда для "Классический", "Богемный" на холод и очень холод.
         addClothingItemFullInternal(db,"Пальто классическое", "Верхняя одежда", "jacketclassicgrey", "Унисекс",
                 -10, 8, 0, 1, // Шерстяное пальто может быть ветрозащитным
                 List.of("Классический", "Богемный"),
@@ -519,7 +517,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insertWithOnConflict(TABLE_WEATHER_CONDITIONS_CATALOG, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
-    // --- СУЩЕСТВУЮЩИЕ МЕТОДЫ (С УДАЛЕННЫМИ DB.CLOSE()) ---
     public long addUser(String login, String password, String name, String gender,
                         String birthDate, String city, String language, int avatarResId) {
         if (checkLoginExists(login)) {
@@ -572,7 +569,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             for (String style : styles) {
                 ContentValues values = new ContentValues();
                 values.put(COLUMN_USER_ID, userId);
-                values.put(COLUMN_STYLE_NAME_USER, style); // Использовал переименованную константу
+                values.put(COLUMN_STYLE_NAME_USER, style);
                 db.insert(TABLE_USER_STYLES, null, values);
             }
             db.setTransactionSuccessful();
@@ -590,7 +587,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             for (String item : clothes) {
                 ContentValues values = new ContentValues();
                 values.put(COLUMN_USER_ID, userId);
-                values.put(COLUMN_CLOTHING_NAME_USER_TABLE, item); // Использовал переименованную константу
+                values.put(COLUMN_CLOTHING_NAME_USER_TABLE, item);
                 db.insert(TABLE_WARDROBE, null, values);
             }
             db.setTransactionSuccessful();
@@ -608,7 +605,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             for (String accessory : accessories) {
                 ContentValues values = new ContentValues();
                 values.put(COLUMN_USER_ID, userId);
-                values.put(COLUMN_ACCESSORY_NAME_USER_TABLE, accessory); // Использовал переименованную константу
+                values.put(COLUMN_ACCESSORY_NAME_USER_TABLE, accessory);
                 db.insert(TABLE_ACCESSORIES, null, values);
             }
             db.setTransactionSuccessful();
@@ -833,13 +830,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         try {
-            // 1. Удаляем связанные данные (цвета, стили и т.д.)
+            // Удаляем связанные данные (цвета, стили и т.д.)
             db.delete(TABLE_USER_COLORS, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
             db.delete(TABLE_USER_STYLES, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
             db.delete(TABLE_WARDROBE, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
             db.delete(TABLE_ACCESSORIES, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
 
-            // 2. Удаляем самого пользователя
+            // Удаляем самого пользователя
             int rowsAffected = db.delete(TABLE_USERS, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
 
             db.setTransactionSuccessful();
@@ -863,11 +860,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         itemValues.put(COLUMN_CI_MAX_TEMP, maxTemp);
         itemValues.put(COLUMN_CI_IS_WATERPROOF, isWaterproof);
         itemValues.put(COLUMN_CI_IS_WINDPROOF, isWindproof);
-
-        // Транзакцию лучше начинать перед циклом добавлений, если prepopulateData делает много вставок.
-        // Но если каждая вставка одежды должна быть атомарной, то можно и здесь.
-        // Для простоты пока уберем вложенную транзакцию здесь, предполагая,
-        // что prepopulateData может быть обернут в транзакцию, или каждая вставка - отдельная операция.
 
         try {
             clothingItemId = db.insertOrThrow(TABLE_CLOTHING_ITEMS, null, itemValues); // Используем переданный db
@@ -1057,7 +1049,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     ClothingItem item = new ClothingItem();
-                    // ... (заполнение объекта ClothingItem как и раньше) ...
                     item.setClothingId(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_CI_ID)));
                     item.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CI_NAME)));
                     item.setCategory(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CI_CATEGORY)));
@@ -1271,8 +1262,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int rowsAffected = 0;
         db.beginTransaction();
         try {
-            // Благодаря ON DELETE CASCADE в TABLE_SAVED_OUTFIT_ITEMS,
-            // все связанные элементы будут удалены автоматически.
+            // Благодаря ON DELETE CASCADE в TABLE_SAVED_OUTFIT_ITEMS, все связанные элементы будут удалены автоматически.
             rowsAffected = db.delete(TABLE_SAVED_OUTFITS, COLUMN_SO_ID + " = ?",
                     new String[]{String.valueOf(outfitId)});
             db.setTransactionSuccessful();

@@ -168,7 +168,7 @@ public class SavedOutfitsAdapter extends RecyclerView.Adapter<SavedOutfitsAdapte
                 Log.w(TAG, "setOutfitImage: ImageView is null or imageResourceName is empty.");
                 return;
             }
-            // Проверяем, существует ли ресурс. Имя ресурса должно быть точно таким же, как в drawable.
+            // Проверяем, существует ли ресурс
             int resId = context.getResources().getIdentifier(imageResourceName, "drawable", context.getPackageName());
             if (resId != 0) {
                 imageView.setImageResource(resId);

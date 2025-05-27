@@ -37,7 +37,7 @@ public class PlannedOutfitsAdapter extends RecyclerView.Adapter<PlannedOutfitsAd
     private static final String TAG = "PlannedOutfitsAdapter";
 
     public interface OnItemDeleteListener {
-        void onDeleteClick(PlannedOutfit outfit); // ИСПОЛЬЗУЕМ PlannedOutfit
+        void onDeleteClick(PlannedOutfit outfit);
     }
 
     public PlannedOutfitsAdapter(Context context, List<PlannedOutfit> plannedOutfits, OnItemDeleteListener deleteListener) {
@@ -46,7 +46,7 @@ public class PlannedOutfitsAdapter extends RecyclerView.Adapter<PlannedOutfitsAd
         this.deleteListener = deleteListener;
     }
 
-    public void updateData(List<PlannedOutfit> newOutfits) { // ИСПОЛЬЗУЕМ PlannedOutfit
+    public void updateData(List<PlannedOutfit> newOutfits) {
         this.plannedOutfits.clear();
         if (newOutfits != null) {
             this.plannedOutfits.addAll(newOutfits);
@@ -63,7 +63,7 @@ public class PlannedOutfitsAdapter extends RecyclerView.Adapter<PlannedOutfitsAd
 
     @Override
     public void onBindViewHolder(@NonNull PlannedOutfitViewHolder holder, int position) {
-        PlannedOutfit outfit = plannedOutfits.get(position); // ИСПОЛЬЗУЕМ PlannedOutfit
+        PlannedOutfit outfit = plannedOutfits.get(position);
         holder.bind(outfit, context);
     }
 
@@ -97,15 +97,15 @@ public class PlannedOutfitsAdapter extends RecyclerView.Adapter<PlannedOutfitsAd
 
             btnDeletePlannedOutfit.setOnClickListener(v -> {
                 if (getAdapterPosition() != RecyclerView.NO_POSITION && deleteListener != null) {
-                    deleteListener.onDeleteClick((PlannedOutfit) itemView.getTag()); // ИСПОЛЬЗУЕМ PlannedOutfit
+                    deleteListener.onDeleteClick((PlannedOutfit) itemView.getTag());
                 }
             });
         }
 
-        void bind(final PlannedOutfit outfit, final Context context) { // ИСПОЛЬЗУЕМ PlannedOutfit
+        void bind(final PlannedOutfit outfit, final Context context) {
             itemView.setTag(outfit);
 
-            tvPlannedDate.setText(formatDate(outfit.getPlanDate())); // ИСПОЛЬЗУЕМ getPlanDate()
+            tvPlannedDate.setText(formatDate(outfit.getPlanDate()));
             tvPlannedWeatherInfo.setText(String.format(Locale.getDefault(), "%s°C, %s, %s стиль",
                     (int) outfit.getTemperature(), outfit.getWeatherDescription(), outfit.getStyleName()));
 
