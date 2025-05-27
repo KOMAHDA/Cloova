@@ -38,7 +38,7 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
     private TextView emptyMessage;
 
     private ImageView navProfileIcon, navHomeIcon, navFavoritesIcon;
-    private TextView backButton;
+    private ImageView gobackbutton;
 
 
     @Override
@@ -75,15 +75,15 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
         adapter = new SavedOutfitsAdapter(this, new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
 
-        backButton = findViewById(R.id.sohranenki_back_button);
+
+        gobackbutton = findViewById(R.id.gobackbutton);
         navProfileIcon = findViewById(R.id.nav_profile_icon_sohranenki);
         navHomeIcon = findViewById(R.id.nav_home_icon_sohranenki);
         navFavoritesIcon = findViewById(R.id.nav_favorites_icon_sohranenki);
     }
 
     private void setupNavigationListeners() {
-        backButton.setOnClickListener(v -> finish());
-
+        gobackbutton.setOnClickListener(v -> finish()); // Просто закрываем
         navProfileIcon.setOnClickListener(v -> {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

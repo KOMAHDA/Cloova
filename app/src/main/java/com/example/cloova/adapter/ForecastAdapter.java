@@ -66,7 +66,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         notifyDataSetChanged();
     }
 
-    // --- ViewHolder ---
+    // ViewHolder
     static class ForecastViewHolder extends RecyclerView.ViewHolder {
         TextView tvDate, tvDayOfWeek;
         ImageView ivWeatherIcon;
@@ -78,8 +78,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             tvDate = itemView.findViewById(R.id.tv_date);
             tvDayOfWeek = itemView.findViewById(R.id.tv_day_of_week);
             ivWeatherIcon = itemView.findViewById(R.id.iv_weather_icon);
-            tvTempDay = itemView.findViewById(R.id.tv_temp_day); // Находим TextView
-            tvTempNight = itemView.findViewById(R.id.tv_temp_night); // Находим TextView
+            tvTempDay = itemView.findViewById(R.id.tv_temp_day);
+            tvTempNight = itemView.findViewById(R.id.tv_temp_night);
             btnOutfit = itemView.findViewById(R.id.btn_outfit);
         }
 
@@ -103,7 +103,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 Log.w(TAG, "No weather condition data for forecast day. Using default cloud icon.");
             }
 
-            // !!! УСТАНАВЛИВАЕМ OnClickListener ДЛЯ КНОПКИ "ВЕШАЛКИ" !!!
+            // УСТАНАВЛИВАЕМ OnClickListener ДЛЯ КНОПКИ "ВЕШАЛКИ"
             btnOutfit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -130,7 +130,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             });
         }
 
-        // --- Вспомогательные методы форматирования даты ---
+        // Вспомогательные методы форматирования даты
         private String formatDisplayDate(String inputDate) { // inputDate в формате "YYYY-MM-DD"
             if (inputDate == null) return "N/A";
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -139,7 +139,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 Date date = inputFormat.parse(inputDate);
                 return outputFormat.format(date);
             } catch (ParseException e) {
-                return inputDate; // Возвращаем как есть при ошибке
+                return inputDate;
             }
         }
 
@@ -165,30 +165,28 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
         private int getWeatherIconResourceByCode(int code) {
             Log.d(TAG, "getWeatherIconResourceByCode called with code: " + code);
-            // Коды взяты из https://www.weatherapi.com/docs/weather_conditions.json
-            // Используйте ваши имена файлов иконок!
             switch (code) {
                 case 1000: // Sunny / Clear (ночь обрабатывается URL в API, здесь один код)
-                    return R.drawable.wb_sunny; // Используйте вашу иконку для Ясно
+                    return R.drawable.wb_sunny;
                 case 1003: // Partly cloudy
-                    return R.drawable.partly_cloudy; // Ваша иконка переменной облачности
+                    return R.drawable.partly_cloudy; // иконка переменной облачности
                 case 1006: // Cloudy
                 case 1009: // Overcast
-                    return R.drawable.cloud; // Ваша иконка Облачно/Пасмурно
+                    return R.drawable.cloud; // иконка Облачно/Пасмурно
                 case 1030: // Mist
                 case 1135: // Fog
                 case 1147: // Freezing fog
-                    return R.drawable.foggy; // Ваша иконка тумана
+                    return R.drawable.foggy; // иконка тумана
                 case 1063: // Patchy light rain
                 case 1150: // Patchy light drizzle
                 case 1180: // Patchy light rain
                 case 1183: // Light rain
                 case 1240: // Light rain shower
-                    return R.drawable.rainy; // Ваша иконка легкого дождя
+                    return R.drawable.rainy; // иконка легкого дождя
                 case 1066: // Patchy snow possible
                 case 1210: // Patchy light snow
                 case 1255: // Light snow showers
-                    return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // Ваша иконка легкого снега
+                    return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // иконка легкого снега
                 case 1069: // Patchy sleet possible
                 case 1249: // Sleet showers
                 case 1204: // Light sleet
@@ -209,7 +207,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 case 1222: // Patchy heavy snow
                 case 1225: // Heavy snow
                 case 1258: // Moderate or heavy snow showers
-                    return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // Ваша иконка снега
+                    return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // иконка снега
                 case 1117: // Blizzard
                     return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // Или специальная иконка метели
                 case 1153: // Light drizzle
@@ -219,7 +217,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 case 1195: // Heavy rain
                 case 1243: // Moderate or heavy rain shower
                 case 1246: // Torrential rain shower
-                    return R.drawable.rainy; // Ваша иконка дождя
+                    return R.drawable.rainy; // иконка дождя
                 case 1198: // Light freezing rain
                 case 1201: // Moderate or heavy freezing rain
                     return R.drawable.weather_mix; // Или иконка ледяного дождя
@@ -233,7 +231,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
                 default:
                     Log.w(TAG, "getWeatherIconResourceByCode: Unknown weather code: " + code);
-                    return R.drawable.cloud; // Ваша иконка по умолчанию
+                    return R.drawable.cloud; // иконка по умолчанию
             }
         }
     }

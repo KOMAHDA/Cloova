@@ -2,7 +2,6 @@
     <!-- Общие -->
     <string name="app_name">CLOOVA</string>
     <string name="logo_text">CLOOVA</string>
-    <string name="strelka"></string> <!-- Символ стрелки назад -->
     <string name="back_button_desc">Back</string> <!-- Описание для кнопки Назад (Accessibility) -->
     <string name="not_available_short">N/D</string> <!-- Кратко "Нет данных" или "Недоступно" -->
     <string name="not_specified">Not specified</string>
@@ -54,6 +53,7 @@
     <string name="save_button_text">Save</string>
     <string name="save">Saved looks</string>
     <string name="plan">Planned looks</string>
+    <string name="date_hint">DD.MM.YYYY</string>
 
 
     <!-- Профиль -->
@@ -118,44 +118,95 @@
     <string name="edit_profile_title">Edit</string> <!-- Один раз -->
 
     <!-- Меню Navigation Drawer -->
-    <string name="navigation_drawer_open">Открыть меню навигации</string>
-    <string name="navigation_drawer_close">Закрыть меню навигации</string>
-    <string name="menu_home">Главная</string> <!-- Главный экран, погода? -->
-    <string name="menu_profile">Профиль</string>
-    <string name="menu_other">Другое</string> <!-- Заголовок группы, один раз -->
-    <string name="menu_settings">Настройки</string> <!-- Один раз -->
-    <string name="menu_logout">Выход</string> <!-- Один раз -->
+    <string name="navigation_drawer_open">Open navigation menu</string>
+    <string name="navigation_drawer_close">Close navigation menu</string>
+    <string name="menu_home">Home</string> <!-- Main screen, weather? -->
+    <string name="menu_profile">Profile</string>
+    <string name="menu_other">Other</string> <!-- Group header, used once -->
+    <string name="menu_settings">Settings</string> <!-- Used once -->
+    <string name="menu_logout">Logout</string> <!-- Used once -->
 
-    <!-- Сообщения Toast / Ошибки / TODO -->
-    <string name="error_auth">Ошибка авторизации</string>
-    <string name="error_loading_profile_data">Не удалось загрузить данные профиля</string>
-    <string name="error_user_data_not_found">Данные пользователя не найдены</string>
-    <string name="error_open_link">Не удалось открыть ссылку</string>
-    <string name="todo_location_settings">Переход к настройкам местоположения (TODO)</string>
-    <string name="todo_language_settings">Переход к настройкам языка (TODO)</string>
-    <string name="todo_questionnaire">Переход к анкете (TODO)</string>
-    <string name="todo_saved_looks">Переход к сохраненным образам (TODO)</string>
-    <string name="todo_planned_looks">Переход к запланированным образам (TODO)</string>
-    <string name="todo_go_home">Переход на главный экран (TODO)</string>
-    <string name="todo_go_settings">Переход на настройки (TODO)</string>
+    <!-- Toast Messages / Errors / TODO -->
+    <string name="error_auth">Authorization error</string>
+    <string name="error_loading_profile_data">Failed to load profile data</string>
+    <string name="error_user_data_not_found">User data not found</string>
+    <string name="error_open_link">Failed to open link</string>
+    <string name="todo_location_settings">Go to location settings (TODO)</string>
+    <string name="todo_language_settings">Go to language settings (TODO)</string>
+    <string name="todo_questionnaire">Go to questionnaire (TODO)</string>
+    <string name="todo_saved_looks">Go to saved outfits (TODO)</string>
+    <string name="todo_planned_looks">Go to planned outfits (TODO)</string>
+    <string name="todo_go_home">Go to home screen (TODO)</string>
+    <string name="todo_go_settings">Go to settings (TODO)</string>
 
-    <!-- Дополнительно (если понадобятся) -->
-    <string name="cloud">Погода</string> <!-- Название для возможного экрана погоды -->
+    <!-- Additional (if needed) -->
+    <string name="cloud">Weather</string> <!-- Possible weather screen title -->
 
-    <string name="weather_forecast_title">Прогноз на ближайшие дни</string>
-    <string name="outfit_button_desc">Подобрать образ</string>
-    <string name="filter_day">День</string>
-    <string name="filter_night">Ночь</string>
-    <string name="filter_outfit">Образ</string>
-    <string name="monthly_forecast_button">Прогноз на месяц</string>
+    <string name="weather_forecast_title">Forecast for the coming days</string>
+    <string name="outfit_button_desc">Find outfit</string>
+    <string name="day_label">Day</string>
+    <string name="night_label">Night</string>
+    <string name="look_label">Outfit</string>
+    <string name="monthly_forecast_button">Monthly forecast</string>
 
-    <string name="day_detail_activity_title">Прогноз на %1$s</string> <!-- %1$s будет заменен на дату -->
-    <string name="wind_label">Ветер</string>
-    <string name="humidity_label">Влажность</string>
-    <string name="weekly_forecast_link">Прогноз на неделю</string>
-    <string name="outfit_suggestion_placeholder">Сегодня хороший день для новых открытий!</string>
-    <string name="add_to_favorites">Добавить в избранное</string>
-    <string name="edit_outfit_button">Редактировать образ</string>
-    <string name="save_outfit_button">Сохранить образ</string>
-    <string name="refresh_button">Обновить</string>
+    <string name="day_detail_activity_title">Forecast for %1$s</string> <!-- %1$s will be replaced with a date -->
+    <string name="wind_label">Wind</string>
+    <string name="humidity_label">Humidity</string>
+    <string name="weekly_forecast_link">Weekly forecast</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="edit_outfit_button">Edit outfit</string>
+    <string name="save_outfit_button">Save outfit</string>
+    <string name="refresh_button">Refresh</string>
+
+    <string name="wind_label_short">Wind</string>
+    <string name="humidity_label_short">Humidity</string>
+
+    <string name="outfit_suggestion_placeholder">Finding your outfit for today...</string>
+    <string name="outfit_no_suitable_clothes">Unfortunately, no suitable clothing matching your criteria was found.</string>
+    <string name="outfit_no_complete_set">Could not assemble a complete set, but here is what we found:</string>
+    <string name="mannequin_desc">Mannequin with suggested outfit</string>
+    <string name="my_anketa">My Profile</string>
+    <string name="saave">Save</string>
+    <string name="sochetanie">Are there any clothes you wouldn’t pair together?</string>
+    <string name="nolove">A color you wouldn’t wear</string>
+    <string name="situazia">For which situations do you most often need outfit suggestions?</string>
+    <string name="komfort">What’s more important to you in an outfit: comfort or appearance?</string>
+    <string name="vibor">Select</string>
+    <string name="outfit_no_complete_set_fallback">Could not assemble a complete set. Try adjusting your criteria or updating the clothing catalog.</string>
+    <string name="recommended_outfit_title">Recommended outfit:</string>
+    <string name="error_loading_user_data">Error loading user data.</string>
+
+    <string name="error_auth_save_outfit">Error: user is not authorized to save the outfit.</string>
+    <string name="outfit_cannot_save_empty">Cannot save an empty outfit.</string>
+    <string name="saving_outfit">Saving outfit...</string>
+    <string name="outfit_saved_successfully">Outfit saved successfully!</string>
+    <string name="error_saving_outfit">Error saving the outfit.</string>
+
+    <string name="saved_looks_title">Saved Outfits</string>
+    <string name="no_saved_looks_message">You don’t have any saved outfits yet.</string>
+    <string name="back_button_text">Back</string>
+    <string name="delete_outfit_cd">Delete outfit</string>
+    <string name="outfit_delete_successful">Outfit deleted.</string>
+    <string name="outfit_delete_failed">Error deleting the outfit.</string>
+    <string name="delete_confirmation_title">Delete outfit?</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete this outfit? This action cannot be undone.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="plan_outfit_button">Plan outfit</string>
+    <string name="error_auth_plan_outfit">Error: user is not authorized to plan an outfit.</string>
+    <string name="outfit_cannot_plan_empty">Cannot plan an empty outfit.</string>
+    <string name="planning_outfit">Planning outfit...</string>
+    <string name="outfit_planned_successfully">Outfit planned successfully!</string>
+    <string name="error_planning_outfit">Error planning the outfit.</string>
+
+    <string name="planned_looks_title">Planned Outfits</string>
+    <string name="no_planned_looks_message">You don’t have any planned outfits yet.</string>
+    <string name="delete_planned_outfit_cd">Delete planned outfit</string>
+    <string name="planned_outfit_delete_successful">Planned outfit deleted.</string>
+    <string name="planned_outfit_delete_failed">Error deleting the planned outfit.</string>
+    <string name="delete_planned_confirmation_title">Delete planned outfit?</string>
+    <string name="delete_planned_confirmation_message">Are you sure you want to delete this planned outfit? This action cannot be undone.</string>
+
+    <string name="menu_favorites">Favorites</string>
 </resources>

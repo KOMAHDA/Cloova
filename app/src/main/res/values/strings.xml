@@ -36,6 +36,7 @@
     <string name="choose_styles">Выбрать стили</string>
     <string name="choose_clothes">Выбрать одежду</string>
     <string name="choose_accessories">Выбрать аксессуары</string>
+    <string name="date_hint">ДД.ММ.ГГГГ</string>
 
     <!-- login_label_colon уже есть -->
     <string name="birth_date_label_colon">Дата рождения:</string> <!-- Используется как метка -->

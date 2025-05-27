@@ -49,16 +49,8 @@ public class Anketa extends AppCompatActivity {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);}
 
-    private void Myhome_2(View v) {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);}
-
-
-    private void setupButton(int buttonId, int titleResId, String[] items, List<String> selectedItemsList) {
-        Button button = findViewById(buttonId);
-        if (button != null) {
-            button.setOnClickListener(v -> showMultiChoiceDialog(titleResId, items, selectedItemsList));
-        }
+        // Навигация
+        setupNavigation();
     }
 
 
@@ -90,22 +82,47 @@ public class Anketa extends AppCompatActivity {
     }
 
 
-    private void submitAnketa() {
-        // Здесь можно добавить сохранение в БД или отправку на сервер
-        showToast(getString(R.string.anketa_submitted_ru));
+        Intent intent = new Intent(this, SelectionActivity.class);
+        intent.putExtra("dialog_title", dialogTitle);
+        intent.putExtra("button_id", button.getId());
+        startActivityForResult(intent, 1);
+    }
 
-        // Пример вывода выбранных значений (для отладки)
-        StringBuilder result = new StringBuilder();
-        result.append("Цвета: ").append(selectedColors).append("\n");
-        result.append("Не носит: ").append(noLoveColors).append("\n");
-        result.append("Принципы: ").append(mainPrinciples).append("\n");
-        result.append("Аксессуары: ").append(accessories).append("\n");
-        result.append("Гардероб: ").append(wardrobeClothes).append("\n");
-        result.append("Не сочетает: ").append(noCombinationClothes).append("\n");
-        result.append("Ситуации: ").append(situations).append("\n");
-        result.append("Приоритет: ").append(priority);
+    //private void saveProfile() {
+    // сохранение данных анкеты
+    // SharedPreferences, Room Database или отправить на сервер
+    //Toast.makeText(this, R.string.saved_successfully, Toast.LENGTH_SHORT).show();
+        /*
+        SharedPreferences prefs = getSharedPreferences("ProfilePrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("preferred_colors", ((Button)findViewById(R.id.btnSelectColors)).getText().toString());
+        // остальные поля
+        editor.apply();
+        */
+    //}
 
-        showToast(result.toString());
+    private void setupNavigation() {
+        ImageView goBackButton = findViewById(R.id.gobackbutton);
+        goBackButton.setOnClickListener(v -> finish());
+
+        Button profileBtn = findViewById(R.id.profile_shape);
+        Button homeBtn = findViewById(R.id.main_house_shape);
+        Button favoritesBtn = findViewById(R.id.heart_shape);
+
+        profileBtn.setOnClickListener(v -> {
+            // Переход в профиль
+            startActivity(new Intent(this, ProfileActivity.class));
+        });
+
+        homeBtn.setOnClickListener(v -> {
+            // Переход на главную
+            startActivity(new Intent(this, DayDetailActivity.class));
+        });
+
+        favoritesBtn.setOnClickListener(v -> {
+            // Переход в избранное
+            startActivity(new Intent(this, Sohranenki.class));
+        });
     }
 
 

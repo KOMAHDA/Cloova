@@ -39,7 +39,7 @@ public class Zaplanerki extends AppCompatActivity implements PlannedOutfitsAdapt
     private TextView emptyMessage;
 
     private ImageView navProfileIcon, navHomeIcon, navFavoritesIcon;
-    private TextView backButton;
+    private ImageView gobackbutton;
 
 
     @Override
@@ -75,14 +75,16 @@ public class Zaplanerki extends AppCompatActivity implements PlannedOutfitsAdapt
         adapter = new PlannedOutfitsAdapter(this, new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
 
-        backButton = findViewById(R.id.zaplanerki_back_button);
-        navProfileIcon = findViewById(R.id.nav_profile_icon_zaplanerki);
-        navHomeIcon = findViewById(R.id.nav_home_icon_zaplanerki);
-        navFavoritesIcon = findViewById(R.id.nav_favorites_icon_zaplanerki);
+        // Инициализация кнопок навигации
+        gobackbutton = findViewById(R.id.gobackbutton); // ID из item_planned_outfit
+        navProfileIcon = findViewById(R.id.nav_profile_icon_zaplanerki); // ID из item_planned_outfit
+        navHomeIcon = findViewById(R.id.nav_home_icon_zaplanerki); // ID из item_planned_outfit
+        navFavoritesIcon = findViewById(R.id.nav_favorites_icon_zaplanerki); // ID из item_planned_outfit
     }
 
     private void setupNavigationListeners() {
-        backButton.setOnClickListener(v -> finish());
+        gobackbutton.setOnClickListener(v -> finish()); // Просто закрываем
+
 
         navProfileIcon.setOnClickListener(v -> {
             Intent intent = new Intent(this, ProfileActivity.class);
