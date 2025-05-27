@@ -268,7 +268,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void MyAnketa(View v) {
-        Intent intent = new Intent(this, Anketa.class);
+        Intent intent = new Intent(ProfileActivity.this, Anketa.class);
+        intent.putExtra("USER_ID", userId);
         startActivity(intent);
     }
 
@@ -393,7 +394,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        dbHelper.close();
         super.onDestroy();
     }
 }

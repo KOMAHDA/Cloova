@@ -105,11 +105,8 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Long userIdResult) {
-            // Выполняется в основном потоке после doInBackground
-            // Включаем кнопку обратно
             loginButton.setEnabled(true);
-            // Скрываем ProgressBar
-            // progressBar.setVisibility(View.GONE);
+
 
             if (userIdResult == -1) { // Ошибка получения ID
                 Toast.makeText(LoginActivity.this, "Ошибка получения данных пользователя", Toast.LENGTH_LONG).show();
@@ -125,15 +122,13 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putLong(DatabaseHelper.PREF_KEY_LOGGED_IN_USER_ID, userIdResult);
-                boolean saved = editor.commit(); // !!! ВОТ ЗДЕСЬ СОХРАНЕНИЕ !!!
+                boolean saved = editor.commit();
 
                 Toast.makeText(LoginActivity.this, "Вход выполнен успешно!", Toast.LENGTH_LONG).show();
 
-                // Переход на ProfileActivity
                 Intent profileIntent = new Intent(LoginActivity.this, ProfileActivity.class);
                 profileIntent.putExtra(DatabaseHelper.EXTRA_USER_ID, userIdResult); // Используем константу
 
-                // Очищаем стек, чтобы ProfileActivity стала корневой (удаляем MainActivity и LoginActivity из стека)
                 profileIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 startActivity(profileIntent);

@@ -1,4 +1,3 @@
-// В Zaplanerki.java
 package com.example.cloova;
 
 import android.annotation.SuppressLint;

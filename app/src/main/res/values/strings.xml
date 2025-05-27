@@ -277,4 +277,9 @@
 
     <string name="saved_looks_title_updated">Список сохраненных образов обновлен</string>
     <string name="error_city_not_found">Город не найден для пользователя или не указан.</string>
+
+    <string name="done">Готово</string>
+    <string name="cancel">Отмена</string>
+    <string name="selected">Выбрано: </string>
+    <string name="selected_count">Выбрано: %1$d</string>
 </resources>

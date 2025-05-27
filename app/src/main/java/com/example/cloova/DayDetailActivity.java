@@ -586,9 +586,7 @@ public class DayDetailActivity extends AppCompatActivity {
         }
         if (lastSelectedBottom != null) { outfitTextBuilder.append("👖 ").append(lastSelectedBottom.getName()).append("\n"); itemsInTextList++; }
         if (lastSelectedShoes != null) { outfitTextBuilder.append("👟 ").append(lastSelectedShoes.getName()).append("\n"); itemsInTextList++; }
-        // if (lastSelectedHeadwear != null) { outfitTextBuilder.append("🧢 ").append(lastSelectedHeadwear.getName()).append("\n"); itemsInTextList++; } // Если есть головной убор
 
-        // Логика отображения/скрытия на основе количества подобранных элементов (остается той же)
         if (itemsVisuallyDisplayed > 0) {
             tvOutfitSuggestionDetail.setText(outfitTextBuilder.toString());
             tvOutfitSuggestionDetail.setVisibility(View.VISIBLE);
