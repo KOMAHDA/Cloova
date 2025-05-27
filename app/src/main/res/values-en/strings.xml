@@ -53,6 +53,7 @@
     <string name="save_button_text">Save</string>
     <string name="save">Saved looks</string>
     <string name="plan">Planned looks</string>
+    <string name="date_hint">DD.MM.YYYY</string>
 
 
     <!-- Профиль -->
