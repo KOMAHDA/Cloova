@@ -45,11 +45,11 @@
     <string name="profile_name_hint">Enter your name</string> <!-- Подсказка на экране ввода данных -->
     <string name="city_label_colon">City:</string> <!-- Используется как метка -->
     <string name="profile_city_hint">Enter your city</string> <!-- Подсказка на экране ввода данных -->
-    <string name="profile_style_label">Desired styles:</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_colors_label">Preferred colors:</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_accessories_question">What accessories do you have?</string> <!-- Переименовано из profile_style_aks -->
-    <string name="profile_clothes_label">The main principle in clothing:</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_clothes_hint">What clothes do you have in your wardrobe?</string> <!-- Подсказка на экране ввода данных -->
+    <string name="profile_style_labelen">Desired styles:</string> <!-- Метка на экране ввода данных -->
+    <string name="profile_colors_labelen">Preferred colors:</string> <!-- Метка на экране ввода данных -->
+    <string name="profile_accessories_questionen">What accessories do you have?</string> <!-- Переименовано из profile_style_aks -->
+    <string name="profile_clothes_labelen">The main principle in clothing:</string> <!-- Метка на экране ввода данных -->
+    <string name="profile_clothes_hinten">What clothes do you have in your wardrobe?</string> <!-- Подсказка на экране ввода данных -->
     <string name="save_button_text">Save</string>
     <string name="save">Saved looks</string>
     <string name="plan">Planned looks</string>

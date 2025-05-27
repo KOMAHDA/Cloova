@@ -32,7 +32,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
 
     private static final String TAG = "WeatherForecastActivity";
     private static final String API_KEY = "579ae8495e7443b3aa9185358252404";
-    private static final int FORECAST_DAYS = 7; // Запрашиваем 7 дней
+    private static final int FORECAST_DAYS = 7;
     private static final String AQI = "no";
     private static final String ALERTS = "no";
     private static final String LANGUAGE = "ru";
@@ -61,8 +61,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_forecast);
 
-/*        Toolbar toolbar = findViewById(R.id.toolbar_weather);
-        setSupportActionBar(toolbar);*/
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);

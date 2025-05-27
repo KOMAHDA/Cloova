@@ -203,7 +203,10 @@ public class Registration_step1 extends AppCompatActivity {
         final int[] avatarResources = {
                 R.drawable.default_avatar1,
                 R.drawable.default_avatar2,
-                R.drawable.default_avatar3
+                R.drawable.default_avatar3,
+                R.drawable.default_avatar4,
+                R.drawable.default_avatar5,
+                R.drawable.default_avatar6
         };
 
         LinearLayout avatarsContainer = dialogView.findViewById(R.id.avatarsContainer);
