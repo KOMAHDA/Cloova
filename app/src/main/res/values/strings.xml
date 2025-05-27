@@ -2,7 +2,6 @@
     <!-- Общие -->
     <string name="app_name">CLOOVA</string>
     <string name="logo_text">CLOOVA</string>
-    <string name="strelka"></string> <!-- Символ стрелки назад -->
     <string name="back_button_desc">Назад</string> <!-- Описание для кнопки Назад (Accessibility) -->
     <string name="not_available_short">Н/Д</string> <!-- Кратко "Нет данных" или "Недоступно" -->
     <string name="not_specified">Не указано</string>

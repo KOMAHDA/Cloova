@@ -93,14 +93,12 @@ public class DayDetailActivity extends AppCompatActivity {
     private ClothingItem lastSelectedTop;
     private ClothingItem lastSelectedBottom;
     private ClothingItem lastSelectedShoes;
-
     private Random outfitRandomGenerator = new Random();
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase));
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
