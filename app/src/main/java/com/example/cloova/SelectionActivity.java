@@ -35,7 +35,7 @@ public class SelectionActivity extends AppCompatActivity {
     }
 
     private String[] getItemsForTitle(String title) {
-        // Возвращаем разные списки в зависимости от заголовка
+
         if (title.equals(getString(R.string.profile_colors_label))) {
             return new String[]{"Красный", "Синий", "Зеленый", "Черный", "Белый"};
         } else if (title.equals(getString(R.string.nolove))) {

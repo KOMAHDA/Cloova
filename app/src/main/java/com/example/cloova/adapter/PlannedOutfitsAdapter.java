@@ -1,5 +1,3 @@
-// В com.example.cloova.adapter/PlannedOutfitsAdapter.java
-
 package com.example.cloova.adapter;
 
 import android.app.AlertDialog;
@@ -19,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cloova.DatabaseHelper;
 import com.example.cloova.R;
 import com.example.cloova.model.ClothingItem;
-import com.example.cloova.model.PlannedOutfit; // ИМПОРТ PlannedOutfit
+import com.example.cloova.model.PlannedOutfit;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,7 +28,7 @@ import java.util.Map;
 
 public class PlannedOutfitsAdapter extends RecyclerView.Adapter<PlannedOutfitsAdapter.PlannedOutfitViewHolder> {
 
-    private List<PlannedOutfit> plannedOutfits; // ИСПОЛЬЗУЕМ PlannedOutfit
+    private List<PlannedOutfit> plannedOutfits;
     private Context context;
     private OnItemDeleteListener deleteListener;
 
@@ -57,7 +55,7 @@ public class PlannedOutfitsAdapter extends RecyclerView.Adapter<PlannedOutfitsAd
     @NonNull
     @Override
     public PlannedOutfitViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_planned_outfit, parent, false); // ССЫЛКА НА item_planned_outfit
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_planned_outfit, parent, false);
         return new PlannedOutfitViewHolder(view, deleteListener);
     }
 
@@ -74,10 +72,10 @@ public class PlannedOutfitsAdapter extends RecyclerView.Adapter<PlannedOutfitsAd
 
 
     static class PlannedOutfitViewHolder extends RecyclerView.ViewHolder {
-        TextView tvPlannedDate, tvPlannedWeatherInfo, tvPlannedOutfitDetails; // ИМЕНА ИЗ item_planned_outfit
-        ImageButton btnDeletePlannedOutfit; // ИМЯ ИЗ item_planned_outfit
-        ImageView ivPlannedMannequin; // ИМЯ ИЗ item_planned_outfit
-        ImageView ivPlannedOutfitOuterwear, ivPlannedOutfitTop, ivPlannedOutfitBottom, ivPlannedOutfitShoes; // ИМЕНА ИЗ item_planned_outfit
+        TextView tvPlannedDate, tvPlannedWeatherInfo, tvPlannedOutfitDetails;
+        ImageButton btnDeletePlannedOutfit;
+        ImageView ivPlannedMannequin;
+        ImageView ivPlannedOutfitOuterwear, ivPlannedOutfitTop, ivPlannedOutfitBottom, ivPlannedOutfitShoes;
 
         OnItemDeleteListener deleteListener;
 
@@ -142,20 +140,14 @@ public class PlannedOutfitsAdapter extends RecyclerView.Adapter<PlannedOutfitsAd
                 setOutfitImage(ivPlannedOutfitShoes, item.getImageResourceName(), context);
                 outfitTextBuilder.append("👟 ").append(item.getName()).append("\n");
             }
-            // Если есть головной убор:
-            // if (outfitItemsMap.containsKey("головной убор")) {
-            //     ClothingItem item = outfitItemsMap.get("головной убор");
-            //     setOutfitImage(ivPlannedOutfitHeadwear, item.getImageResourceName(), context);
-            //     outfitTextBuilder.append("🧢 ").append(item.getName()).append("\n");
-            // }
 
             tvPlannedOutfitDetails.setText(outfitTextBuilder.toString().trim());
         }
 
-        private String formatDate(String dateStr) { // ИСПОЛЬЗУЕМ dateStr в формате "YYYY-MM-DD"
+        private String formatDate(String dateStr) {
             try {
                 SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                SimpleDateFormat outputFormat = new SimpleDateFormat("d MMMM yyyy", new Locale("ru", "RU")); // "28 мая 2025"
+                SimpleDateFormat outputFormat = new SimpleDateFormat("d MMMM yyyy", new Locale("ru", "RU"));
                 Date date = inputFormat.parse(dateStr);
                 return outputFormat.format(date);
             } catch (ParseException e) {

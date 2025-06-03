@@ -11,7 +11,6 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-/*import androidx.appcompat.widget.Toolbar;*/
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,7 +71,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra(EXTRA_CITY_NAME)) {
             String receivedCity = intent.getStringExtra(EXTRA_CITY_NAME);
             if (receivedCity != null && !receivedCity.isEmpty()) {
-                this.currentCity = receivedCity; // Используем this.currentCity
+                this.currentCity = receivedCity;
             }
         }
 
@@ -83,10 +82,10 @@ public class WeatherForecastActivity extends AppCompatActivity {
             }
         }
 
-        // progressBar = findViewById(R.id.progress_bar_weather);
+
         recyclerView = findViewById(R.id.rv_daily_forecast);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // !!! Создаем адаптер с новым списком !!!
+
         adapter = new ForecastAdapter(this, displayList, this.currentCity, this.currentUserStyle);
         recyclerView.setAdapter(adapter);
 
@@ -109,24 +108,24 @@ public class WeatherForecastActivity extends AppCompatActivity {
 
     private void fetchWeatherData(String city) {
         Log.d(TAG, "fetchWeatherData: Fetching weather for " + city);
-        // if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
 
-        // !!! Вызываем новый метод API !!!
+
+
         Call<WeatherApiResponse> call = apiService.getWeatherForecast(API_KEY, city, FORECAST_DAYS, AQI, ALERTS, LANGUAGE);
 
         call.enqueue(new Callback<WeatherApiResponse>() {
             @Override
             public void onResponse(@NonNull Call<WeatherApiResponse> call, @NonNull Response<WeatherApiResponse> response) {
-                // if (progressBar != null) progressBar.setVisibility(View.GONE);
+
 
                 if (response.isSuccessful() && response.body() != null && response.body().forecast != null) {
                     Log.d(TAG, "onResponse: Success.");
-                    // !!! Получаем List<ForecastDay> !!!
+
                     List<ForecastDay> forecastDays = response.body().forecast.forecastDay;
 
                     if (forecastDays != null) {
                         Log.d(TAG, "onResponse: Received " + forecastDays.size() + " forecast days.");
-                        // !!! Просто передаем список в адаптер !!!
+
                         adapter.updateData(forecastDays, city, WeatherForecastActivity.this.currentUserStyle);
                     } else {
                         Log.w(TAG, "onResponse: forecastDay list is null");
@@ -155,7 +154,7 @@ public class WeatherForecastActivity extends AppCompatActivity {
 
         navProfileIcon.setOnClickListener(v -> {
             Intent intent = new Intent(this, ProfileActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); // Привести существующий экземпляр наверх
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         });
 

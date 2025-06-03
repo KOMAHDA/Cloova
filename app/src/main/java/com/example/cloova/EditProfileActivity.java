@@ -1,5 +1,6 @@
 package com.example.cloova;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,7 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log; // Добавьте импорт
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +26,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale; // Добавьте импорт
+import java.util.Locale;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "EditProfileActivity";
-    private static final int REQUEST_CODE_SELECT_STYLE = 101; // Код запроса для SelectionActivity
+    private static final int REQUEST_CODE_SELECT_STYLE = 101;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -46,10 +47,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private ImageView ivAvatar;
     private ImageButton btnChangeAvatar;
-    private TextView btnSelectStyle; // Теперь это TextView для выбора стиля
+    private TextView btnSelectStyle;
 
-    // --- НОВЫЕ ПОЛЯ для управления стилями ---
-    private List<String> currentSelectedStyles = new ArrayList<>(); // Список выбранных стилей для сохранения
+
+    private List<String> currentSelectedStyles = new ArrayList<>();
 
 
     @Override
@@ -75,20 +76,20 @@ public class EditProfileActivity extends AppCompatActivity {
 
             ivAvatar = findViewById(R.id.iv_avatar);
             btnChangeAvatar = findViewById(R.id.btn_change_avatar);
-            btnSelectStyle = findViewById(R.id.btn_select_style); // Инициализация TextView
+            btnSelectStyle = findViewById(R.id.btn_select_style);
 
-            loadUserData(); // Загрузит текущие данные и установит дефолтные значения
+            loadUserData();
 
-            // Обработчики нажатий
+
             btnChangeAvatar.setOnClickListener(v -> showAvatarSelectionDialog());
-            btnSelectStyle.setOnClickListener(v -> openStyleSelectionDialog()); // Новый метод для выбора стиля (диалог)
+            btnSelectStyle.setOnClickListener(v -> openStyleSelectionDialog());
 
             Button saveButton = findViewById(R.id.save_button);
             saveButton.setOnClickListener(v -> saveProfileChanges());
 
         } catch (Exception e) {
             Toast.makeText(this, R.string.error_loading_profile, Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Error in onCreate: " + e.getMessage(), e); // Логирование ошибки
+            Log.e(TAG, "Error in onCreate: " + e.getMessage(), e);
             e.printStackTrace();
             finish();
         }
@@ -98,7 +99,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         findViewById(R.id.main_house_shape).setOnClickListener(v -> {
             String city = originalUserData != null && originalUserData.getCity() != null ? originalUserData.getCity() : WeatherForecastActivity.FALLBACK_CITY;
-            // Теперь берем стиль из currentSelectedStyles, если он есть
+
             String style = currentSelectedStyles != null && !currentSelectedStyles.isEmpty() ? currentSelectedStyles.get(0) : "Повседневный";
 
             Intent intent = new Intent(this, WeatherForecastActivity.class);
@@ -131,9 +132,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 updateMainAvatar(R.drawable.default_avatar1);
             }
 
-            // Загрузка и отображение текущих стилей
-            currentSelectedStyles = dbHelper.getUserStyles(userId); // Получаем список стилей
-            updateStyleButtonText(); // Обновляем текст на кнопке стиля
+
+            currentSelectedStyles = dbHelper.getUserStyles(userId);
+            updateStyleButtonText();
 
         } else {
             Toast.makeText(this, R.string.error_loading_user_data, Toast.LENGTH_SHORT).show();
@@ -164,20 +165,18 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
-        // Проверка, изменились ли основные данные профиля
+
         boolean profileChanged = !newName.equals(originalUserData.getName()) ||
                 !newDob.equals(originalUserData.getBirthDate()) ||
                 !newUsername.equals(originalUserData.getLogin()) ||
                 selectedAvatarResId != originalUserData.getAvatarResId();
 
-        // Проверка, изменились ли стили
-        // Это сложно, потому что currentSelectedStyles - это новый список
-        // Проще всего всегда перезаписывать стили.
-        // Если originalUserData.getStyles() пуст, а currentSelectedStyles не пуст -> стиль изменился
-        // Если оба не пусты, но разные -> стиль изменился
+
+
+
         boolean stylesChanged = false;
         List<String> originalStyles = originalUserData.getStyles();
-        if (originalStyles == null) originalStyles = new ArrayList<>(); // Чтобы избежать NullPointerException
+        if (originalStyles == null) originalStyles = new ArrayList<>();
 
         if (currentSelectedStyles.size() != originalStyles.size() || !currentSelectedStyles.containsAll(originalStyles) || !originalStyles.containsAll(currentSelectedStyles)) {
             stylesChanged = true;
@@ -201,17 +200,17 @@ public class EditProfileActivity extends AppCompatActivity {
         updatedUser.setAvatarResId(selectedAvatarResId);
 
         boolean isProfileUpdated = dbHelper.updateUser(updatedUser);
-        boolean isStylesUpdated = true; // По умолчанию true, если нет изменений стилей
+        boolean isStylesUpdated = true;
 
         if (stylesChanged) {
-            dbHelper.deleteUserStyles(userId); // Удаляем все старые стили пользователя
+            dbHelper.deleteUserStyles(userId);
             if (!currentSelectedStyles.isEmpty()) {
-                dbHelper.addUserStyles(userId, currentSelectedStyles); // Добавляем новый список стилей
+                dbHelper.addUserStyles(userId, currentSelectedStyles);
             }
             Log.d(TAG, "User styles updated. New styles: " + currentSelectedStyles.toString());
         }
 
-        if (isProfileUpdated || stylesChanged) { // Если что-то из профиля или стилей обновилось
+        if (isProfileUpdated || stylesChanged) {
             Toast.makeText(this, R.string.saved_successfully, Toast.LENGTH_SHORT).show();
             navigateBackToProfile();
         } else {
@@ -226,7 +225,7 @@ public class EditProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // --- Методы для выбора аватара (скопированы из Registration_step1) ---
+
     private void showAvatarSelectionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -298,12 +297,11 @@ public class EditProfileActivity extends AppCompatActivity {
         float density = getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
     }
-    // --- Конец методов для выбора аватара ---
 
 
-    // --- Методы для выбора стиля (используем MultiChoiceDialog) ---
+
     private void openStyleSelectionDialog() {
-        List<String> availableStyles = dbHelper.getAllStylesFromCatalog(); // Получаем все доступные стили из БД
+        List<String> availableStyles = dbHelper.getAllStylesFromCatalog();
         if (availableStyles.isEmpty()) {
             Toast.makeText(this, R.string.no_styles_available, Toast.LENGTH_SHORT).show();
             return;
@@ -312,7 +310,7 @@ public class EditProfileActivity extends AppCompatActivity {
         String[] items = availableStyles.toArray(new String[0]);
         boolean[] checkedItems = new boolean[items.length];
 
-        // Инициализируем checkedItems на основе текущего выбора
+
         for (int i = 0; i < items.length; i++) {
             checkedItems[i] = currentSelectedStyles.contains(items[i]);
         }
@@ -323,20 +321,20 @@ public class EditProfileActivity extends AppCompatActivity {
                     checkedItems[which] = isChecked;
                 })
                 .setPositiveButton(R.string.done, (dialog, id) -> {
-                    currentSelectedStyles.clear(); // Очищаем старые стили
+                    currentSelectedStyles.clear();
                     for (int i = 0; i < items.length; i++) {
                         if (checkedItems[i]) {
-                            currentSelectedStyles.add(items[i]); // Добавляем новые
+                            currentSelectedStyles.add(items[i]);
                         }
                     }
-                    updateStyleButtonText(); // Обновляем текст на кнопке
+                    updateStyleButtonText();
                     Toast.makeText(this, getString(R.string.selected) + currentSelectedStyles.toString(), Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
         builder.create().show();
     }
-    // --- Конец методов для выбора стиля ---
+
 
 
     private String formatBirthDate(String rawDate) {
@@ -348,7 +346,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        // dbHelper.close(); // УДАЛИТЕ ЭТУ СТРОКУ, если она еще есть
+
         super.onDestroy();
     }
 

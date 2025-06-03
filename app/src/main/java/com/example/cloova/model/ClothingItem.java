@@ -1,4 +1,4 @@
-package com.example.cloova.model; // Важно!
+package com.example.cloova.model;
 
 public class ClothingItem {
     private long clothingId;
@@ -13,7 +13,6 @@ public class ClothingItem {
 
     public ClothingItem() {}
 
-    // Геттеры и сеттеры
     public long getClothingId() { return clothingId; }
     public void setClothingId(long clothingId) { this.clothingId = clothingId; }
     public String getName() { return name; }

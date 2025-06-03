@@ -1,7 +1,7 @@
 package com.example.cloova;
 
-import android.app.Application; // Важно: импортировать android.app.Application
-import com.yandex.mapkit.MapKitFactory; // Импортировать MapKitFactory
+import android.app.Application;
+import com.yandex.mapkit.MapKitFactory;
 
 public class App extends Application {
     @Override

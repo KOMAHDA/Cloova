@@ -1,5 +1,3 @@
-// В com.example.cloova.adapter/SavedOutfitsAdapter.java
-
 package com.example.cloova.adapter;
 
 import android.app.AlertDialog;
@@ -32,7 +30,7 @@ public class SavedOutfitsAdapter extends RecyclerView.Adapter<SavedOutfitsAdapte
 
     private List<SavedOutfit> savedOutfits;
     private Context context;
-    private OnItemDeleteListener deleteListener; // Интерфейс для удаления
+    private OnItemDeleteListener deleteListener;
 
     private static final String TAG = "SavedOutfitsAdapter";
 
@@ -79,7 +77,7 @@ public class SavedOutfitsAdapter extends RecyclerView.Adapter<SavedOutfitsAdapte
         ImageView ivSavedMannequin;
         ImageView ivSavedOutfitOuterwear, ivSavedOutfitTop, ivSavedOutfitBottom, ivSavedOutfitShoes;
 
-        OnItemDeleteListener deleteListener; // Интерфейс для удаления
+        OnItemDeleteListener deleteListener;
 
         public SavedOutfitViewHolder(@NonNull View itemView, OnItemDeleteListener deleteListener) {
             super(itemView);
@@ -94,23 +92,20 @@ public class SavedOutfitsAdapter extends RecyclerView.Adapter<SavedOutfitsAdapte
             ivSavedOutfitTop = itemView.findViewById(R.id.iv_saved_outfit_top);
             ivSavedOutfitBottom = itemView.findViewById(R.id.iv_saved_outfit_bottom);
             ivSavedOutfitShoes = itemView.findViewById(R.id.iv_saved_outfit_shoes);
-            // Обработчик кнопки удаления
             btnDeleteOutfit.setOnClickListener(v -> {
                 if (getAdapterPosition() != RecyclerView.NO_POSITION && deleteListener != null) {
-                    deleteListener.onDeleteClick((SavedOutfit) itemView.getTag()); // Получаем объект из тега
+                    deleteListener.onDeleteClick((SavedOutfit) itemView.getTag());
                 }
             });
         }
 
         void bind(final SavedOutfit outfit, final Context context) {
-            // Сохраняем объект в tag для использования в Listener
             itemView.setTag(outfit);
 
             tvSavedDate.setText(formatDate(outfit.getDateSaved()));
             tvSavedWeatherInfo.setText(String.format(Locale.getDefault(), "%s°C, %s, %s стиль",
                     (int) outfit.getTemperature(), outfit.getWeatherDescription(), outfit.getStyleName()));
 
-            // Скрываем все ImageView одежды перед заполнением
             ivSavedOutfitOuterwear.setVisibility(View.GONE);
             ivSavedOutfitTop.setVisibility(View.GONE);
             ivSavedOutfitBottom.setVisibility(View.GONE);
@@ -119,7 +114,6 @@ public class SavedOutfitsAdapter extends RecyclerView.Adapter<SavedOutfitsAdapte
             StringBuilder outfitTextBuilder = new StringBuilder();
             Map<String, ClothingItem> outfitItemsMap = outfit.getOutfitItems();
 
-            // Отображаем элементы образа и формируем текстовое описание
             if (outfitItemsMap.containsKey("верхняя одежда")) {
                 ClothingItem item = outfitItemsMap.get("верхняя одежда");
                 setOutfitImage(ivSavedOutfitOuterwear, item.getImageResourceName(), context);
@@ -130,9 +124,9 @@ public class SavedOutfitsAdapter extends RecyclerView.Adapter<SavedOutfitsAdapte
                 setOutfitImage(ivSavedOutfitTop, item.getImageResourceName(), context);
                 outfitTextBuilder.append("👕 ").append(item.getName()).append("\n");
             }
-            if (outfitItemsMap.containsKey("платья/юбки")) { // Если есть платье, то это "верх"
+            if (outfitItemsMap.containsKey("платья/юбки")) {
                 ClothingItem item = outfitItemsMap.get("платья/юбки");
-                setOutfitImage(ivSavedOutfitTop, item.getImageResourceName(), context); // Накладываем на тот же слот
+                setOutfitImage(ivSavedOutfitTop, item.getImageResourceName(), context);
                 outfitTextBuilder.append("👗 ").append(item.getName()).append("\n");
             }
             if (outfitItemsMap.containsKey("низ")) {
@@ -146,20 +140,20 @@ public class SavedOutfitsAdapter extends RecyclerView.Adapter<SavedOutfitsAdapte
                 outfitTextBuilder.append("👟 ").append(item.getName()).append("\n");
             }
 
-            tvSavedOutfitDetails.setText(outfitTextBuilder.toString().trim()); // trim() уберет лишний перенос строки в конце
+            tvSavedOutfitDetails.setText(outfitTextBuilder.toString().trim());
         }
 
         private String formatDate(String dateTimeStr) {
             try {
-                // Входящий формат: "YYYY-MM-DD HH:MM:SS"
+
                 SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                // Выходной формат: "d MMMM yyyy, HH:mm" (например, "25 мая 2025, 15:30")
-                SimpleDateFormat outputFormat = new SimpleDateFormat("d MMMM yyyy, HH:mm", new Locale("ru", "RU")); // Указываем русский язык для месяца
+
+                SimpleDateFormat outputFormat = new SimpleDateFormat("d MMMM yyyy, HH:mm", new Locale("ru", "RU"));
                 Date date = inputFormat.parse(dateTimeStr);
                 return outputFormat.format(date);
             } catch (ParseException e) {
                 Log.e(TAG, "Error parsing date: " + dateTimeStr, e);
-                return dateTimeStr; // В случае ошибки возвращаем как есть
+                return dateTimeStr;
             }
         }
 
@@ -168,7 +162,7 @@ public class SavedOutfitsAdapter extends RecyclerView.Adapter<SavedOutfitsAdapte
                 Log.w(TAG, "setOutfitImage: ImageView is null or imageResourceName is empty.");
                 return;
             }
-            // Проверяем, существует ли ресурс
+
             int resId = context.getResources().getIdentifier(imageResourceName, "drawable", context.getPackageName());
             if (resId != 0) {
                 imageView.setImageResource(resId);
