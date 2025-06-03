@@ -761,9 +761,6 @@ public class DayDetailActivity extends AppCompatActivity {
             return null;
         }
 
-        // --- НОВАЯ ЛОГИКА ВЫБОРА: Рандом из "хороших" элементов ---
-
-        // 1. Сортируем все элементы по убыванию скора
         Collections.sort(scoredItems, (s1, s2) -> Double.compare(s2.score, s1.score));
 
         Log.d(TAG, "findBestMatch: All scored items for this category (sorted):");
