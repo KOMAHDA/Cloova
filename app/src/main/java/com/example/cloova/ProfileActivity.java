@@ -123,14 +123,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        myAnketaLayout = findViewById(R.id.block3);
-        myAnketaLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyAnketa(v);
-            }
-        });
-
         likedLooksLayout = findViewById(R.id.block4);
         likedLooksLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,12 +256,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void PlannedLooks(View v) {
         Intent intent = new Intent(this, Zaplanerki.class);
-        startActivity(intent);
-    }
-
-    private void MyAnketa(View v) {
-        Intent intent = new Intent(ProfileActivity.this, Anketa.class);
-        intent.putExtra("USER_ID", userId);
         startActivity(intent);
     }
 
