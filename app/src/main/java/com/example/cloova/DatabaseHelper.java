@@ -1414,4 +1414,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+    public void deleteUserStyles(long userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.delete(TABLE_USER_STYLES, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
+            Log.d(TAG, "Deleted all styles for userId: " + userId);
+        } catch (Exception e) {
+            Log.e(TAG, "Error deleting user styles for userId: " + userId, e);
+        }
+    }
+
+    public List<String> getAllStylesFromCatalog() {
+        List<String> styles = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.query(TABLE_STYLES_CATALOG, new String[]{COLUMN_SC_NAME},
+                    null, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    styles.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SC_NAME)));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting all styles from catalog", e);
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+        return styles;
+    }
 }

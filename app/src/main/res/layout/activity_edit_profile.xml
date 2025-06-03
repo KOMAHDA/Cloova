@@ -98,6 +98,17 @@
             android:background="@drawable/circle_mask"
             android:src="@drawable/default_avatar1"
             android:layout_gravity="center" />
+
+        <ImageButton
+            android:id="@+id/btn_change_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/circle_button_bg"
+            android:src="@drawable/refresh"
+            android:tint="@android:color/white"
+            android:padding="8dp"
+            android:contentDescription="@string/change_avatar_button_cd"/>
     </FrameLayout>
 
     <TextView
@@ -176,22 +187,26 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textSize="17sp" />
-<!--        <TextView
-            android:id="@+id/info_style"
+        <TextView
+            android:id="@+id/btn_select_style"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
             android:gravity="center_vertical|start"
             android:minHeight="48dp"
-            android:textColor="@color/black"
             android:paddingStart="16dp"
             android:paddingLeft="16dp"
             android:paddingEnd="16dp"
             android:paddingRight="16dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:textSize="17sp" />-->
+            android:textSize="17sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:drawableEnd="@drawable/right_arrow"
+            android:drawableTint="@color/black"
+            android:text="@string/profile_style_label"/>
     </LinearLayout>
 
     <Button

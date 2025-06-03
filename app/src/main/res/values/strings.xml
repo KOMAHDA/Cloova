@@ -281,4 +281,17 @@
     <string name="cancel">Отмена</string>
     <string name="selected">Выбрано: </string>
     <string name="selected_count">Выбрано: %1$d</string>
+
+    <string name="profile_style_label_not_selected">Выберите стиль</string> <!-- Или "Не выбран" -->
+    <string name="select_style_title">Выберите стиль</string>
+    <string name="no_styles_available">Нет доступных стилей</string>
+
+    <string name="change_avatar_button_cd">Сменить аватар</string>
+    <string name="error_loading_profile">Ошибка при загрузке профиля.</string>
+    <string name="fill_all_fields">Пожалуйста, заполните все поля.</string>
+    <string name="data_not_changed">Данные не изменились.</string>
+    <string name="saved_successfully">Данные успешно сохранены.</string>
+    <string name="error_saving_data">Ошибка при сохранении данных.</string>
+    <string name="profile_deleted_successfully">Профиль успешно удален.</string>
+    <string name="error_deleting_profile">Ошибка при удалении профиля.</string>
 </resources>
