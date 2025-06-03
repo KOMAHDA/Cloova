@@ -16,7 +16,8 @@
         android:fontFamily="@font/marcellus"
         android:text="@string/logo_text"
         android:textColor="@color/blue"
-        android:textSize="80sp"
+        android:textSize="80dp"
+        android:autoSizeTextType="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +31,8 @@
         android:text="@string/main_subtitle"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="16dp"
+        android:autoSizeTextType="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -44,7 +46,8 @@
         android:fontFamily="@font/manrope_bold"
         android:text="@string/button_start_знакомство"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="16dp"
+        android:autoSizeTextType="none"
         android:onClick="Registration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +62,8 @@
         android:fontFamily="@font/manrope_bold"
         android:text="@string/button_already_have_profile"
         android:textColor="@color/blue"
-        android:textSize="15sp"
+        android:textSize="15dp"
+        android:autoSizeTextType="none"
         android:onClick="Vhod"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,19 +71,28 @@
 
     <ImageView
         android:id="@+id/temni"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:srcCompat="@drawable/temni" />
 
     <ImageView
         android:id="@+id/svetli"
-        android:layout_width="415dp"
-        android:layout_height="254dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:srcCompat="@drawable/svetli" />
 
     <LinearLayout
