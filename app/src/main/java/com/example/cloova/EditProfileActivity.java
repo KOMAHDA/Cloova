@@ -26,6 +26,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText infoName, infoDob, infoUsernameInCard;
     private TextView infoUsername;
     private User originalUserData;
+    private ImageView infoAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class EditProfileActivity extends AppCompatActivity {
             infoDob = findViewById(R.id.info_dob);
             infoUsernameInCard = findViewById(R.id.info_username_in_card);
             infoUsername = findViewById(R.id.profile_username);
-            ImageView infoAvatar = findViewById(R.id.iv_avatar);
+            infoAvatar = findViewById(R.id.iv_avatar);
 
             // Загрузка данных пользователя
             loadUserData();
@@ -70,7 +71,7 @@ public class EditProfileActivity extends AppCompatActivity {
             navigateBackToProfile();
         });
 
-        // Обработчики кнопок навигации (без сохранения)
+        /*// Обработчики кнопок навигации (без сохранения)
         findViewById(R.id.profile_shape).setOnClickListener(v -> {
             navigateBackToProfile();
         });
@@ -85,7 +86,7 @@ public class EditProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(this, Sohranenki.class);
             intent.putExtra("USER_ID", userId);
             startActivity(intent);
-        });
+        });*/
 
         TextView deleteProfileButton = findViewById(R.id.delete_profile);
         deleteProfileButton.setOnClickListener(v -> showDeleteConfirmationDialog());
@@ -100,6 +101,12 @@ public class EditProfileActivity extends AppCompatActivity {
             infoDob.setText(user.getBirthDate() != null ? formatBirthDate(user.getBirthDate()) : "Не указана");
             infoUsernameInCard.setText(user.getLogin() != null ? user.getLogin() : "Не указано");
 
+            if (originalUserData.getAvatarResId() != 0) {
+                infoAvatar.setImageResource(originalUserData.getAvatarResId());
+            } else {
+                infoAvatar.setImageResource(R.drawable.default_avatar1); // Установка аватарки по умолчанию, если не выбрана
+            }
+            
         } else {
             Toast.makeText(this, "Не удалось загрузить данные пользователя", Toast.LENGTH_SHORT).show();
             finish();

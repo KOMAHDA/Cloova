@@ -65,7 +65,7 @@ public class LanguagesActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Обработчики кнопок навигации (без finish())
+/*        // Обработчики кнопок навигации (без finish())
         findViewById(R.id.profile_shape).setOnClickListener(v -> {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.putExtra("USER_ID", userId);
@@ -83,7 +83,7 @@ public class LanguagesActivity extends AppCompatActivity {
             Intent intent = new Intent(this, Sohranenki.class);
             intent.putExtra("USER_ID", userId);
             startActivity(intent);
-        });
+        });*/
     }
 
     @Override
