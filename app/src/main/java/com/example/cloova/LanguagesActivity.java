@@ -3,29 +3,10 @@ package com.example.cloova;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 public class LanguagesActivity extends AppCompatActivity {
 
@@ -78,6 +59,7 @@ public class LanguagesActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+/*        // Обработчики кнопок навигации (без finish())
         findViewById(R.id.profile_shape).setOnClickListener(v -> {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.putExtra("USER_ID", userId);
@@ -95,7 +77,7 @@ public class LanguagesActivity extends AppCompatActivity {
             Intent intent = new Intent(this, Sohranenki.class);
             intent.putExtra("USER_ID", userId);
             startActivity(intent);
-        });
+        });*/
     }
 
     @Override

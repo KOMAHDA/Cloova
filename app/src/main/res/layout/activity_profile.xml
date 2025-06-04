@@ -190,7 +190,6 @@
                 <Spinner
                     android:id="@+id/info_style"
                     android:layout_width="match_parent"
-                    android:backgroundTint="@color/login_input_gray"
                     android:layout_height="35dp"
                     android:gravity="center_vertical|start"
                     android:minHeight="48dp"
@@ -202,6 +201,7 @@
                     android:paddingEnd="8dp"
                     android:textSize="17sp"
                     style="@style/VisibleSpinnerStyle"
+                    android:drawableTint="@color/black"
                     android:spinnerMode="dropdown"  />
             </LinearLayout>
 

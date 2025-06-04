@@ -62,7 +62,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/temni_3_snizu"/>
 
-    <ImageView
+<!--    <ImageView
         android:id="@+id/gobackbutton"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -75,7 +75,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/chevron_left"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:id="@+id/weather_forecast_title"

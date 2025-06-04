@@ -95,9 +95,9 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.gobackbutton).setOnClickListener(v -> navigateBackToProfile());
-        findViewById(R.id.profile_shape).setOnClickListener(v -> navigateBackToProfile());
+        /*findViewById(R.id.profile_shape).setOnClickListener(v -> navigateBackToProfile());*/
 
-        findViewById(R.id.main_house_shape).setOnClickListener(v -> {
+        /*findViewById(R.id.main_house_shape).setOnClickListener(v -> {
             String city = originalUserData != null && originalUserData.getCity() != null ? originalUserData.getCity() : WeatherForecastActivity.FALLBACK_CITY;
 
             String style = currentSelectedStyles != null && !currentSelectedStyles.isEmpty() ? currentSelectedStyles.get(0) : "Повседневный";
@@ -111,7 +111,7 @@ public class EditProfileActivity extends AppCompatActivity {
         findViewById(R.id.heart_shape).setOnClickListener(v -> {
             Intent intent = new Intent(this, Sohranenki.class);
             startActivity(intent);
-        });
+        });*/
 
         TextView deleteProfileButton = findViewById(R.id.delete_profile);
         deleteProfileButton.setOnClickListener(v -> showDeleteConfirmationDialog());

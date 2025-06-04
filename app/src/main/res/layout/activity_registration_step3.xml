@@ -125,6 +125,7 @@
             android:paddingEnd="16dp"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
+            android:textColor="@color/black"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:textSize="17sp" />
@@ -151,6 +152,7 @@
             android:paddingEnd="16dp"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
+            android:textColor="@color/black"
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:textSize="17sp" />
@@ -177,6 +179,7 @@
             android:paddingEnd="16dp"
             android:background="@drawable/rounded_gray_edittext_bg"
             android:backgroundTint="@color/login_input_gray"
+            android:textColor="@color/black"
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:textSize="17sp" />
