@@ -122,7 +122,6 @@ public class ProfileActivity extends AppCompatActivity {
                 ChangeLanguage(v);
             }
         });
-
         likedLooksLayout = findViewById(R.id.block4);
         likedLooksLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,7 +257,6 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Zaplanerki.class);
         startActivity(intent);
     }
-
     private void displayUserProfile() {
         User user = dbHelper.getUserInfo(userId);
 

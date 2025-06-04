@@ -74,7 +74,7 @@
         android:fontFamily="@font/marcellus"
         android:text="@string/logo_text"
         android:textColor="@color/login_dark_blue"
-        android:textSize="80sp"
+        android:textSize="70sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -186,7 +186,7 @@
     <LinearLayout
         android:id="@+id/Linear"
         android:layout_width="335dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginTop="15dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_edit_text"
