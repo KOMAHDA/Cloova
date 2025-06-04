@@ -74,7 +74,7 @@
         android:fontFamily="@font/marcellus"
         android:text="@string/logo_text"
         android:textColor="@color/login_dark_blue"
-        android:textSize="80sp"
+        android:textSize="70sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
