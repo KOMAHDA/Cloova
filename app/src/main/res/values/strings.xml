@@ -1,63 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Общие -->
     <string name="app_name">CLOOVA</string>
     <string name="logo_text">CLOOVA</string>
-    <string name="back_button_desc">Назад</string> <!-- Описание для кнопки Назад (Accessibility) -->
-    <string name="not_available_short">Н/Д</string> <!-- Кратко "Нет данных" или "Недоступно" -->
+    <string name="back_button_desc">Назад</string>
+    <string name="not_available_short">Н/Д</string>
     <string name="not_specified">Не указано</string>
     <string name="skip">Пропустить</string>
-    <string name="user_default_name">Пользователь</string> <!-- Имя по умолчанию для шапки Drawer -->
+    <string name="user_default_name">Пользователь</string>
 
-    <!-- MainActivity -->
     <string name="button_start_знакомство">Начать знакомство</string>
     <string name="button_already_have_profile">У меня уже есть профиль</string>
-    <string name="main_subtitle">Стиль, который всегда в теме — с Cloova, ваш образ идеален в любую погоду!</string> <!-- Переименовано из zit_reg -->
+    <string name="main_subtitle">Стиль, который всегда в теме — с Cloova, ваш образ идеален в любую погоду!</string>
 
-    <!-- LoginActivity -->
     <string name="login_subtitle">Рады вашему возвращению!\nCloova всегда готов подобрать\nидеальный образ!</string>
-    <string name="login_label_colon">Логин:</string> <!-- Используется как метка -->
-    <string name="password_label_colon">Пароль:</string> <!-- Используется как метка -->
+    <string name="login_label_colon">Логин:</string>
+    <string name="password_label_colon">Пароль:</string>
     <string name="login_button_text">Войти</string>
 
-    <!-- RegistrationActivity (и шаги регистрации) -->
     <string name="register_subtitle">Создайте аккаунт,\nчтобы начать подбирать\nидеальные образы!</string>
-    <string name="username_placeholder">Имя пользователя</string> <!-- Используется как подсказка (hint) для логина -->
-    <string name="confirm_password_label_colon">Подтвердите пароль:</string> <!-- Используется как метка -->
+    <string name="username_placeholder">Имя пользователя</string>
+    <string name="confirm_password_label_colon">Подтвердите пароль:</string>
     <string name="register_button_text">Зарегистрироваться</string>
     <string name="title_create_profile">Создание профиля</string>
     <string name="step_1">Шаг 1: Заполните информацию о себе</string>
     <string name="step_2">Шаг 2: Расскажите про ваш стиль</string>
     <string name="step_3">Шаг 3: Конфиденциальность</string>
     <string name="anketa">Более подробную анкету пройдите в вашем личном кабинете</string>
-    <string name="name_label_colon">Имя:</string> <!-- Используется как метка -->
-    <string name="gender_label_colon">Пол:</string> <!-- Используется как метка -->
+    <string name="name_label_colon">Имя:</string>
+    <string name="gender_label_colon">Пол:</string>
     <string name="choose_colors">Выбрать цвета</string>
     <string name="choose_styles">Выбрать стили</string>
     <string name="choose_clothes">Выбрать одежду</string>
     <string name="choose_accessories">Выбрать аксессуары</string>
     <string name="date_hint">ДД.ММ.ГГГГ</string>
 
-    <!-- login_label_colon уже есть -->
-    <string name="birth_date_label_colon">Дата рождения:</string> <!-- Используется как метка -->
+    <string name="birth_date_label_colon">Дата рождения:</string>
     <string name="button_next">Продолжить</string>
     <string name="button_next_short">Далее</string>
     <string name="button_create">Создать</string>
-    <string name="registration_style_intro">Ваш стиль — наша забота! Давайте узнаем друг друга лучше, чтобы создавать образы, которые идеально подходят именно вам.</string> <!-- Переименовано из stil -->
-    <string name="profile_name_label">Ваше имя</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_name_hint">Введите ваше имя</string> <!-- Подсказка на экране ввода данных -->
-    <string name="city_label_colon">Город:</string> <!-- Используется как метка -->
-    <string name="profile_city_hint">Введите ваш город</string> <!-- Подсказка на экране ввода данных -->
-    <string name="profile_style_label">Желаемые стили:</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_colors_label">Предпочитаемые цвета:</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_accessories_question">Какие аксессуары есть у вас?</string> <!-- Переименовано из profile_style_aks -->
-    <string name="profile_clothes_label">Главный принцип в одежде:</string> <!-- Метка на экране ввода данных -->
-    <string name="profile_clothes_hint">Какая одежда есть в вашем гардеробе?</string> <!-- Подсказка на экране ввода данных -->
+    <string name="registration_style_intro">Ваш стиль — наша забота! Давайте узнаем друг друга лучше, чтобы создавать образы, которые идеально подходят именно вам.</string>
+    <string name="profile_name_label">Ваше имя</string>
+    <string name="profile_name_hint">Введите ваше имя</string>
+    <string name="city_label_colon">Город:</string>
+    <string name="profile_city_hint">Введите ваш город</string>
+    <string name="profile_style_label">Желаемые стили:</string>
+    <string name="profile_colors_label">Предпочитаемые цвета:</string>
+    <string name="profile_accessories_question">Какие аксессуары есть у вас?</string>
+    <string name="profile_clothes_label">Главный принцип в одежде:</string>
+    <string name="profile_clothes_hint">Какая одежда есть в вашем гардеробе?</string>
     <string name="save_button_text">Сохранить</string>
     <string name="save">Сохраненные образы</string>
     <string name="plan">Запланированные образы</string>
 
-
-    <!-- Профиль -->
     <string name="profile_username">\@noname</string>
     <string name="setting_location_label">Город</string>
     <string name="setting_language_label">Язык приложения</string>
@@ -68,28 +62,24 @@
     <string name="contact_devs">Связаться с разработчиками</string>
     <string name="logout_label">Выйти</string>
     <string name="delete">Удалить профиль</string>
-    <string name="profile_activity_title">Профиль</string> <!-- Добавлено название экрана -->
+    <string name="profile_activity_title">Профиль</string>
     <string name="style_not_selected">Стиль не выбран</string>
 
-    <!-- Изменение профиля -->
     <string name="button_save">Сохранить</string>
     <string name="button_delete_profile">Удалить профиль</string>
 
-    <!-- Смена языка -->
     <string name="app_language">Язык приложения</string>
     <string name="notific_lang">К сожалению, в Cloova пока не доступны другие языки, но мы активно работаем над их добавлением в ближайшее время!</string>
     <string name="choose_language">Выберете язык приложения:</string>
     <string name="russian_lang">Русский</string>
     <string name="english_lang">Английский</string>
 
-    <!-- Местоположение -->
     <string name="location">Местоположение</string>
     <string name="your_city">Ваш город:</string>
     <string name="city_saved">Город сохранен</string>
     <string name="error_saving">Ошибка сохранения</string>
     <string name="search_button_text">Поиск</string>
 
-    <!-- Anketa -->
     <string name="profile_colors_label_ru">Предпочитаемые цвета</string>
     <string name="nolove_ru">Цвет, который бы не носил(а)</string>
     <string name="profile_clothes_label_ru">Главный принцип в одежде</string>
@@ -156,40 +146,33 @@
         <item>Внешний вид</item>
     </string-array>
 
-
-    <!-- Массивы для Spinner/Выбора -->
     <string-array name="cities_array">
-        <item>Выберите город</item> <!-- Добавлена подсказка -->
+        <item>Выберите город</item>
         <item>Самара</item>
         <item>Тольятти</item>
         <item>Москва</item>
-        <!-- Добавьте другие города -->
     </string-array>
     <string-array name="sex_array">
-        <item>Выберите пол</item> <!-- Добавлена подсказка -->
+        <item>Выберите пол</item>
         <item>Мужской</item>
         <item>Женский</item>
     </string-array>
     <string-array name="style_array">
-        <!-- Можно добавить подсказку, если нужно -->
         <item>Классический</item>
         <item>Спортивный</item>
         <item>Деловой</item>
         <item>Свободный</item>
-        <!-- Добавьте другие стили -->
     </string-array>
 
-    <!-- Меню Toolbar -->
-    <string name="edit_profile_title">Редактировать</string> <!-- Один раз -->
+    <string name="edit_profile_title">Редактировать</string>
 
-    <!-- Меню Navigation Drawer -->
     <string name="navigation_drawer_open">Открыть меню навигации</string>
     <string name="navigation_drawer_close">Закрыть меню навигации</string>
-    <string name="menu_home">Главная</string> <!-- Главный экран, погода? -->
+    <string name="menu_home">Главная</string>
     <string name="menu_profile">Профиль</string>
-    <string name="menu_other">Другое</string> <!-- Заголовок группы, один раз -->
-    <string name="menu_settings">Настройки</string> <!-- Один раз -->
-    <string name="menu_logout">Выход</string> <!-- Один раз -->
+    <string name="menu_other">Другое</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_logout">Выход</string>
 
     <string name="error_auth">Ошибка авторизации</string>
     <string name="error_loading_profile_data">Не удалось загрузить данные профиля</string>
@@ -203,8 +186,7 @@
     <string name="todo_go_home">Переход на главный экран (TODO)</string>
     <string name="todo_go_settings">Переход на настройки (TODO)</string>
 
-    <!-- Дополнительно (если понадобятся) -->
-    <string name="cloud">Погода</string> <!-- Название для возможного экрана погоды -->
+    <string name="cloud">Погода</string>
 
     <string name="weather_forecast_title">Прогноз на ближайшие дни</string>
     <string name="outfit_button_desc">Подобрать образ</string>
@@ -213,7 +195,7 @@
     <string name="look_label">Образ</string>
     <string name="monthly_forecast_button">Прогноз на месяц</string>
 
-    <string name="day_detail_activity_title">Прогноз на %1$s</string> <!-- %1$s будет заменен на дату -->
+    <string name="day_detail_activity_title">Прогноз на %1$s</string>
     <string name="wind_label">Ветер</string>
     <string name="humidity_label">Влажность</string>
     <string name="weekly_forecast_link">Прогноз на ближайшие дни</string>
@@ -281,4 +263,17 @@
     <string name="cancel">Отмена</string>
     <string name="selected">Выбрано: </string>
     <string name="selected_count">Выбрано: %1$d</string>
+
+    <string name="profile_style_label_not_selected">Выберите стиль</string>
+    <string name="select_style_title">Выберите стиль</string>
+    <string name="no_styles_available">Нет доступных стилей</string>
+
+    <string name="change_avatar_button_cd">Сменить аватар</string>
+    <string name="error_loading_profile">Ошибка при загрузке профиля.</string>
+    <string name="fill_all_fields">Пожалуйста, заполните все поля.</string>
+    <string name="data_not_changed">Данные не изменились.</string>
+    <string name="saved_successfully">Данные успешно сохранены.</string>
+    <string name="error_saving_data">Ошибка при сохранении данных.</string>
+    <string name="profile_deleted_successfully">Профиль успешно удален.</string>
+    <string name="error_deleting_profile">Ошибка при удалении профиля.</string>
 </resources>

@@ -64,7 +64,7 @@ public class Registration_step3 extends AppCompatActivity {
     }
 
     public void Create(View v) {
-        // Проверка полей ввода
+
         if (loginEditText.getText() == null || passwordEditText.getText() == null ||
                 confPasswordEditText.getText() == null) {
             Toast.makeText(this, "Ошибка ввода данных", Toast.LENGTH_SHORT).show();
@@ -75,7 +75,7 @@ public class Registration_step3 extends AppCompatActivity {
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confPasswordEditText.getText().toString().trim();
 
-        // Валидация данных
+
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Логин и пароль обязательны", Toast.LENGTH_SHORT).show();
             return;
@@ -86,7 +86,7 @@ public class Registration_step3 extends AppCompatActivity {
             return;
         }
 
-        // Получаем данные из предыдущих шагов
+
         Intent intent = getIntent();
         String name = intent != null ? intent.getStringExtra("name") : "";
         String gender = intent != null ? intent.getStringExtra("gender") : "";
@@ -94,27 +94,27 @@ public class Registration_step3 extends AppCompatActivity {
         String city = intent != null ? intent.getStringExtra("city") : "";
         int avatarResId = intent != null ? intent.getIntExtra("avatar", R.drawable.default_avatar1) : R.drawable.default_avatar1;
 
-        // Получаем списки из Registration_step2
+
         ArrayList<String> colors = intent != null ? intent.getStringArrayListExtra("colors") : new ArrayList<>();
         ArrayList<String> styles = intent != null ? intent.getStringArrayListExtra("styles") : new ArrayList<>();
         ArrayList<String> wardrobe = intent != null ? intent.getStringArrayListExtra("wardrobe") : new ArrayList<>();
         ArrayList<String> accessories = intent != null ? intent.getStringArrayListExtra("accessories") : new ArrayList<>();
 
-        // Логирование для отладки
+
         Log.d("REG_DEBUG", "Colors: " + colors.toString());
         Log.d("REG_DEBUG", "Wardrobe: " + wardrobe.toString());
         Log.d("REG_DEBUG", "Styles: " + styles.toString());
         Log.d("REG_DEBUG", "Accessories: " + accessories.toString());
 
-        // Регистрируем пользователя
+
         try {
-            // Проверка занятости логина
+
             if (dbHelper.checkLoginExists(username)) {
                 Toast.makeText(this, "Логин уже занят", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Добавляем пользователя
+
             long userId = dbHelper.addUser(username, password, name, gender, birthDate, city, userLanguage, avatarResId);
 
             if (userId == -1) {
@@ -122,7 +122,7 @@ public class Registration_step3 extends AppCompatActivity {
                 return;
             }
 
-            // Сохраняем дополнительные данные
+
             if (!colors.isEmpty()) {
                 dbHelper.addUserColors(userId, colors);
                 Log.d("DB_DEBUG", "Colors saved for user: " + userId);
@@ -143,10 +143,10 @@ public class Registration_step3 extends AppCompatActivity {
                 Log.d("DB_DEBUG", "Accessories saved for user: " + userId);
             }
 
-            // Успешная регистрация
+
             Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
 
-            // Переход на экран входа
+
             Intent loginIntent = new Intent(this, LoginActivity.class);
             loginIntent.putExtra("username", username);
             loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

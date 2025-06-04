@@ -256,6 +256,7 @@
                             android:textColor="@color/black"
                             android:entries="@array/sex_array"
                             android:minHeight="48dp"
+                            android:drawableTint="@color/black"
                             android:textSize="17sp" />
                     </LinearLayout>
                 </LinearLayout>

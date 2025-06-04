@@ -1,15 +1,15 @@
 package com.example.cloova.model;
 
-import java.util.Map; // Используем Map для хранения элементов по категориям
+import java.util.Map;
 
 public class SavedOutfit {
     private long id;
     private long userId;
-    private String dateSaved; // Формат "YYYY-MM-DD HH:MM:SS"
+    private String dateSaved;
     private String weatherDescription;
     private double temperature;
     private String styleName;
-    private Map<String, ClothingItem> outfitItems; // Категория -> ClothingItem
+    private Map<String, ClothingItem> outfitItems;
 
     public SavedOutfit(long id, long userId, String dateSaved, String weatherDescription, double temperature, String styleName, Map<String, ClothingItem> outfitItems) {
         this.id = id;
@@ -21,7 +21,6 @@ public class SavedOutfit {
         this.outfitItems = outfitItems;
     }
 
-    // Геттеры
     public long getId() { return id; }
     public long getUserId() { return userId; }
     public String getDateSaved() { return dateSaved; }

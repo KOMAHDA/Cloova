@@ -1,4 +1,3 @@
-// LocaleHelper.java
 package com.example.cloova;
 
 import android.content.Context;
@@ -32,7 +31,7 @@ public class LocaleHelper {
 
     private static String getPersistedLanguage(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(SELECTED_LANGUAGE, "ru"); // По умолчанию русский
+        return preferences.getString(SELECTED_LANGUAGE, "ru");
     }
 
     private static Context updateResources(Context context, String language) {

@@ -74,15 +74,15 @@ public class Zaplanerki extends AppCompatActivity implements PlannedOutfitsAdapt
         adapter = new PlannedOutfitsAdapter(this, new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
 
-        // Инициализация кнопок навигации
-        gobackbutton = findViewById(R.id.gobackbutton); // ID из item_planned_outfit
-        navProfileIcon = findViewById(R.id.nav_profile_icon_zaplanerki); // ID из item_planned_outfit
-        navHomeIcon = findViewById(R.id.nav_home_icon_zaplanerki); // ID из item_planned_outfit
-        navFavoritesIcon = findViewById(R.id.nav_favorites_icon_zaplanerki); // ID из item_planned_outfit
+
+        gobackbutton = findViewById(R.id.gobackbutton);
+        navProfileIcon = findViewById(R.id.nav_profile_icon_zaplanerki);
+        navHomeIcon = findViewById(R.id.nav_home_icon_zaplanerki);
+        navFavoritesIcon = findViewById(R.id.nav_favorites_icon_zaplanerki);
     }
 
     private void setupNavigationListeners() {
-        gobackbutton.setOnClickListener(v -> finish()); // Просто закрываем
+        gobackbutton.setOnClickListener(v -> finish());
 
 
         navProfileIcon.setOnClickListener(v -> {
@@ -92,7 +92,7 @@ public class Zaplanerki extends AppCompatActivity implements PlannedOutfitsAdapt
         });
 
         navHomeIcon.setOnClickListener(v -> {
-            // !!! НОВАЯ ЛОГИКА ДЛЯ ПЕРЕДАЧИ ДАННЫХ В WEATHERFORECASTACTIVITY !!!
+
             SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, MODE_PRIVATE);
             long userId = prefs.getLong(DatabaseHelper.PREF_KEY_LOGGED_IN_USER_ID, DatabaseHelper.DEFAULT_USER_ID);
 
@@ -192,7 +192,7 @@ public class Zaplanerki extends AppCompatActivity implements PlannedOutfitsAdapt
         }
     }
 
-    // --- НОВЫЙ ASYNCTASK ДЛЯ ПОЛУЧЕНИЯ ДАННЫХ ПОЛЬЗОВАТЕЛЯ И НАВИГАЦИИ ---
+
     @SuppressLint("StaticFieldLeak")
     private class GetUserAndNavigateTask extends AsyncTask<Long, Void, UserDataForNavigation> {
         @Override
@@ -206,7 +206,7 @@ public class Zaplanerki extends AppCompatActivity implements PlannedOutfitsAdapt
                 city = user.getCity();
                 List<String> userStyles = dbHelper.getUserStyles(userId);
                 if (userStyles != null && !userStyles.isEmpty()) {
-                    style = userStyles.get(0); // Берем первый стиль пользователя
+                    style = userStyles.get(0);
                 }
             }
             return new UserDataForNavigation(city, style);
@@ -227,7 +227,7 @@ public class Zaplanerki extends AppCompatActivity implements PlannedOutfitsAdapt
         }
     }
 
-    // Вспомогательный класс для передачи данных
+
     private static class UserDataForNavigation {
         String city;
         String style;

@@ -33,7 +33,6 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
     private long currentUserId = DatabaseHelper.DEFAULT_USER_ID;
 
     private RecyclerView recyclerView;
-    private SavedOutfitsAdapter adapter;
     private ProgressBar progressBar;
     private TextView emptyMessage;
 
@@ -56,13 +55,13 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
         initViews();
         setupNavigationListeners();
 
-        retrieveUserIdAndLoadOutfits(); // Эта функция также будет использоваться для получения ID пользователя
+        retrieveUserIdAndLoadOutfits();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Перезагружаем данные каждый раз, когда активность становится видимой
+
         retrieveUserIdAndLoadOutfits();
     }
 
@@ -72,7 +71,7 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
         emptyMessage = findViewById(R.id.sohranenki_empty_message);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SavedOutfitsAdapter(this, new ArrayList<>(), this);
+        SavedOutfitsAdapter adapter = new SavedOutfitsAdapter(this, new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
 
 
@@ -83,7 +82,7 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
     }
 
     private void setupNavigationListeners() {
-        gobackbutton.setOnClickListener(v -> finish()); // Просто закрываем
+        gobackbutton.setOnClickListener(v -> finish());
         navProfileIcon.setOnClickListener(v -> {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -91,13 +90,12 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
         });
 
         navHomeIcon.setOnClickListener(v -> {
-            // !!! НОВАЯ ЛОГИКА ДЛЯ ПЕРЕДАЧИ ДАННЫХ В WEATHERFORECASTACTIVITY !!!
-            // Сначала получаем ID пользователя
+
             SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, MODE_PRIVATE);
             long userId = prefs.getLong(DatabaseHelper.PREF_KEY_LOGGED_IN_USER_ID, DatabaseHelper.DEFAULT_USER_ID);
 
             if (userId != DatabaseHelper.DEFAULT_USER_ID) {
-                // Запускаем AsyncTask для получения данных пользователя
+
                 new GetUserAndNavigateTask().execute(userId);
             } else {
                 Toast.makeText(this, R.string.error_auth, Toast.LENGTH_SHORT).show();
@@ -106,9 +104,9 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
         });
 
         navFavoritesIcon.setOnClickListener(v -> {
-            // Мы уже на экране избранного, можно просто обновить данные
+
             retrieveUserIdAndLoadOutfits();
-            Toast.makeText(this, R.string.saved_looks_title_updated, Toast.LENGTH_SHORT).show(); // Добавьте в strings.xml
+            Toast.makeText(this, R.string.saved_looks_title_updated, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -157,12 +155,12 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
         protected void onPostExecute(@Nullable List<SavedOutfit> result) {
             progressBar.setVisibility(View.GONE);
             if (result != null && !result.isEmpty()) {
-                adapter.updateData(result);
+                ((SavedOutfitsAdapter) recyclerView.getAdapter()).updateData(result);
                 recyclerView.setVisibility(View.VISIBLE);
                 emptyMessage.setVisibility(View.GONE);
                 Log.d(TAG, "Loaded " + result.size() + " saved outfits.");
             } else {
-                adapter.updateData(new ArrayList<>());
+                ((SavedOutfitsAdapter) recyclerView.getAdapter()).updateData(new ArrayList<>());
                 emptyMessage.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
                 Log.d(TAG, "No saved outfits found.");
@@ -193,7 +191,7 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
         }
     }
 
-    // --- НОВЫЙ ASYNCTASK ДЛЯ ПОЛУЧЕНИЯ ДАННЫХ ПОЛЬЗОВАТЕЛЯ И НАВИГАЦИИ ---
+
     @SuppressLint("StaticFieldLeak")
     private class GetUserAndNavigateTask extends AsyncTask<Long, Void, UserDataForNavigation> {
         @Override
@@ -207,7 +205,7 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
                 city = user.getCity();
                 List<String> userStyles = dbHelper.getUserStyles(userId);
                 if (userStyles != null && !userStyles.isEmpty()) {
-                    style = userStyles.get(0); // Берем первый стиль пользователя
+                    style = userStyles.get(0);
                 }
             }
             return new UserDataForNavigation(city, style);
@@ -218,17 +216,17 @@ public class Sohranenki extends AppCompatActivity implements SavedOutfitsAdapter
             if (result != null && result.city != null && !result.city.isEmpty()) {
                 Intent intent = new Intent(Sohranenki.this, WeatherForecastActivity.class);
                 intent.putExtra(WeatherForecastActivity.EXTRA_CITY_NAME, result.city);
-                intent.putExtra(WeatherForecastActivity.EXTRA_USER_STYLE, result.style != null ? result.style : "Повседневный"); // Дефолтный стиль
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); // Привести существующий экземпляр наверх
+                intent.putExtra(WeatherForecastActivity.EXTRA_USER_STYLE, result.style != null ? result.style : "Повседневный");
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             } else {
-                Toast.makeText(Sohranenki.this, R.string.error_city_not_found, Toast.LENGTH_SHORT).show(); // Добавьте в strings.xml
+                Toast.makeText(Sohranenki.this, R.string.error_city_not_found, Toast.LENGTH_SHORT).show();
                 Log.w(TAG, "GetUserAndNavigateTask: City or user data not found for navigation.");
             }
         }
     }
 
-    // Вспомогательный класс для передачи данных
+
     private static class UserDataForNavigation {
         String city;
         String style;

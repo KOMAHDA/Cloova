@@ -77,7 +77,7 @@ public class Registration_step1 extends AppCompatActivity {
         avatarImageView = findViewById(R.id.avatarImageView);
 
         setupSexSpinner();
-        setupCityInput(); // Заменил setupCitySpinner()
+        setupCityInput();
 
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +90,7 @@ public class Registration_step1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isDataValid()) {
-                    // Проверяем город перед переходом
+
                     new CityValidationTask().execute(cityInput.getText().toString().trim());
                 }
             }
@@ -105,7 +105,7 @@ public class Registration_step1 extends AppCompatActivity {
     }
 
     private void setupCityInput() {
-        // Настройка автозаполнения для города
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, popularCities);
         cityInput.setAdapter(adapter);
@@ -140,7 +140,7 @@ public class Registration_step1 extends AppCompatActivity {
             List<Address> addresses = geocoder.getFromLocationName(inputCityName, 1);
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
-                // Возвращаем официальное название города из геокодера
+
                 return address.getLocality();
             }
         } catch (IOException e) {
@@ -159,7 +159,7 @@ public class Registration_step1 extends AppCompatActivity {
         @Override
         protected void onPostExecute(String validCityName) {
             if (validCityName != null) {
-                // Город найден, обновляем поле ввода и переходим дальше
+
                 cityInput.setText(validCityName);
                 Next();
             } else {
@@ -179,7 +179,7 @@ public class Registration_step1 extends AppCompatActivity {
         intent.putExtra("name", nameEditText.getText().toString());
         intent.putExtra("gender", sexSpinner.getSelectedItem().toString());
         intent.putExtra("birthDate", dateEditText.getText().toString());
-        intent.putExtra("city", cityInput.getText().toString()); // Теперь берем из AutoCompleteTextView
+        intent.putExtra("city", cityInput.getText().toString());
         intent.putExtra("avatar", selectedAvatarResId);
         startActivity(intent);
     }

@@ -19,7 +19,7 @@ import java.util.List;
 public class GetUserAndNavigateTask extends AsyncTask<Long, Void, GetUserAndNavigateTask.UserDataForNavigation> {
 
     private static final String TAG = "GetUserAndNavigateTask";
-    private Context context; // Добавьте поле для контекста
+    private Context context;
 
     public GetUserAndNavigateTask(Context context) {
         this.context = context;
@@ -28,7 +28,7 @@ public class GetUserAndNavigateTask extends AsyncTask<Long, Void, GetUserAndNavi
     @Override
     protected UserDataForNavigation doInBackground(Long... userIds) {
         long userId = userIds[0];
-        DatabaseHelper dbHelper = new DatabaseHelper(context); // Используем контекст для dbHelper
+        DatabaseHelper dbHelper = new DatabaseHelper(context);
         User user = dbHelper.getUserInfo(userId);
         String city = null;
         String style = null;
@@ -37,7 +37,7 @@ public class GetUserAndNavigateTask extends AsyncTask<Long, Void, GetUserAndNavi
             city = user.getCity();
             List<String> userStyles = dbHelper.getUserStyles(userId);
             if (userStyles != null && !userStyles.isEmpty()) {
-                style = userStyles.get(0); // Берем первый стиль пользователя
+                style = userStyles.get(0);
             }
         }
         return new UserDataForNavigation(city, style);
@@ -46,13 +46,13 @@ public class GetUserAndNavigateTask extends AsyncTask<Long, Void, GetUserAndNavi
     @Override
     protected void onPostExecute(@Nullable UserDataForNavigation result) {
         if (result != null && result.city != null && !result.city.isEmpty()) {
-            Intent intent = new Intent(context, WeatherForecastActivity.class); // Используем контекст
+            Intent intent = new Intent(context, WeatherForecastActivity.class);
             intent.putExtra(WeatherForecastActivity.EXTRA_CITY_NAME, result.city);
-            intent.putExtra(WeatherForecastActivity.EXTRA_USER_STYLE, result.style != null ? result.style : "Повседневный"); // Дефолтный стиль
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); // Привести существующий экземпляр наверх
-            context.startActivity(intent); // Используем контекст
+            intent.putExtra(WeatherForecastActivity.EXTRA_USER_STYLE, result.style != null ? result.style : "Повседневный");
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            context.startActivity(intent);
         } else {
-            Toast.makeText(context, R.string.error_city_not_found, Toast.LENGTH_SHORT).show(); // Используем контекст
+            Toast.makeText(context, R.string.error_city_not_found, Toast.LENGTH_SHORT).show();
             Log.w(TAG, "GetUserAndNavigateTask: City or user data not found for navigation.");
         }
     }

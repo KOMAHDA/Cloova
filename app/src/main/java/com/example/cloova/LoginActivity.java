@@ -33,40 +33,39 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Инициализация SharedPreferences
 
-        // Инициализация UI элементов
+
         loginWindow = findViewById(R.id.usernameEditText);
         passWindow = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         goBackButton = findViewById(R.id.gobackbutton);
 
-        // Инициализация DatabaseHelper
+
         databaseHelper = new DatabaseHelper(this);
 
-        // Обработчик кнопки входа
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Запускаем проверку в фоновом потоке (пример с AsyncTask)
+
                 String login = loginWindow.getText().toString().trim();
                 String password = passWindow.getText().toString().trim();
 
-                // Проверка на пустые поля перед запуском задачи
+
                 if (login.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // Отключаем кнопку на время проверки
+
                 loginButton.setEnabled(false);
-                // Можно показать ProgressBar
-                // progressBar.setVisibility(View.VISIBLE);
+
+
 
                 new LoginTask().execute(login, password);
             }
         });
 
-        // Обработчик кнопки "Назад"
+
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,29 +77,29 @@ public class LoginActivity extends AppCompatActivity {
     public void Back(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        finish(); // Закрываем текущую активити
+        finish();
     }
 
-    @SuppressLint("StaticFieldLeak") // Предупреждение о возможной утечке, для простоты игнорируем
+    @SuppressLint("StaticFieldLeak")
     private class LoginTask extends AsyncTask<String, Void, Long> {
 
-        private String loginAttempt; // Сохраняем логин для получения ID
+        private String loginAttempt;
 
         @Override
         protected Long doInBackground(String... credentials) {
             loginAttempt = credentials[0];
             String passwordAttempt = credentials[1];
 
-            // Сначала проверяем логин
+
             if (!databaseHelper.checkLoginExists(loginAttempt)) {
-                return -2L; // Код ошибки: пользователь не найден
+                return -2L;
             }
-            // Затем проверяем пароль (с хэшированием!)
+
             if (!databaseHelper.checkUserCredentials(loginAttempt, passwordAttempt)) {
-                return -3L; // Код ошибки: неверный пароль
+                return -3L;
             }
-            // Если все ок, получаем ID
-            return databaseHelper.getUserId(loginAttempt); // Вернет -1, если ошибка получения ID
+
+            return databaseHelper.getUserId(loginAttempt);
         }
 
         @Override
@@ -108,17 +107,17 @@ public class LoginActivity extends AppCompatActivity {
             loginButton.setEnabled(true);
 
 
-            if (userIdResult == -1) { // Ошибка получения ID
+            if (userIdResult == -1) {
                 Toast.makeText(LoginActivity.this, "Ошибка получения данных пользователя", Toast.LENGTH_LONG).show();
-            } else if (userIdResult == -2L) { // Пользователь не найден
+            } else if (userIdResult == -2L) {
                 Toast.makeText(LoginActivity.this, "Пользователь не найден", Toast.LENGTH_LONG).show();
-                passWindow.setText(""); // Очищаем пароль
-            } else if (userIdResult == -3L) { // Неверный пароль
+                passWindow.setText("");
+            } else if (userIdResult == -3L) {
                 Toast.makeText(LoginActivity.this, "Неверный пароль", Toast.LENGTH_LONG).show();
-                passWindow.setText(""); // Очищаем пароль
+                passWindow.setText("");
             } else {
-                // --- Успешный вход ---
-                // Сохранение ID пользователя в SharedPreferences
+
+
                 SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putLong(DatabaseHelper.PREF_KEY_LOGGED_IN_USER_ID, userIdResult);
@@ -127,12 +126,12 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Вход выполнен успешно!", Toast.LENGTH_LONG).show();
 
                 Intent profileIntent = new Intent(LoginActivity.this, ProfileActivity.class);
-                profileIntent.putExtra(DatabaseHelper.EXTRA_USER_ID, userIdResult); // Используем константу
+                profileIntent.putExtra(DatabaseHelper.EXTRA_USER_ID, userIdResult);
 
                 profileIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 startActivity(profileIntent);
-                finish(); // Закрываем LoginActivity
+                finish();
             }
         }
     }

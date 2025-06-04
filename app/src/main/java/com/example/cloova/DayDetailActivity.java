@@ -1,4 +1,4 @@
-package com.example.cloova; // Убедитесь, что пакет правильный
+package com.example.cloova;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-// import com.bumptech.glide.Glide; // Если будете использовать Glide для иконок погоды из URL
 
 import com.example.cloova.model.ClothingItem;
 import com.example.cloova.User;
@@ -35,14 +34,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random; // Для простого выбора одежды из категории
+import java.util.Random;
 
 public class DayDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "DayDetailActivity";
 
-    // Ключи для Intent Extras (как public static final в WeatherForecastActivity или Constants)
-    public static final String EXTRA_DATE_STR = "EXTRA_DATE_STR"; // "YYYY-MM-DD"
+
+    public static final String EXTRA_DATE_STR = "EXTRA_DATE_STR";
     public static final String EXTRA_MAX_TEMP = "EXTRA_MAX_TEMP";
     public static final String EXTRA_MIN_TEMP = "EXTRA_MIN_TEMP";
     public static final String EXTRA_WIND_KPH = "EXTRA_WIND_KPH";
@@ -57,13 +56,13 @@ public class DayDetailActivity extends AppCompatActivity {
     private long currentUserId = DatabaseHelper.DEFAULT_USER_ID;
     private User currentUser;
 
-    // UI элементы для данных дня
+
     private MaterialButton btnLocationDetail;
     private TextView tvDetailTemp, tvWindValueDetail, tvHumidityValueDetail;
     private ImageView ivDetailWeatherIcon;
     private TextView btnBackToWeeklyDetail;
     private TextView tvOutfitSuggestionDetail;
-    private ImageView ivMannequin; // Заглушка для манекена
+    private ImageView ivMannequin;
     private String outfitPreferredStyle;
     private TextView tvNoOutfitMessage;
 
@@ -72,13 +71,13 @@ public class DayDetailActivity extends AppCompatActivity {
     private ImageView ivOutfitBottom;
     private ImageView ivOutfitShoes;
 
-    // FAB кнопки
+
     private FloatingActionButton fabAddFavorite, fabRefresh, fabPlanOutfit;
 
-    // Нижняя навигация (кастомная)
+
     private ImageView navProfileIcon, navHomeIcon, navFavoritesIcon;
 
-    // Данные дня, полученные из Intent
+
     private String dateString;
     private double maxTemp;
     private double minTemp;
@@ -109,7 +108,7 @@ public class DayDetailActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         initViews();
         retrieveIntentData();
-        retrieveUserIdAndLoadUser(); // Загрузит пользователя и затем одежду
+        retrieveUserIdAndLoadUser();
 
         setupClickListeners();
     }
@@ -145,8 +144,8 @@ public class DayDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             dateString = intent.getStringExtra(EXTRA_DATE_STR);
-            maxTemp = intent.getDoubleExtra(EXTRA_MAX_TEMP, 20.0); // Значение по умолчанию
-            minTemp = intent.getDoubleExtra(EXTRA_MIN_TEMP, 10.0); // Значение по умолчанию
+            maxTemp = intent.getDoubleExtra(EXTRA_MAX_TEMP, 20.0);
+            minTemp = intent.getDoubleExtra(EXTRA_MIN_TEMP, 10.0);
             weatherIconUrl = intent.getStringExtra(EXTRA_WEATHER_ICON_URL);
             weatherDescription = intent.getStringExtra(EXTRA_WEATHER_DESCRIPTION);
             weatherCode = intent.getIntExtra(EXTRA_WEATHER_CODE, 1000);
@@ -155,12 +154,12 @@ public class DayDetailActivity extends AppCompatActivity {
                 this.currentCity = WeatherForecastActivity.FALLBACK_CITY;
                 Log.w(TAG, "retrieveIntentData: CityName not found in Intent, using fallback: " + this.currentCity);
             }
-            windKph = intent.getDoubleExtra(EXTRA_WIND_KPH, 0.0); // Значение по умолчанию
-            humidity = intent.getIntExtra(EXTRA_HUMIDITY, 0);     // Значение по умолчанию
+            windKph = intent.getDoubleExtra(EXTRA_WIND_KPH, 0.0);
+            humidity = intent.getIntExtra(EXTRA_HUMIDITY, 0);
 
             this.outfitPreferredStyle = intent.getStringExtra(EXTRA_USER_STYLE_FOR_OUTFIT);
             if (this.outfitPreferredStyle == null || this.outfitPreferredStyle.isEmpty()) {
-                this.outfitPreferredStyle = "Повседневный"; // Стиль по умолчанию
+                this.outfitPreferredStyle = "Повседневный";
                 Log.w(TAG, "retrieveIntentData: Outfit style not found in Intent, using default: " + this.outfitPreferredStyle);
             }
             Log.d(TAG, "retrieveIntentData: Outfit preferred style: " + this.outfitPreferredStyle);
@@ -178,68 +177,66 @@ public class DayDetailActivity extends AppCompatActivity {
     private int getWeatherIconResourceByApiCode(int apiCode) {
         Log.d(TAG, "getWeatherIconResourceByApiCode: Mapping API code " + apiCode);
         switch (apiCode) {
-            case 1000: // Sunny / Clear
-                // добавить логику для дня/ночи, если у вас есть is_day флаг для дня
-                // и разные иконки для ясного дня и ясной ночи.
-                // Пока просто возвращаем одну "солнечную" иконку.
-                return R.drawable.wb_sunny; // иконка для "Ясно/Солнечно"
-            case 1003: // Partly cloudy
-                return R.drawable.partly_cloudy; // иконка для "Переменная облачность"
-            case 1006: // Cloudy
-            case 1009: // Overcast
-                return R.drawable.cloud; // иконка для "Облачно"
-            case 1030: // Mist
-            case 1135: // Fog
-            case 1147: // Freezing fog
-                return R.drawable.foggy; // иконка для "Туман/Дымка"
-            case 1063: // Patchy rain possible
-            case 1150: // Patchy light drizzle
-            case 1153: // Light drizzle
-            case 1180: // Patchy light rain
-            case 1183: // Light rain
-                return R.drawable.rainy; // иконка для "Небольшой дождь"
-            case 1066: // Patchy snow possible
-            case 1210: // Patchy light snow
-            case 1213: // Light snow
-                return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // иконка для "Небольшой снег"
-            case 1069: // Patchy sleet possible
-            case 1204: // Light sleet
-            case 1207: // Moderate or heavy sleet
-            case 1249: // Light sleet showers
-            case 1252: // Moderate or heavy sleet showers
-                return R.drawable.weather_mix; // иконка для "Дождь со снегом"
-            case 1072: // Patchy freezing drizzle possible
-            case 1168: // Freezing drizzle
-            case 1171: // Heavy freezing drizzle
-                return R.drawable.icerain; // иконка для "Ледяной дождь"
-            case 1087: // Thundery outbreaks possible
-            case 1273: // Patchy light rain with thunder
-            case 1276: // Moderate or heavy rain with thunder
-                return R.drawable.thunderstorm; // иконка для "Гроза"
-            case 1114: // Blowing snow
-            case 1117: // Blizzard
-            case 1216: // Patchy moderate snow
-            case 1219: // Moderate snow
-            case 1222: // Patchy heavy snow
-            case 1225: // Heavy snow
-            case 1255: // Light snow showers
-            case 1258: // Moderate or heavy snow showers
-                return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24; // иконка для "Снег"
-            case 1186: // Moderate rain at times
-            case 1189: // Moderate rain
-            case 1192: // Heavy rain at times
-            case 1195: // Heavy rain
-            case 1240: // Light rain shower
-            case 1243: // Moderate or heavy rain shower
-            case 1246: // Torrential rain shower
-                return R.drawable.rainy; // иконка для "Дождь"
-            case 1279: // Patchy light snow with thunder
-            case 1282: // Moderate or heavy snow with thunder
-                return R.drawable.weather_mix; // иконка "Снег с грозой"
+            case 1000:
+
+                return R.drawable.wb_sunny;
+            case 1003:
+                return R.drawable.partly_cloudy;
+            case 1006:
+            case 1009:
+                return R.drawable.cloud;
+            case 1030:
+            case 1135:
+            case 1147:
+                return R.drawable.foggy;
+            case 1063:
+            case 1150:
+            case 1153:
+            case 1180:
+            case 1183:
+                return R.drawable.rainy;
+            case 1066:
+            case 1210:
+            case 1213:
+            case 1255:
+                return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24;
+            case 1069:
+            case 1204:
+            case 1207:
+            case 1249:
+            case 1252:
+                return R.drawable.weather_mix;
+            case 1072:
+            case 1168:
+            case 1171:
+                return R.drawable.icerain;
+            case 1087:
+            case 1273:
+            case 1276:
+                return R.drawable.thunderstorm;
+            case 1114:
+            case 1117:
+            case 1216:
+            case 1219:
+            case 1222:
+            case 1225:
+            case 1258:
+                return R.drawable.weather_snowy_24dp_e3e3e3_fill0_wght400_grad0_opsz24;
+            case 1186:
+            case 1189:
+            case 1192:
+            case 1195:
+            case 1240:
+            case 1243:
+            case 1246:
+                return R.drawable.rainy;
+            case 1279:
+            case 1282:
+                return R.drawable.weather_mix;
 
             default:
                 Log.w(TAG, "Unknown weather code: " + apiCode + ", using default icon.");
-                return R.drawable.cloud; // иконка по умолчанию
+                return R.drawable.cloud;
         }
     }
 
@@ -250,7 +247,7 @@ public class DayDetailActivity extends AppCompatActivity {
             btnLocationDetail.setText("Город не указан");
         }
 
-        tvDetailTemp.setText(String.format(Locale.getDefault(), "%.0f°", maxTemp)); // Отображаем дневную (max)
+        tvDetailTemp.setText(String.format(Locale.getDefault(), "%.0f°", maxTemp));
 
         if (ivDetailWeatherIcon != null) {
             ivDetailWeatherIcon.setImageResource(getWeatherIconResourceByApiCode(this.weatherCode));
@@ -258,8 +255,8 @@ public class DayDetailActivity extends AppCompatActivity {
             Log.e(TAG, "ivDetailWeatherIcon is null!");
         }
 
-        // ОТОБРАЖАЕМ ВЕТЕР И ВЛАЖНОСТЬ
-        tvWindValueDetail.setText(String.format(Locale.getDefault(), "до %.0f м/с", windKph / 3.6)); // Переводим км/ч в м/с и округляем
+
+        tvWindValueDetail.setText(String.format(Locale.getDefault(), "до %.0f м/с", windKph / 3.6));
         tvHumidityValueDetail.setText(String.format(Locale.getDefault(), "%d%%", humidity));
     }
 
@@ -272,7 +269,7 @@ public class DayDetailActivity extends AppCompatActivity {
         } else {
             Log.e(TAG, "retrieveUserIdAndLoadUser: Invalid userId, cannot load user or outfit.");
             Toast.makeText(this, R.string.error_auth, Toast.LENGTH_SHORT).show();
-            // Возможно, перенаправить на логин
+
         }
     }
 
@@ -280,90 +277,90 @@ public class DayDetailActivity extends AppCompatActivity {
         List<String> dbConditions = new ArrayList<>();
         Log.d(TAG, "mapApiWeatherToDbConditions: Mapping API desc='" + apiDescription + "', code=" + apiCode);
 
-        // https://www.weatherapi.com/docs/weather_conditions.json
+
         switch (apiCode) {
-            case 1000: // Sunny / Clear
+            case 1000:
                 dbConditions.add("Солнечно");
                 break;
-            case 1003: // Partly cloudy
+            case 1003:
                 dbConditions.add("Переменная облачность");
-                // dbConditions.add("Облачно");
+
                 break;
-            case 1006: // Cloudy
-            case 1009: // Overcast
+            case 1006:
+            case 1009:
                 dbConditions.add("Облачно");
                 break;
-            case 1030: // Mist
-            case 1135: // Fog
-            case 1147: // Freezing fog
+            case 1030:
+            case 1135:
+            case 1147:
                 dbConditions.add("Туман");
                 break;
-            case 1063: // Patchy rain possible
-            case 1150: // Patchy light drizzle
-            case 1153: // Light drizzle
-            case 1180: // Patchy light rain
-            case 1183: // Light rain
+            case 1063:
+            case 1150:
+            case 1153:
+            case 1180:
+            case 1183:
                 dbConditions.add("Небольшой дождь");
-                // Также может считаться просто "Дождь"
+
                 if (!dbConditions.contains("Дождь")) dbConditions.add("Дождь");
                 break;
-            case 1066: // Patchy snow possible
-            case 1210: // Patchy light snow
-            case 1213: // Light snow
-            case 1255: // Light snow showers
-                dbConditions.add("Снег"); // Для простоты, все снегопады пока как "Снег"
-                break;
-            case 1069: // Patchy sleet possible (Мокрый снег)
-            case 1204: // Light sleet
-            case 1207: // Moderate or heavy sleet
-            case 1249: // Light sleet showers
-            case 1252: // Moderate or heavy sleet showers
-                dbConditions.add("Дождь"); // Мокрый снег - это и дождь, и снег
+            case 1066:
+            case 1210:
+            case 1213:
+            case 1255:
                 dbConditions.add("Снег");
                 break;
-            case 1072: // Patchy freezing drizzle possible
-            case 1168: // Freezing drizzle
-            case 1171: // Heavy freezing drizzle (Ледяной дождь)
-                dbConditions.add("Дождь"); // Ледяной дождь - это форма дождя
-                // Можно добавить специфическое условие "Ледяной дождь"
+            case 1069:
+            case 1204:
+            case 1207:
+            case 1249:
+            case 1252:
+                dbConditions.add("Дождь");
+                dbConditions.add("Снег");
                 break;
-            case 1087: // Thundery outbreaks possible (Возможны грозы)
-            case 1273: // Patchy light rain with thunder
-            case 1276: // Moderate or heavy rain with thunder
-                dbConditions.add("Дождь"); // Гроза обычно с дождем
-                // dbConditions.add("Гроза");
+            case 1072:
+            case 1168:
+            case 1171:
+                dbConditions.add("Дождь");
+
                 break;
-            case 1114: // Blowing snow
-            case 1117: // Blizzard (Метель)
+            case 1087:
+            case 1273:
+            case 1276:
+                dbConditions.add("Дождь");
+
+                break;
+            case 1114:
+            case 1117:
                 dbConditions.add("Снег");
                 dbConditions.add("Ветрено");
                 break;
-            case 1216: // Patchy moderate snow
-            case 1219: // Moderate snow
-            case 1222: // Patchy heavy snow
-            case 1225: // Heavy snow
-            case 1258: // Moderate or heavy snow showers
+            case 1216:
+            case 1219:
+            case 1222:
+            case 1225:
+            case 1258:
                 dbConditions.add("Снег");
                 break;
-            case 1186: // Moderate rain at times
-            case 1189: // Moderate rain
-            case 1192: // Heavy rain at times
-            case 1195: // Heavy rain
-            case 1240: // Light rain shower
-            case 1243: // Moderate or heavy rain shower
-            case 1246: // Torrential rain shower
+            case 1186:
+            case 1189:
+            case 1192:
+            case 1195:
+            case 1240:
+            case 1243:
+            case 1246:
                 dbConditions.add("Дождь");
                 break;
-            case 1279: // Patchy light snow with thunder
-            case 1282: // Moderate or heavy snow with thunder
+            case 1279:
+            case 1282:
                 dbConditions.add("Снег");
-                // dbConditions.add("Гроза");
+
                 break;
-            // Добавьте другие коды по необходимости
+
         }
 
-        // Если по коду ничего не определили или хотим дополнить по тексту (менее надежно)
-        if (apiDescription != null && dbConditions.isEmpty()) { // Дополняем, только если по коду ничего не нашлось
+
+        if (apiDescription != null && dbConditions.isEmpty()) {
             String descLower = apiDescription.toLowerCase();
             if (descLower.contains("солн") || descLower.contains("ясно") && !dbConditions.contains("Солнечно")) dbConditions.add("Солнечно");
             if (descLower.contains("облач") && !dbConditions.contains("Облачно") && !dbConditions.contains("Переменная облачность")) dbConditions.add("Облачно");
@@ -374,7 +371,7 @@ public class DayDetailActivity extends AppCompatActivity {
             if (descLower.contains("туман") && !dbConditions.contains("Туман")) dbConditions.add("Туман");
         }
 
-        // Если после всех попыток список пуст, добавляем что-то по умолчанию
+
         if (dbConditions.isEmpty()) {
             Log.w(TAG, "mapApiWeatherToDbConditions: No specific conditions mapped, using default 'Переменная облачность'");
             dbConditions.add("Переменная облачность");
@@ -420,16 +417,16 @@ public class DayDetailActivity extends AppCompatActivity {
                     displaySuggestedOutfit(result.allPossibleItems, maxTemp, result.preferredStyle, result.weatherConditions);
                 } else {
                     Log.w(TAG, "All possible items list is null. Showing no outfit message.");
-                    tvOutfitSuggestionDetail.setVisibility(View.GONE); // Скрыть текстовый список, если нет вещей
-                    tvNoOutfitMessage.setVisibility(View.VISIBLE); // Показать сообщение об отсутствии образа
-                    ivMannequin.setVisibility(View.GONE); // Скрыть манекен
+                    tvOutfitSuggestionDetail.setVisibility(View.GONE);
+                    tvNoOutfitMessage.setVisibility(View.VISIBLE);
+                    ivMannequin.setVisibility(View.GONE);
                 }
             } else {
                 Log.e(TAG, "Failed to load user data. Showing error message.");
-                tvOutfitSuggestionDetail.setVisibility(View.GONE); // Скрыть текстовый список
-                tvNoOutfitMessage.setText(getString(R.string.error_loading_user_data)); // Сообщение об ошибке загрузки пользователя
-                tvNoOutfitMessage.setVisibility(View.VISIBLE); // Показать сообщение об ошибке
-                ivMannequin.setVisibility(View.GONE); // Скрыть манекен
+                tvOutfitSuggestionDetail.setVisibility(View.GONE);
+                tvNoOutfitMessage.setText(getString(R.string.error_loading_user_data));
+                tvNoOutfitMessage.setVisibility(View.VISIBLE);
+                ivMannequin.setVisibility(View.GONE);
             }
         }
     }
@@ -452,22 +449,22 @@ public class DayDetailActivity extends AppCompatActivity {
                                         String preferredStyle, List<String> currentDbWeatherConditions) {
         Log.d(TAG, "displaySuggestedOutfit: Processing " + allPossibleItems.size() + " possible items. PrefStyle: " + preferredStyle + ", Conditions: " + currentDbWeatherConditions);
 
-        // Сбрасываем видимость всех элементов перед новым подбором
+
         ivOutfitOuterwear.setVisibility(View.GONE);
         ivOutfitTop.setVisibility(View.GONE);
         ivOutfitBottom.setVisibility(View.GONE);
         ivOutfitShoes.setVisibility(View.GONE);
-        tvOutfitSuggestionDetail.setVisibility(View.GONE); // Скрываем текстовый список
-        tvNoOutfitMessage.setVisibility(View.GONE); // Скрываем сообщение об отсутствии образа
-        ivMannequin.setVisibility(View.VISIBLE); // Показываем манекен по умолчанию
+        tvOutfitSuggestionDetail.setVisibility(View.GONE);
+        tvNoOutfitMessage.setVisibility(View.GONE);
+        ivMannequin.setVisibility(View.VISIBLE);
 
         boolean isRainyOrSnowy = containsRainOrSnow(currentDbWeatherConditions);
         boolean isWindy = currentDbWeatherConditions.contains("Ветрено");
 
         if (allPossibleItems.isEmpty()) {
-            tvOutfitSuggestionDetail.setVisibility(View.GONE); // Скрываем текстовый список
-            tvNoOutfitMessage.setVisibility(View.VISIBLE); // Показываем сообщение об отсутствии образа
-            ivMannequin.setVisibility(View.GONE); // Скрываем манекен
+            tvOutfitSuggestionDetail.setVisibility(View.GONE);
+            tvNoOutfitMessage.setVisibility(View.VISIBLE);
+            ivMannequin.setVisibility(View.GONE);
             Log.d(TAG, "No possible items found. Showing no outfit message.");
             return;
         }
@@ -478,7 +475,7 @@ public class DayDetailActivity extends AppCompatActivity {
         }
 
         List<Map<String, ClothingItem>> outfitCandidates = new ArrayList<>();
-        int numAttempts = 5; // Попробуем сгенерировать 5 разных вариантов
+        int numAttempts = 5;
 
         for (int i = 0; i < numAttempts; i++) {
             Log.d(TAG, "Generating outfit candidate #" + (i + 1));
@@ -490,24 +487,24 @@ public class DayDetailActivity extends AppCompatActivity {
 
             boolean isFemaleUser = currentUser != null && "Женский".equalsIgnoreCase(currentUser.getGender());
 
-            // В1: Обычный комплект (Верх + Низ)
+
             ClothingItem candTopReg = findBestMatch(itemsByCategory.get("верх"), preferredStyle, currentDbWeatherConditions, currentTemperature);
             ClothingItem candBottomReg = (candTopReg != null) ? findBestMatch(itemsByCategory.get("низ"), preferredStyle, currentDbWeatherConditions, currentTemperature) : null;
 
-            // В2: Платье/Юбка (только для женщин)
+
             ClothingItem candDressOrSkirt = null;
             if (isFemaleUser && itemsByCategory.containsKey("платья/юбки")) {
                 candDressOrSkirt = findBestMatch(itemsByCategory.get("платья/юбки"), preferredStyle, currentDbWeatherConditions, currentTemperature);
             }
 
-            // Выбор лучшего основного образа для этой попытки
+
             boolean chooseDressOrSkirtForThisAttempt = false;
             if (candDressOrSkirt != null && (candTopReg == null || candBottomReg == null)) {
                 chooseDressOrSkirtForThisAttempt = true;
             } else if (candDressOrSkirt == null && candTopReg != null && candBottomReg != null) {
                 chooseDressOrSkirtForThisAttempt = false;
             } else if (candDressOrSkirt != null && candTopReg != null && candBottomReg != null) {
-                chooseDressOrSkirtForThisAttempt = new Random().nextBoolean(); // Случайный выбор
+                chooseDressOrSkirtForThisAttempt = new Random().nextBoolean();
             } else {
                 Log.d(TAG, "No complete primary outfit found for candidate #" + (i + 1));
             }
@@ -520,22 +517,22 @@ public class DayDetailActivity extends AppCompatActivity {
                 currentCandidateBottom = candBottomReg;
             }
 
-            // Обувь, верхняя одежда, головной убор - подбираются отдельно для каждого кандидата
+
             currentCandidateShoes = findBestMatch(itemsByCategory.get("обувь"), preferredStyle, currentDbWeatherConditions, currentTemperature);
             boolean needsOuterwear = currentTemperature < 15 || containsRainOrSnow(currentDbWeatherConditions) || isWindy;
             if (needsOuterwear) {
                 currentCandidateOuterwear = findBestMatch(itemsByCategory.get("верхняя одежда"), preferredStyle, currentDbWeatherConditions, currentTemperature);
             }
 
-            // Собираем кандидата в Map
+
             Map<String, ClothingItem> candidateOutfit = new LinkedHashMap<>();
             if (currentCandidateOuterwear != null) candidateOutfit.put("верхняя одежда", currentCandidateOuterwear);
             if (currentCandidateTop != null) candidateOutfit.put(currentCandidateTop.getCategory().equalsIgnoreCase("платья/юбки") ? "платья/юбки" : "верх", currentCandidateTop);
             if (currentCandidateBottom != null) candidateOutfit.put("низ", currentCandidateBottom);
             if (currentCandidateShoes != null) candidateOutfit.put("обувь", currentCandidateShoes);
 
-            // Добавляем кандидата, только если он не пустой (хотя бы 2-3 элемента)
-            if (candidateOutfit.size() >= 2) { // Минимальное количество элементов для "образа"
+
+            if (candidateOutfit.size() >= 2) {
                 outfitCandidates.add(candidateOutfit);
                 Log.d(TAG, "Added outfit candidate #" + outfitCandidates.size() + ". Items: " + candidateOutfit.keySet());
             } else {
@@ -543,42 +540,41 @@ public class DayDetailActivity extends AppCompatActivity {
             }
         }
 
-        // ВЫБОР И ФИНАЛЬНОЕ ОТОБРАЖЕНИЕ ОДНОГО ИЗ КАНДИДАТОВ
+
         Map<String, ClothingItem> finalOutfit = null;
         if (!outfitCandidates.isEmpty()) {
-            // Выбираем случайный образ из списка сгенерированных кандидатов
+
             finalOutfit = outfitCandidates.get(new Random().nextInt(outfitCandidates.size()));
             Log.d(TAG, "Final outfit chosen randomly from " + outfitCandidates.size() + " candidates.");
 
-            // Извлекаем элементы для отображения из выбранного финального образа
+
             this.lastSelectedOuterwear = finalOutfit.get("верхняя одежда");
-            this.lastSelectedTop = finalOutfit.get("верх"); // или "платья/юбки"
-            if (this.lastSelectedTop == null && finalOutfit.containsKey("платья/юбки")) { // Если это платье/юбка
+            this.lastSelectedTop = finalOutfit.get("верх");
+            if (this.lastSelectedTop == null && finalOutfit.containsKey("платья/юбки")) {
                 this.lastSelectedTop = finalOutfit.get("платья/юбки");
             }
             this.lastSelectedBottom = finalOutfit.get("низ");
             this.lastSelectedShoes = finalOutfit.get("обувь");
-            // this.lastSelectedHeadwear = finalOutfit.get("головной убор"); // Если есть головной убор
+
 
         } else {
-            // Если ни один из кандидатов не был достаточно полным
+
             Log.w(TAG, "No suitable outfit candidates generated. Displaying no outfit message.");
             tvOutfitSuggestionDetail.setVisibility(View.GONE);
             tvNoOutfitMessage.setVisibility(View.VISIBLE);
             ivMannequin.setVisibility(View.GONE);
-            return; // Выходим, так как ничего не подобрали
+            return;
         }
 
-        // Устанавливаем изображения в ImageView (используя finalOutfit)
+
         int itemsVisuallyDisplayed = 0;
         if (lastSelectedOuterwear != null) { setOutfitImage(ivOutfitOuterwear, lastSelectedOuterwear.getImageResourceName()); itemsVisuallyDisplayed++; }
         if (lastSelectedTop != null) { setOutfitImage(ivOutfitTop, lastSelectedTop.getImageResourceName()); itemsVisuallyDisplayed++; }
         if (lastSelectedBottom != null) { setOutfitImage(ivOutfitBottom, lastSelectedBottom.getImageResourceName()); itemsVisuallyDisplayed++; }
         if (lastSelectedShoes != null) { setOutfitImage(ivOutfitShoes, lastSelectedShoes.getImageResourceName()); itemsVisuallyDisplayed++; }
-        // if (lastSelectedHeadwear != null) { setOutfitImage(ivOutfitHeadwear, lastSelectedHeadwear.getImageResourceName()); itemsVisuallyDisplayed++; } // Если есть головной убор
 
 
-        // Формируем и отображаем ТЕКСТОВОЕ описание образа
+
         StringBuilder outfitTextBuilder = new StringBuilder(getString(R.string.recommended_outfit_title) + "\n");
         int itemsInTextList = 0;
 
@@ -621,7 +617,7 @@ public class DayDetailActivity extends AppCompatActivity {
         }
     }
 
-    // Вспомогательный метод для проверки наличия дождя или снега
+
     private boolean containsRainOrSnow(List<String> conditions) {
         if (conditions == null) return false;
         for (String cond : conditions) {
@@ -632,8 +628,7 @@ public class DayDetailActivity extends AppCompatActivity {
         return false;
     }
 
-    // Новый метод для выбора лучшего совпадения с учетом стиля и погоды,
-    // с откатом к выбору только по температуре, если идеального нет.
+
     @Nullable
     private ClothingItem findBestMatch(@Nullable List<ClothingItem> itemsInCategory,
                                        String preferredStyle,
@@ -670,85 +665,85 @@ public class DayDetailActivity extends AppCompatActivity {
 
 
         for (ClothingItem item : itemsInCategory) {
-            double score = 0; // Базовый скор
+            double score = 0;
 
-            // 1. Оценка по соответствию стилю (строже)
+
             boolean itemMatchesStyle = false;
-            if (preferredStyleId != -1) { // Если пользователь выбрал конкретный стиль
+            if (preferredStyleId != -1) {
                 List<Long> itemStyleIds = dbHelper.getStylesForClothingItem(item.getClothingId());
                 itemMatchesStyle = itemStyleIds.contains(preferredStyleId);
                 if (itemMatchesStyle) {
-                    score += 1000; // ОЧЕНЬ высокий бонус за соответствие выбранному стилю
+                    score += 1000;
                     Log.d(TAG, "  Item '" + item.getName() + "': Style match! Score +1000");
                 } else {
-                    // Если стиль выбран, но предмет не соответствует - очень большой штраф (почти исключение)
-                    score -= 10000; // ГИГАНТСКИЙ ШТРАФ за несоответствие ВЫБРАННОМУ стилю
+
+                    score -= 10000;
                     Log.d(TAG, "  Item '" + item.getName() + "': DOES NOT match preferred style. Score -10000");
                 }
-            } else { // Если стиль не указан (preferredStyleId == -1) или дефолтный "Повседневный"
-                itemMatchesStyle = true; // Считаем, что любой стиль подходит, но без бонуса
-                // Здесь не даем бонус, т.к. нет специфичного стиля, но и не штрафуем
+            } else {
+                itemMatchesStyle = true;
+
                 Log.d(TAG, "  Item '" + item.getName() + "': No specific preferred style, assuming match.");
             }
 
 
-            // 2. Оценка по соответствию погодным условиям (общие)
+
             boolean itemMatchesWeather = false;
             if (!conditionIds.isEmpty()) {
                 List<Long> itemConditionIds = dbHelper.getConditionsForClothingItem(item.getClothingId());
                 for (long condId : conditionIds) {
                     if (itemConditionIds.contains(condId)) {
                         itemMatchesWeather = true;
-                        score += 80; // Хороший бонус
+                        score += 80;
                         Log.d(TAG, "  Item '" + item.getName() + "': General weather match! Score +80");
                         break;
                     }
                 }
-                if (!itemMatchesWeather) { // Если нет соответствия НИ ОДНОМУ погодному условию
-                    score -= 50; // Небольшой штраф
+                if (!itemMatchesWeather) {
+                    score -= 50;
                     Log.d(TAG, "  Item '" + item.getName() + "': Does NOT match any weather conditions. Score -50");
                 }
             } else {
-                itemMatchesWeather = true; // Если условия не указаны, любые подходят
-                score += 40; // Небольшой бонус
+                itemMatchesWeather = true;
+                score += 40;
                 Log.d(TAG, "  Item '" + item.getName() + "': No specific weather conditions set, assuming general weather match. Score +40");
             }
 
-            // 3. Оценка по специальным требованиям (водонепроницаемость, ветрозащита)
+
             boolean itemMeetsWaterproofRequirement = true;
             if (isRainyOrSnowy && !item.isWaterproof()) {
                 itemMeetsWaterproofRequirement = false;
-                score -= 500; // Большой ШТРАФ (меньше чем за стиль)
+                score -= 500;
                 Log.d(TAG, "  Item '" + item.getName() + "': Fails waterproof requirement. Score -500");
             } else if (isRainyOrSnowy && item.isWaterproof()) {
-                score += 50; // Бонус за водонепроницаемость, если она нужна
+                score += 50;
                 Log.d(TAG, "  Item '" + item.getName() + "': Meets waterproof requirement. Score +50");
             }
 
             boolean itemMeetsWindproofRequirement = true;
             if (isWindy && !item.isWindproof()) {
                 itemMeetsWindproofRequirement = false;
-                score -= 400; // Большой ШТРАФ (меньше чем за стиль)
+                score -= 400;
                 Log.d(TAG, "  Item '" + item.getName() + "': Fails windproof requirement. Score -400");
             } else if (isWindy && item.isWindproof()) {
-                score += 40; // Бонус за ветрозащиту, если она нужна
+                score += 40;
                 Log.d(TAG, "  Item '" + item.getName() + "': Meets windproof requirement. Score +40");
             }
 
-            // 4. Оценка по температурному соответствию (чем ближе к идеальному центру, тем лучше)
+
             double itemMidTemp = (item.getMinTemp() + item.getMaxTemp()) / 2.0;
             double tempDifference = Math.abs(itemMidTemp - currentTemperature);
-            score -= tempDifference * 5; // Штраф за разницу
+            score -= tempDifference * 5;
             Log.d(TAG, "  Item '" + item.getName() + "': Temp difference " + tempDifference + ". Score -" + (tempDifference * 5));
 
-            // Если текущая температура находится за пределами диапазона вещи, даем очень большой штраф
+
             if (currentTemperature < item.getMinTemp() || currentTemperature > item.getMaxTemp()) {
-                score -= 200; // Очень большой штраф за выход за пределы диапазона
+                score -= 200;
                 Log.d(TAG, "  Item '" + item.getName() + "': Current temp outside item's range. Score -200");
             }
 
-            // Добавляем элемент со скором только если он не получил "смертельный" штраф за стиль
-            if (score > -5000) { // Исключаем вещи, которые категорически не подходят по стилю
+
+            if (score > -5000) {
                 scoredItems.add(new ScoredClothingItem(item, score));
                 Log.d(TAG, "  Final score for '" + item.getName() + "': " + score + " (Added to candidates).");
             } else {
@@ -770,8 +765,8 @@ public class DayDetailActivity extends AppCompatActivity {
 
         double maxScore = scoredItems.get(0).score;
 
-        double scoreThreshold = maxScore * 0.7; // Если maxScore может быть отрицательным, нужна более сложная логика
-        if (maxScore < 0) scoreThreshold = maxScore * 1.3; // Если лучший скор отрицательный, расширяем вниз.
+        double scoreThreshold = maxScore * 0.7;
+        if (maxScore < 0) scoreThreshold = maxScore * 1.3;
 
 
         List<ClothingItem> eligibleItems = new ArrayList<>();
@@ -783,12 +778,12 @@ public class DayDetailActivity extends AppCompatActivity {
             }
         }
 
-        if (!eligibleItems.isEmpty()) { // Убедимся, что список не пуст ПЕРЕД тем, как брать из него элементы
-            ClothingItem chosenItem = eligibleItems.get(new Random().nextInt(eligibleItems.size())); // <-- ЭТА СТРОКА
+        if (!eligibleItems.isEmpty()) {
+            ClothingItem chosenItem = eligibleItems.get(new Random().nextInt(eligibleItems.size()));
             Log.d(TAG, "findBestMatch: Randomly selected from " + eligibleItems.size() + " eligible items. Chosen: '" + chosenItem.getName() + "' (Score: " + scoredItems.get(scoredItems.indexOf(new ScoredClothingItem(chosenItem, 0))).score + ")");
             return chosenItem;
         } else {
-            // Если eligibleItems пуст (даже лучший предмет не преодолел порог)
+
             Log.d(TAG, "findBestMatch: No truly suitable item found after applying score threshold (" + scoreThreshold + "). Returning null.");
             return null;
         }
@@ -804,13 +799,13 @@ public class DayDetailActivity extends AppCompatActivity {
             this.score = score;
         }
 
-        // Переопределяем equals() и hashCode() для корректного сравнения по 'item'
+
         @Override
         public boolean equals(@Nullable Object obj) {
             if (this == obj) return true;
             if (obj == null || getClass() != obj.getClass()) return false;
             ScoredClothingItem that = (ScoredClothingItem) obj;
-            return item.equals(that.item); // Сравниваем по самому ClothingItem
+            return item.equals(that.item);
         }
 
         @Override
@@ -829,14 +824,14 @@ public class DayDetailActivity extends AppCompatActivity {
         if (fabAddFavorite != null) {
             fabAddFavorite.setOnClickListener(v -> {
                 Log.d(TAG, "Add to Favorites button clicked.");
-                saveCurrentOutfit(); // Вызываем новый метод для сохранения
+                saveCurrentOutfit();
             });
         }
         if (fabRefresh != null) {
             fabRefresh.setOnClickListener(v -> {
                 Log.d(TAG, "Refresh clicked, refetching weather for: " + currentCity);
                 if (currentCity != null && !currentCity.isEmpty()) {
-                    retrieveUserIdAndLoadUser(); // Это перезагрузит и пользователя и одежду
+                    retrieveUserIdAndLoadUser();
                 } else {
                     Toast.makeText(this, "Город не определен для обновления", Toast.LENGTH_SHORT).show();
                 }
@@ -850,11 +845,11 @@ public class DayDetailActivity extends AppCompatActivity {
             });
         }
 
-        // Обработчики для кастомной нижней навигации
+
         if (navProfileIcon != null) {
             navProfileIcon.setOnClickListener(v -> {
                 Intent intent = new Intent(this, ProfileActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); // Привести существующий экземпляр наверх
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             });
         }
@@ -878,7 +873,7 @@ public class DayDetailActivity extends AppCompatActivity {
 
     private void saveCurrentOutfit() {
         if (currentUserId == DatabaseHelper.DEFAULT_USER_ID || currentUser == null) {
-            Toast.makeText(this, R.string.error_auth_save_outfit, Toast.LENGTH_SHORT).show(); // Добавьте эту строку в strings.xml
+            Toast.makeText(this, R.string.error_auth_save_outfit, Toast.LENGTH_SHORT).show();
             Log.e(TAG, "saveCurrentOutfit: User not logged in or currentUser data missing.");
             return;
         }
@@ -890,7 +885,7 @@ public class DayDetailActivity extends AppCompatActivity {
         if (lastSelectedShoes != null) currentOutfitMap.put("обувь", lastSelectedShoes);
 
         if (currentOutfitMap.isEmpty()) {
-            Toast.makeText(this, R.string.outfit_cannot_save_empty, Toast.LENGTH_SHORT).show(); // Добавьте эту строку
+            Toast.makeText(this, R.string.outfit_cannot_save_empty, Toast.LENGTH_SHORT).show();
             Log.w(TAG, "saveCurrentOutfit: No items in the outfit to save.");
             return;
         }
@@ -903,18 +898,18 @@ public class DayDetailActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(DayDetailActivity.this, R.string.saving_outfit, Toast.LENGTH_SHORT).show(); // "Сохранение образа..."
+            Toast.makeText(DayDetailActivity.this, R.string.saving_outfit, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         protected Long doInBackground(Map<String, ClothingItem>... params) {
             Map<String, ClothingItem> outfitItemsMap = params[0];
-            // Используем текущие значения, которые были переданы в Intent или установлены ранее
+
             return dbHelper.saveOutfit(
                     currentUserId,
-                    weatherDescription, // Используем weatherDescription
-                    maxTemp,            // Используем maxTemp
-                    outfitPreferredStyle, // Используем outfitPreferredStyle
+                    weatherDescription,
+                    maxTemp,
+                    outfitPreferredStyle,
                     outfitItemsMap
             );
         }
@@ -939,36 +934,35 @@ public class DayDetailActivity extends AppCompatActivity {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
-                    // Форматируем выбранную дату в YYYY-MM-DD для базы данных
+
                     String formattedDate = String.format(Locale.US, "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
                     Log.d(TAG, "Selected plan date: " + formattedDate);
                     planCurrentOutfit(formattedDate);
                 }, year, month, day);
 
-        // Опционально: можно ограничить выбор даты (например, только будущее)
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000); // Только сегодняшняя и будущие даты
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
         datePickerDialog.show();
     }
 
     private void planCurrentOutfit(String planDate) {
         if (currentUserId == DatabaseHelper.DEFAULT_USER_ID || currentUser == null) {
-            Toast.makeText(this, R.string.error_auth_plan_outfit, Toast.LENGTH_SHORT).show(); // Добавь эту строку в strings.xml
+            Toast.makeText(this, R.string.error_auth_plan_outfit, Toast.LENGTH_SHORT).show();
             Log.e(TAG, "planCurrentOutfit: User not logged in or currentUser data missing.");
             return;
         }
 
         Map<String, ClothingItem> currentOutfitMap = new LinkedHashMap<>();
 
-        // Убедись, что lastSelectedOuterwear, lastSelectedTop и т.д. являются ПОЛЯМИ КЛАССА DayDetailActivity
-        // и заполняются в displaySuggestedOutfit(). Это критически важно!
+
         if (lastSelectedOuterwear != null) currentOutfitMap.put("верхняя одежда", lastSelectedOuterwear);
         if (lastSelectedTop != null) currentOutfitMap.put(lastSelectedTop.getCategory().equalsIgnoreCase("платья/юбки") ? "платья/юбки" : "верх", lastSelectedTop);
         if (lastSelectedBottom != null) currentOutfitMap.put("низ", lastSelectedBottom);
         if (lastSelectedShoes != null) currentOutfitMap.put("обувь", lastSelectedShoes);
 
         if (currentOutfitMap.isEmpty()) {
-            Toast.makeText(this, R.string.outfit_cannot_plan_empty, Toast.LENGTH_SHORT).show(); // Добавь эту строку
+            Toast.makeText(this, R.string.outfit_cannot_plan_empty, Toast.LENGTH_SHORT).show();
             Log.w(TAG, "planCurrentOutfit: No items in the outfit to plan.");
             return;
         }
@@ -976,7 +970,7 @@ public class DayDetailActivity extends AppCompatActivity {
         new PlanOutfitTask(planDate).execute(currentOutfitMap);
     }
 
-    // AsyncTask для сохранения запланированного образа в фоновом потоке
+
     @SuppressLint("StaticFieldLeak")
     private class PlanOutfitTask extends AsyncTask<Map<String, ClothingItem>, Void, Long> {
         private String planDate;
@@ -988,13 +982,13 @@ public class DayDetailActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(DayDetailActivity.this, R.string.planning_outfit, Toast.LENGTH_SHORT).show(); // "Планирование образа..."
+            Toast.makeText(DayDetailActivity.this, R.string.planning_outfit, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         protected Long doInBackground(Map<String, ClothingItem>... params) {
             Map<String, ClothingItem> outfitItemsMap = params[0];
-            // Используем текущие значения, которые были переданы в Intent или установлены ранее
+
             return dbHelper.savePlannedOutfit(
                     currentUserId,
                     planDate,
