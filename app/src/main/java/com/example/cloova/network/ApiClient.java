@@ -11,17 +11,16 @@ public class ApiClient {
 
     public static Retrofit getClient() {
         if (retrofit == null) {
-            // Для отладки - логирование запросов и ответов
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY); // Уровень логирования
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(logging)
                     .build();
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(client) // Добавляем клиент с логгером
-                    .addConverterFactory(GsonConverterFactory.create()) // Используем Gson
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         return retrofit;

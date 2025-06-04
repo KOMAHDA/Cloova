@@ -28,49 +28,49 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: Found userId in Prefs: " + loggedInUserId);
 
         if (loggedInUserId != DatabaseHelper.DEFAULT_USER_ID) {
-            // Пользователь уже вошел, перенаправляем в профиль
+
             Log.d(TAG, "onCreate: User is logged in. Redirecting to ProfileActivity...");
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            intent.putExtra(DatabaseHelper.EXTRA_USER_ID, loggedInUserId); // Передаем ID
+            intent.putExtra(DatabaseHelper.EXTRA_USER_ID, loggedInUserId);
 
-            // Очищаем стек активностей, чтобы ProfileActivity стала корневой
+
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             startActivity(intent);
-            finish(); // Закрываем MainActivity, чтобы она не оставалась в стеке
-            return;   // Выходим из onCreate, чтобы не выполнять остальной код
+            finish();
+            return;
         } else {
-            // Пользователь НЕ вошел, продолжаем обычную инициализацию MainActivity
+
             Log.d(TAG, "onCreate: User is NOT logged in. Showing MainActivity layout.");
         }
 
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Setting main activity layout");
 
-        // Обработчик для иконки Telegram
+
         ImageView telegaImage = findViewById(R.id.telega);
         telegaImage.setOnClickListener(v -> openSocialLink(
-                "tg://resolve?domain=cloova_app",  // Intent для приложения Telegram
-                "https://t.me/cloova_app"          // Fallback ссылка
+                "tg://resolve?domain=cloova_app",
+                "https://t.me/cloova_app"
         ));
 
-        // Обработчик для иконки VK
-        ImageView vkImage = findViewById(R.id.vk); // Предполагаемый ID вашей иконки VK
+
+        ImageView vkImage = findViewById(R.id.vk);
         vkImage.setOnClickListener(v -> openSocialLink(
-                "vk://vk.com/cloova_app",          // Intent для приложения VK
-                "https://vk.com/cloova_app"        // Fallback ссылка
+                "vk://vk.com/cloova_app",
+                "https://vk.com/cloova_app"
         ));
     }
 
-    // Универсальный метод для открытия соцсетей
+
     private void openSocialLink(String appUri, String webUrl) {
         try {
-            // Пробуем открыть в приложении
+
             Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(appUri));
             startActivity(appIntent);
         } catch (Exception e) {
             try {
-                // Если приложение не установлено, открываем в браузере
+
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl));
                 startActivity(browserIntent);
             } catch (Exception ex) {

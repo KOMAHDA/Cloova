@@ -5,12 +5,12 @@ import java.util.Map;
 public class PlannedOutfit {
     private long id;
     private long userId;
-    private String planDate; // Дата, на которую запланирован образ (YYYY-MM-DD)
-    private String dateCreated; // Дата создания записи (YYYY-MM-DD HH:MM:SS)
+    private String planDate;
+    private String dateCreated;
     private String weatherDescription;
     private double temperature;
     private String styleName;
-    private Map<String, ClothingItem> outfitItems; // Категория -> ClothingItem
+    private Map<String, ClothingItem> outfitItems;
 
     public PlannedOutfit(long id, long userId, String planDate, String dateCreated, String weatherDescription, double temperature, String styleName, Map<String, ClothingItem> outfitItems) {
         this.id = id;
@@ -23,7 +23,6 @@ public class PlannedOutfit {
         this.outfitItems = outfitItems;
     }
 
-    // Геттеры
     public long getId() { return id; }
     public long getUserId() { return userId; }
     public String getPlanDate() { return planDate; }
@@ -32,6 +31,4 @@ public class PlannedOutfit {
     public double getTemperature() { return temperature; }
     public String getStyleName() { return styleName; }
     public Map<String, ClothingItem> getOutfitItems() { return outfitItems; }
-
-    // Сеттеры (обычно не нужны для неизменяемых объектов)
 }

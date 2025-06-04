@@ -2,9 +2,9 @@ package com.example.cloova.model;
 import com.google.gson.annotations.SerializedName;
 public class Condition {
     @SerializedName("text")
-    public String text; // Описание (напр. "Местами дождь")
+    public String text;
     @SerializedName("icon")
-    public String iconUrlPath; // Относительный URL иконки (напр. "//cdn.weatherapi.com/weather/64x64/day/176.png")
+    public String iconUrlPath;
     @SerializedName("code")
-    public int code; // Код состояния погоды
+    public int code;
 }

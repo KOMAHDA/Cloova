@@ -57,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             userId = getIntent().getLongExtra("USER_ID", -1);
             if (userId == -1) {
-                // Дополнительная проверка из SharedPreferences
+
                 SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
                 userId = prefs.getLong("user_id", -1);
                 if (userId == -1) {
@@ -85,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Если ничего не выбрано, убедитесь, что selectedUserStyle имеет значение по умолчанию
+
                 if (selectedUserStyle == null || selectedUserStyle.isEmpty() || "Стили не выбраны".equals(selectedUserStyle)) {
                     selectedUserStyle = "Повседневный";
                 }
@@ -102,8 +102,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         contactTelegaLayout = findViewById(R.id.contact_telega);
         contactTelegaLayout.setOnClickListener(v -> openSocialLink(
-                "tg://resolve?domain=cloova_app",  // Intent для приложения Telegram
-                "https://t.me/cloova_app"          // Fallback ссылка
+                "tg://resolve?domain=cloova_app",
+                "https://t.me/cloova_app"
         ));
 
         changeCity = findViewById(R.id.block1);
@@ -122,15 +122,6 @@ public class ProfileActivity extends AppCompatActivity {
                 ChangeLanguage(v);
             }
         });
-
-/*        myAnketaLayout = findViewById(R.id.block3);
-        myAnketaLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyAnketa(v);
-            }
-        });*/
-
         likedLooksLayout = findViewById(R.id.block4);
         likedLooksLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,26 +186,26 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     public void Vihod(View v) {
-        // 1. Очищаем SharedPreferences (сессию)
+
         SharedPreferences prefs = getSharedPreferences(DatabaseHelper.SHARED_PREFS_NAME, MODE_PRIVATE);
         prefs.edit().remove(DatabaseHelper.PREF_KEY_LOGGED_IN_USER_ID).apply();
 
-        // 2. Создаем Intent для MainActivity с полным сбросом стека
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        // 3. Запускаем и закрываем текущую Activity
+
         startActivity(intent);
         finish();
     }
     private void openSocialLink(String appUri, String webUrl) {
         try {
-            // Пробуем открыть в приложении
+
             Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(appUri));
             startActivity(appIntent);
         } catch (Exception e) {
             try {
-                // Если приложение не установлено, открываем в браузере
+
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl));
                 startActivity(browserIntent);
             } catch (Exception ex) {
@@ -234,21 +225,21 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Обновляем данные профиля при возврате
+
             displayUserProfile();
         }
     }
 
     private void ChangeLanguage(View v) {
         Intent intent = new Intent(this, LanguagesActivity.class);
-        intent.putExtra("USER_ID", userId); // Убедитесь, что userId получен
+        intent.putExtra("USER_ID", userId);
         startActivity(intent);
-        // Не вызываем finish() - оставляем ProfileActivity в стеке
+
     }
 
     private void Edit(View v) {
         Intent intent = new Intent(this, EditProfileActivity.class);
-        intent.putExtra("USER_ID", userId); // Добавьте эту строку
+        intent.putExtra("USER_ID", userId);
         startActivity(intent);
     }
 
@@ -266,13 +257,6 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Zaplanerki.class);
         startActivity(intent);
     }
-
-/*    private void MyAnketa(View v) {
-        Intent intent = new Intent(ProfileActivity.this, Anketa.class);
-        intent.putExtra("USER_ID", userId);
-        startActivity(intent);
-    }*/
-
     private void displayUserProfile() {
         User user = dbHelper.getUserInfo(userId);
 
@@ -291,8 +275,8 @@ public class ProfileActivity extends AppCompatActivity {
         TextView infoLanguage = findViewById(R.id.info_language);
         ImageView infoAvatar = findViewById(R.id.iv_avatar);
 
-        // Установка значений с проверками
-        profileUsername.setText(user.getLogin() != null ? "@" + user.getLogin() : getString(R.string.not_available_short)); // Используем строку
+
+        profileUsername.setText(user.getLogin() != null ? "@" + user.getLogin() : getString(R.string.not_available_short));
         infoName.setText(user.getName() != null ? user.getName() : "Не указано");
         infoBirthDate.setText(user.getBirthDate() != null ? formatBirthDate(user.getBirthDate()) : "Не указана");
         infoUsername.setText(user.getLogin() != null ? user.getLogin() : "Не указано");
@@ -332,17 +316,17 @@ public class ProfileActivity extends AppCompatActivity {
         if (styles != null && !styles.isEmpty()) {
             selectedUserStyle = styles.get(0);
         } else {
-            selectedUserStyle = "Повседневный"; // Если стилей нет, используем дефолтный
-            styles = new ArrayList<>(); // Инициализируем пустой список для адаптера
-            styles.add("Стили не выбраны"); // Добавляем заглушку для Spinner
+            selectedUserStyle = "Повседневный";
+            styles = new ArrayList<>();
+            styles.add("Стили не выбраны");
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_spinner_item,
                 styles != null && !styles.isEmpty() ? styles.toArray(new String[0]) : new String[]{"Стили не выбраны"}
-       ) {
-            // Для закрытого состояния Spinner
+        ) {
+
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -351,7 +335,7 @@ public class ProfileActivity extends AppCompatActivity {
                 return view;
             }
 
-            // Для выпадающего списка
+
             @Override
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
@@ -364,11 +348,11 @@ public class ProfileActivity extends AppCompatActivity {
         };
 
         if (styles != null && !styles.isEmpty()) {
-            if (selectedUserStyle == null || !styles.contains(selectedUserStyle)) { // Если еще не установлен или нет в списке
-                selectedUserStyle = styles.get(0); // Берем первый как дефолтный
+            if (selectedUserStyle == null || !styles.contains(selectedUserStyle)) {
+                selectedUserStyle = styles.get(0);
             }
         } else {
-            selectedUserStyle = "Повседневный"; // Если стилей нет
+            selectedUserStyle = "Повседневный";
         }
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -379,17 +363,17 @@ public class ProfileActivity extends AppCompatActivity {
             stylesSpinner.setSelection(position);
         }
 
-        // Применяем стиль к Spinner (для API 21+)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             stylesSpinner.setPopupBackgroundResource(R.drawable.spinner_dropdown_bg);
         }
     }
     private String formatBirthDate(String rawDate) {
-        // Простой форматировщик даты (можно заменить на более сложный)
+
         if (rawDate == null || rawDate.isEmpty()) {
             return "Не указана";
         }
-        return rawDate; // или преобразуйте формат по вашему усмотрению
+        return rawDate;
     }
 
     @Override

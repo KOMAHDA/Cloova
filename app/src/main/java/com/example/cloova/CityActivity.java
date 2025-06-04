@@ -72,7 +72,6 @@ public class CityActivity extends AppCompatActivity {
         cityInput = findViewById(R.id.city_input);
         searchButton = findViewById(R.id.search_button);
 
-        // Настройка автозаполнения
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, popularCities);
         cityInput.setAdapter(adapter);
@@ -135,7 +134,7 @@ public class CityActivity extends AppCompatActivity {
             List<Address> addresses = geocoder.getFromLocationName(inputCityName, 1);
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
-                // Возвращаем официальное название города из геокодера
+
                 return address.getLocality();
             }
         } catch (IOException e) {
@@ -178,7 +177,7 @@ public class CityActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String inputCity = params[0];
-            // Получаем валидное название города
+
             return getValidCityName(inputCity);
         }
 
@@ -189,7 +188,7 @@ public class CityActivity extends AppCompatActivity {
                 if (user != null) {
                     user.setCity(validCityName);
                     if (dbHelper.updateUser(user)) {
-                        // Обновляем текст в поле ввода на валидное название
+
                         cityInput.setText(validCityName);
                         setResult(RESULT_OK);
                         finish();

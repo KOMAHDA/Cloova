@@ -119,13 +119,9 @@
         <item name="android:colorControlNormal">@color/black</item>
     </style>
     <style name="VisibleSpinnerStyle" parent="Widget.AppCompat.Spinner">
-        <!-- Основной фон -->
         <item name="android:background">@drawable/spinner_visible_bg</item>
-        <!-- Цвет стрелочки -->
         <item name="colorControlNormal">@color/black</item>
-        <!-- Цвет текста -->
         <item name="android:textColor">@color/black</item>
-        <!-- Шрифт -->
         <item name="android:fontFamily">@font/manrope_bold</item>
     </style>
 </resources>
