@@ -123,13 +123,13 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        myAnketaLayout = findViewById(R.id.block3);
+/*        myAnketaLayout = findViewById(R.id.block3);
         myAnketaLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MyAnketa(v);
             }
-        });
+        });*/
 
         likedLooksLayout = findViewById(R.id.block4);
         likedLooksLayout.setOnClickListener(new View.OnClickListener() {
@@ -267,11 +267,11 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void MyAnketa(View v) {
+/*    private void MyAnketa(View v) {
         Intent intent = new Intent(ProfileActivity.this, Anketa.class);
         intent.putExtra("USER_ID", userId);
         startActivity(intent);
-    }
+    }*/
 
     private void displayUserProfile() {
         User user = dbHelper.getUserInfo(userId);

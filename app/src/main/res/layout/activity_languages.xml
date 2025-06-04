@@ -10,35 +10,56 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
-        android:layout_height="180dp"
-        android:src="@drawable/light_shape_profile"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="-40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@null" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/lang_switch_window"
+        app:srcCompat="@drawable/light_shape_profile" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="0dp"
-        android:layout_height="90dp"
-        android:src="@drawable/dark_shape_profile"
-        android:scaleType="centerCrop"
+        android:layout_height="0dp"
+        android:layout_marginBottom="35dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/lang_switch_window"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@null"/>
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/dark_shape_profile" />
 
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="0dp"
-        android:layout_height="268dp"
-        android:src="@drawable/temni_2_3_snizu"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="-40dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@null"/>
+        app:layout_constraintTop_toBottomOf="@+id/notific"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/temni_2_3_snizu"/>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notific"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/temni_2_2_snizu"/>
 
     <ImageView
         android:id="@+id/gobackbutton"
@@ -54,17 +75,6 @@
         android:src="@drawable/chevron_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="0dp"
-        android:layout_height="134dp"
-        android:src="@drawable/temni_2_2_snizu"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@null"/>
 
     <TextView
         android:id="@+id/app_lang"
@@ -96,7 +106,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lang_switch_window"
-        android:layout_width="345dp"
+        android:layout_width="335dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_edit_text"
         android:orientation="vertical"
@@ -147,7 +157,6 @@
             <View
                 android:id="@+id/separator2"
                 style="@style/DividerStyle"
-                app:layout_constraintTop_toBottomOf="@id/block3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

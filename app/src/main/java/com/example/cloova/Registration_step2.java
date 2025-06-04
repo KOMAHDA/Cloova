@@ -38,20 +38,20 @@ public class Registration_step2 extends AppCompatActivity {
         goBackButton = findViewById(R.id.gobackbutton);
         goNextButton = findViewById(R.id.gonextbutton);
 
-        Button btnSelectColors = findViewById(R.id.btnSelectColors);
-        btnSelectColors.setOnClickListener(v -> showColorsDialog());
+/*        Button btnSelectColors = findViewById(R.id.btnSelectColors);
+        btnSelectColors.setOnClickListener(v -> showColorsDialog());*/
 
         Button btnSelectStyles = findViewById(R.id.btnSelectStyles);
         btnSelectStyles.setOnClickListener(v -> showStylesDialog());
 
 /*        Button btnSelectPrinciple = findViewById(R.id.btnSelectPrinciple);
         btnSelectPrinciple.setOnClickListener(v -> showSPrincipleDialog());*/
-
+/*
         Button btnSelectClothes = findViewById(R.id.btnSelectClothes);
         btnSelectClothes.setOnClickListener(v -> showClothesDialog());
 
         Button btnSelectAccessories = findViewById(R.id.btnSelectAccessories);
-        btnSelectAccessories.setOnClickListener(v -> showAccessoriesDialog());
+        btnSelectAccessories.setOnClickListener(v -> showAccessoriesDialog());*/
 
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override

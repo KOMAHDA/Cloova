@@ -186,7 +186,7 @@
     <LinearLayout
         android:id="@+id/Linear"
         android:layout_width="335dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginTop="15dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_edit_text"

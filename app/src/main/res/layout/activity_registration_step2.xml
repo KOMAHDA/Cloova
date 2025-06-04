@@ -31,7 +31,7 @@
             android:layout_height="0dp"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
-            android:layout_marginTop="-120dp"
+            android:layout_marginTop="-80dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gonextbutton"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
             android:layout_height="0dp"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gonextbutton"
             app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +96,7 @@
     <LinearLayout
         android:id="@+id/Linear"
         android:layout_width="335dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginTop="15dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_edit_text"
@@ -133,8 +133,7 @@
     <ScrollView
         android:id="@+id/Scroll"
         android:layout_width="335dp"
-        android:layout_height="274dp"
-
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="425dp"
@@ -149,7 +148,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/Text3"
                 android:textColor="@color/black"
                 android:layout_width="wrap_content"
@@ -164,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:backgroundTint="@color/blue"
                 android:layout_height="wrap_content"
-                android:text="@string/choose_colors"/>
+                android:text="@string/choose_colors"/>-->
 
 
             <TextView
@@ -172,7 +171,6 @@
                 android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:fontFamily="@font/manrope_bold"
                 android:labelFor="@id/nameEditText"
                 android:text="@string/profile_style_label"
@@ -186,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/choose_styles"/>
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/Text5"
                 android:textColor="@color/black"
                 android:layout_width="wrap_content"
@@ -202,9 +200,9 @@
                 android:backgroundTint="@color/blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/choose_clothes"/>
+                android:text="@string/choose_clothes"/>-->
 
-            <TextView
+           <!-- <TextView
                 android:id="@+id/Text6"
                 android:textColor="@color/black"
                 android:layout_width="wrap_content"
@@ -221,7 +219,7 @@
                 android:backgroundTint="@color/blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/choose_accessories"/>
+                android:text="@string/choose_accessories"/>-->
         </LinearLayout>
     </ScrollView>
 
